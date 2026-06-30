@@ -6,6 +6,12 @@ See `CONTEXT.md` for the domain language and `docs/adr/` for architectural decis
 
 ## Stack (decided, not yet scaffolded)
 
+> ⚠ **Under review — pending ClaimReady meeting (2026-06-30).** The "no backend" /
+> "Action Network only" summary below is challenged by the planned ClaimReady
+> integration (needs a server-side proxy + PDF storage). See the inline flags in
+> `docs/adr/0001-stack.md` and the open questions in
+> `docs/claimready/meeting-questions.md`.
+
 - **Frontend:** Astro (static SSG), Tailwind CSS v4 with brand design tokens
 - **CMS:** Sanity (Studio on Sanity hosting); 6 document types — siteSettings, newsArticle, resource, impactStory, testimonial, person
 - **Structure:** pnpm-workspace monorepo (`apps/web`, `apps/studio`)

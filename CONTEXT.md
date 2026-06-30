@@ -14,6 +14,9 @@ _Avoid_: charity, fund (when describing the org itself)
 
 **Founding member**:
 A disaster survivor who joins the association during its founding phase ("Become a Founding Member"). Gets early access to trainings, member calls, legislative updates, and resources.
+_⚠ Pending ClaimReady meeting (2026-06-30):_ "member" collides with ClaimReady's own
+**member / associate / professional** tier vocabulary. Our member is an association
+identity; theirs is a ClaimReady account tier. Keep the two senses distinct.
 
 **Resource**:
 A guide, article, or video that helps people prepare for and respond to a disaster and navigate recovery. Lives on the Resources page under a **section** (Preparation & Response, or Assistance & Eligibility) and has a **format** (article, video, or downloadable guide).
@@ -29,6 +32,10 @@ A time-stamped update published under News. Carries a **vertical** (a tag used f
 
 **Claims Ready**:
 A program/page (currently TBD) concerning disaster-insurance claim readiness.
+_⚠ Pending ClaimReady meeting (2026-06-30):_ this page is intended to surface the
+**ClaimReady** white-label policy-scan experience (upload a policy → AI coverage-gap
+analysis → hosted report). Naming collision to resolve: our **Claims Ready** (with "s")
+vs the vendor product **Claim Ready / ClaimReady** — pick one canonical term.
 
 **Rebuild Foundation**:
 A nav destination referring to the foundation entity (currently TBD).
@@ -45,3 +52,8 @@ A nav destination referring to the foundation entity (currently TBD).
 - "victim" vs "survivor" — resolved: always **disaster survivor**; "victim" is never used.
 - "member" vs "founding member" — at launch the membership is the founding cohort. Revisit if a general (non-founding) member tier is introduced later.
 - **Claims Ready** and **Rebuild Foundation** page scope is undefined in the current wireframes — TBD.
+- _⚠ Identity (pending ClaimReady meeting 2026-06-30):_ the only notion of a "person"
+  on the site today is an **Action Network email capture** via blind-POST — no login,
+  no sessions, no readback, no API key. Open question whether this can back the
+  ClaimReady flow (which expects the partner to authenticate members). See
+  `docs/claimready/meeting-questions.md`.
