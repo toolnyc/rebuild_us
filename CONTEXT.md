@@ -13,10 +13,8 @@ The organizational positioning of the rebuilt site — "the first-ever national 
 _Avoid_: charity, fund (when describing the org itself)
 
 **Founding member**:
-A disaster survivor who joins the association during its founding phase ("Become a Founding Member"). Gets early access to trainings, member calls, legislative updates, and resources.
-_⚠ Pending ClaimReady meeting (2026-06-30):_ "member" collides with ClaimReady's own
-**member / associate / professional** tier vocabulary. Our member is an association
-identity; theirs is a ClaimReady account tier. Keep the two senses distinct.
+A disaster survivor who joins the association during its founding phase ("Become a Founding Member"). Gets early access to trainings, member calls, legislative updates, and resources. The Phase 1 splash page targets 500 founding members via a Solidarity Tech signup form.
+_Note:_ "member" collides with ClaimReady's own **member / associate / professional** tier vocabulary. Our member is an association identity; theirs is a ClaimReady account tier. Keep the two senses distinct in code and copy.
 
 **Resource**:
 A guide, article, or video that helps people prepare for and respond to a disaster and navigate recovery. Lives on the Resources page under a **section** (Preparation & Response, or Assistance & Eligibility) and has a **format** (article, video, or downloadable guide).
@@ -30,15 +28,21 @@ An endorsement quote from an advisory-board member or partner-organization leade
 **News article**:
 A time-stamped update published under News. Carries a **vertical** (a tag used for grouping/filtering).
 
-**Claims Ready**:
-A program/page (currently TBD) concerning disaster-insurance claim readiness.
-_⚠ Pending ClaimReady meeting (2026-06-30):_ this page is intended to surface the
-**ClaimReady** white-label policy-scan experience (upload a policy → AI coverage-gap
-analysis → hosted report). Naming collision to resolve: our **Claims Ready** (with "s")
-vs the vendor product **Claim Ready / ClaimReady** — pick one canonical term.
+**Claims Ready** (our page) / **ClaimReady** (the vendor):
+"Claims Ready" (with "s") is the rebuild.us page and program. "ClaimReady" (no space, no "s") is the third-party vendor product — a white-label policy-scan tool (upload a policy → AI coverage-gap analysis → hosted report). In Phase 1 the Claims Ready page is a static "Coming Soon" section with a link to claimreadyapp.com. Phase 2 integrates the ClaimReady API server-side (see ADR-0002). Always keep the two names distinct in code, copy, and route names.
 
 **Rebuild Foundation**:
-A nav destination referring to the foundation entity (currently TBD).
+A nav destination referring to the foundation entity (currently TBD — hidden via Sanity `siteSettings` in Phase 1).
+
+**Solidarity Tech**:
+The CRM and form platform used by rebuild.us. The Solidarity Tech instance is hosted at `act.rebuild.us`. In Phase 1 it provides an iframe embed for the founding-member signup form. In Phase 2 it is the primary CRM, with bidirectional member data sync to Neon.
+_Avoid_: "Action Network" as a synonym — these are two distinct platforms.
+
+**Phase 1 / splash**:
+The launch-ready static splash page at rebuild.us. Single long-scroll page, centered logo only in nav, Solidarity Tech founding-member form embed, no user auth or backend. Replaces the current WordPress site on deploy.
+
+**Phase 2 / full site**:
+The full rebuild.us product with user auth (Clerk), relational database (Neon), hybrid SSR (Astro + Vercel adapter), ClaimReady integration, and CMS-driven content pages.
 
 ## Relationships
 
@@ -51,9 +55,7 @@ A nav destination referring to the foundation entity (currently TBD).
 
 - "victim" vs "survivor" — resolved: always **disaster survivor**; "victim" is never used.
 - "member" vs "founding member" — at launch the membership is the founding cohort. Revisit if a general (non-founding) member tier is introduced later.
-- **Claims Ready** and **Rebuild Foundation** page scope is undefined in the current wireframes — TBD.
-- _⚠ Identity (pending ClaimReady meeting 2026-06-30):_ the only notion of a "person"
-  on the site today is an **Action Network email capture** via blind-POST — no login,
-  no sessions, no readback, no API key. Open question whether this can back the
-  ClaimReady flow (which expects the partner to authenticate members). See
-  `docs/claimready/meeting-questions.md`.
+- **Claims Ready** vs **ClaimReady** — resolved: "Claims Ready" (with "s") is our page/program; "ClaimReady" (no space) is the vendor. See term definitions above.
+- **Rebuild Foundation** page scope — still TBD; hidden in Phase 1.
+- **Identity / auth** — resolved: Phase 2 uses Clerk (phone/email OTP) for real user accounts. Phase 1 has no auth. See ADR-0002.
+- **Newsletter signup** — integration TBD (Solidarity Tech secondary form or Action Network). Stubbed in Phase 1.

@@ -1,34 +1,31 @@
 # 0001 - Stack: Astro + Sanity monorepo on Vercel
 
-- Status: Accepted (partially under review)
+- Status: Accepted
 - Date: 2026-06-28
+- Updated: 2026-07-13
 
-> ⚠ **Under review — pending ClaimReady meeting (2026-06-30).** The Claims Ready
-> integration requires a server-side component (API key must never reach the
-> browser, plus PDF upload/storage and a submit-and-poll API), which conflicts
-> with the "fully static, no backend" decisions below. Inline ⚠ flags mark the
-> affected points. No decision is changed yet; see
-> `docs/claimready/meeting-questions.md`. ADR-0002 will record the resolution
-> once vendor answers are in.
+> This ADR covers the Phase 1 (splash) architecture only. Phase 1 is fully
+> static. The ClaimReady integration and full-site backend decisions (auth,
+> database, hybrid SSR) are recorded in ADR-0002.
 
 ## Context
 
-We are rebuilding rebuild.us (currently WordPress on Pantheon) as a rebrand with a new information architecture. The new site is content-heavy: a News collection and a structured Resources library (articles, videos, downloadable guides), plus Impact Stories and Testimonials. Content is edited by non-technical staff, but updates are infrequent. Donations and email/SMS signup are handled today by Action Network and will stay there.
+We are rebuilding rebuild.us (currently WordPress on Pantheon) as a rebrand with a new information architecture. The build is split into two phases: a static splash page for launch (Phase 1), followed by a full site with backend and auth (Phase 2). Phase 1 is content-heavy but editor-infrequent; Phase 2 introduces user accounts, CRM integration, and the ClaimReady policy-scan feature.
 
 ## Decision
 
-- **Frontend:** Astro, rendered as a static site (SSG). Rebuilt on content publish via a Sanity webhook that calls a Vercel deploy hook.
-- **Styling:** Tailwind CSS v4 with brand design tokens. The current design is grayscale low-fi wireframes, so tokens start as placeholders and are swapped when the visual brand lands.
-- **CMS:** Sanity. Studio deployed to Sanity's hosting (keeps the public site fully static). Document types: `siteSettings`, `newsArticle`, `resource`, `impactStory`, `testimonial`, `person`. Marketing pages (Home, Who We Are, What We Do, Claims Ready, Rebuild Foundation) are built directly as Astro components rather than CMS-managed. <!-- ⚠ pending ClaimReady meeting: the "Claims Ready" page likely becomes an interactive scan flow (upload → poll → results), not a purely static marketing page. -->
-- **Repo structure:** pnpm-workspace monorepo — `apps/web` (Astro) and `apps/studio` (Sanity Studio).
-- **Hosting:** Vercel (static).
-- **Integrations:** Action Network. Signup uses a custom-branded form that blind-POSTs (no API key in the browser) to the AN form helper endpoint, keeping the site fully static and handling email + SMS opt-in. Donations link out to the existing AN-hosted donate.rebuild.us page. <!-- ⚠ pending ClaimReady meeting: ClaimReady is a new, server-side API integration (Bearer API key, submit-and-poll) — not blind-POST and not browser-safe. Not yet reflected here. -->
-- **Tooling:** TypeScript strict, Prettier (`prettier-plugin-astro`), ESLint (`eslint-plugin-astro`). No git hooks or test framework at setup; add a Playwright smoke test later if needed.
+- **Frontend:** Astro. Phase 1 is fully static (SSG), deployed to Vercel. Phase 2 uses Astro hybrid mode with the Vercel adapter so that only `/api/*` routes run server-side; all other pages remain static.
+- **Styling:** Tailwind CSS v4 with brand design tokens. Brand fonts are New Burns Trial (display) and Armand Grotesk Test (body); files live in `apps/web/public/fonts/`. Token names use CSS custom properties (`--font-display`, `--font-body`, `--font-ui`).
+- **CMS:** Sanity. Studio deployed to Sanity's hosting. Document types: `siteSettings`, `newsArticle`, `resource`, `impactStory`, `testimonial`, `person`. `siteSettings` is used from Phase 1 onward to control nav and footer link visibility. Marketing pages are built as Astro components rather than CMS-managed.
+- **Repo structure:** pnpm-workspace monorepo — `apps/web` (Astro) and `apps/studio` (Sanity Studio). Sanity Studio is scaffolded from Phase 1 (required for `siteSettings`).
+- **Hosting:** Vercel.
+- **Integrations (Phase 1):** Solidarity Tech. The founding-member signup form is a Solidarity Tech iframe embed (`act.rebuild.us`). Newsletter sections are stubbed pending integration decision. Donations link out to the existing AN-hosted `donate.rebuild.us` page.
+- **Tooling:** TypeScript strict, Prettier (`prettier-plugin-astro`), ESLint (`eslint-plugin-astro`). No git hooks or test framework at setup; add Playwright smoke tests later if needed.
 
 ## Consequences
 
-- The public site stays fast and cheap (static CDN), with editor changes going live via a publish-triggered rebuild — acceptable given infrequent edits.
-- Sanity is a second service requiring a project ID and a Studio deploy, but its editing UX and image CDN justify this for non-technical editors and image-heavy content.
-- No backend is required: blind-POST signup and external donations keep everything static. <!-- ⚠ pending ClaimReady meeting: directly conflicts with the integration, which needs a server-side proxy to hold the API key, accept/host the policy PDF, and run the auth→submit→poll flow. -->
-- Marketing pages favor design control and speed over editability; if staff later need to reword them often, revisit with a Sanity page-builder (would supersede part of this ADR).
-- Brand tokens are placeholders until hi-fi design exists; a Figma MCP connection can pull exact specs when available.
+- The public site stays fast and cheap (static CDN), with editor changes going live via a publish-triggered Vercel rebuild. Infrequent edits make this acceptable.
+- Sanity Studio is a Phase 1 dependency (not Phase 2) because `siteSettings` controls nav/footer link visibility on the splash page.
+- The Solidarity Tech iframe embed keeps Phase 1 fully static with no server-side handling required.
+- Marketing pages favor design control and speed over editability; if staff later need to reword them frequently, revisit with a Sanity page-builder.
+- Phase 2 hybrid mode is additive: switching individual routes to SSR does not require rebuilding the static pages.
