@@ -1,6 +1,6 @@
 # Phase 1 Splash — Build Plan
 
-> **Design in progress.** The client rejected the current Figma. Section layout and visual details below are provisional until a new Figma is approved. Infrastructure, content model, and Sanity schema decisions remain valid.
+> **Design approved (mid-fi).** Section layout, palette, and copy below reflect the approved mid-fidelity design. It is a direction, not a pixel spec — standardize spacing/type and improve details during build. Infrastructure, content model, and Sanity schema decisions remain valid.
 
 ## Goal
 
@@ -22,14 +22,18 @@ Ship the splash page at rebuild.us, replacing the current WordPress/Pantheon sit
 
 Build in this order. Resources is last to keep momentum on higher-traffic sections first.
 
-1. **Nav** — centered `Wordmark_1A.svg`; RESOURCES link (visible at launch — scrolls to `#resources` section); JOIN button (orange border, hidden at launch via `showJoin`); ABOUT/NEWS links (hidden via page visibility); GIVE button (hidden via `showGive`). `resourcesDestination` and `joinDestination` in `siteSettings` let editors upgrade scroll targets to full-page URLs without a deploy.
-2. **Hero** — full-width photo (Sanity image field), yellow accent block, split headline, `Group 92.svg` badge/stamp overlay.
-3. **About** — two-column copy block. Both text blocks editable via `splashPage`.
-4. **Founding Member CTA** — headline + sub-copy (Sanity) + Solidarity Tech iframe embed (`act.rebuild.us/founding-member/embed`).
-5. **Why Join Rebuild Today?** — three columns, order and background color editor-controlled. Photos + copy editable via `splashPage`.
-6. **Resources** — yellow (`#ecf278`) background. White card with resource list. See Resources section in splashPage fields. `resourcesPage.visible` controls the "visit rebuild.us/resources" link.
-7. **Get Involved** — two-column layout: left column is custom (copy + social icons, editable via `splashPage`); right column is the Solidarity Tech iframe (`act.rebuild.us/join-form/embed`), which renders its own email/phone/subscribe form UI. Appears once, immediately above the footer.
-8. **Footer** — dark (`#1c1b19`) background, `Wordmark_1A.svg` (large), two link columns visibility-controlled via page documents.
+Each content section carries a hardcoded editorial **section marker** eyebrow: a `N°0X` number (structural, hardcoded) + an editable label (e.g. "Founding membership", "Why we exist", "Join", "Membership benefits", "Resources"). The hero also shows a hardcoded "Est. 2026 — National" marker.
+
+0. **Announcement bar** — full-width orange bar above the nav. Toggleable + editable via `siteSettings` (`showAnnouncement`, `announcementText`, `announcementCtaLabel`, `announcementDestination`). Seed: "Founding membership is open — only 500 spots. Join today →".
+1. **Nav** — left-aligned `Wordmark_1A.svg` + hardcoded tagline lockup "The National Disaster Survivors Association". Right side: "Why join" link (scrolls to `#membership-benefits`), "Resources" link (scrolls to `#resources`), and a filled-orange **Join** button. All three are visible at launch; the Join button scrolls to the on-page founding-member section (`joinDestination`, default `#join`). GIVE stays hidden via `showGive`. `resourcesDestination` / `joinDestination` in `siteSettings` let editors upgrade scroll targets to full-page URLs without a deploy.
+2. **Hero** (`#join` targets section 4; hero id `#top`) — split serif headline ("When things fall apart, we come **_together_**." with "together." in orange italic), `heroSubcopy`, "Join today" (primary, → `joinDestination`) + "Why join Rebuild →" (secondary text link, → `#membership-benefits`). Full-height photo (Sanity image) with a yellow accent block behind its lower-left corner and an editable caption (`heroImageCaption`, default "Community, in action").
+3. **Stats bar** — three-item band: value + label per item. Hardcoded for launch: "500 / Founding member spots", "Nationwide / Survivor-built network", "By & for / Disaster survivors". Keep "500" consistent with the announcement bar and founding CTA copy.
+4. **About** (`#membership-benefits` is section 5; about id `#about`) — one large statement (`aboutStatement`, rich text) + one small supporting paragraph (`aboutSupport`). Highlighted phrases (e.g. "strength in numbers") use the yellow **highlight** mark.
+5. **Founding Member CTA** (`#join`) — dark (`#1F1B17`) section. Editable headline (`foundingCtaHeadline`) + sub-copy (`foundingCtaSubcopy`) in the left column; the right column is the Solidarity Tech iframe (`act.rebuild.us/founding-member/embed`). The bordered card around the form in the design is the **ST-rendered** form (branded via the pasted Custom HTML brand CSS) — Astro builds **no** wrapper around the iframe.
+6. **Why Join Rebuild Today?** (`#membership-benefits`) — three columns numbered `01`/`02`/`03` (numbers hardcoded by index), each with an image on top, title, and body. Column order and background color editor-controlled via `splashPage`.
+7. **Resources** (`#resources`) — two-column layout on the cream (`#F1E9DD`) background (no separate section color / white card): left is heading + subcopy + intro copy with the "visit rebuild.us/resources" link (shown only when `resourcesPage.visible`); right is the guide list. Each guide card shows "Guide 0X · PDF" (number + `format`), a document icon (top-bar color rotates orange/sage/yellow by index, hardcoded), the title, and a "Download ↓" link shown only when a `file` is attached.
+8. **Get Involved** — two-column layout: left column is custom (copy `getInvolvedCopy` + editable fine print + "Follow along" social icons). Right column is the Solidarity Tech iframe (`act.rebuild.us/join-form/embed`), which renders its own email/phone/subscribe form UI. Appears once, immediately above the footer.
+9. **Footer** — dark (`#1F1B17`) background, `Wordmark_1A.svg` (large) + tagline lockup + "Join today →" button. Two link columns (visibility-controlled): **Get involved** (Donate → gated by `showGive`; Member Portal → `memberPortalPage`; Contact → `contactPage`) and **Explore** (Case Studies → `caseStudiesPage`; More Information → `aboutPage`; Privacy Policy → `privacyPage`). Bottom bar: "© 2026 Rebuild — The National Disaster Survivors Association" + "By & for survivors".
 
 ## Sanity content editing principle
 
@@ -37,20 +41,25 @@ Build in this order. Resources is last to keep momentum on higher-traffic sectio
 
 ## Sanity `splashPage` fields (minimum)
 
+Section eyebrow labels are editable strings (numbers are hardcoded). Add one string per section as needed, e.g. `foundingLabel`, `aboutLabel`, `joinLabel`, `benefitsLabel`, `resourcesLabel`.
+
 | Field | Type | Used by |
 |---|---|---|
-| `heroImage` | image | Hero section |
-| `heroHeadline` | string | Hero display text |
-| `aboutLeft` | rich text | About left column |
-| `aboutRight` | rich text | About right column |
+| `heroImage` | image (+ alt) | Hero section |
+| `heroHeadline` | string | Hero display text ("together." styled orange italic in the component) |
+| `heroSubcopy` | string | Hero supporting line under the headline |
+| `heroImageCaption` | string | Hero photo caption overlay (default "Community, in action") |
+| `aboutStatement` | rich text | About section large statement (supports the yellow **highlight** mark) |
+| `aboutSupport` | string / rich text | About section small supporting paragraph |
 | `foundingCtaHeadline` | string | Founding Member CTA |
 | `foundingCtaSubcopy` | string | Founding Member CTA |
-| `whyJoinColumns` | array (items: title, body, image, backgroundColor enum). Reorderable. backgroundColor enum: `#fffffc`, `#ecf278`, `#b7c1ad`, `#fd683e`, `#1c1b19`. Column headline badge background is always `#ecf278` (hardcoded, not editor-controlled). | Why Join section |
+| `whyJoinColumns` | array (items: title, body, image, backgroundColor enum). Reorderable; rendered as numbered 01/02/03 by index (numbers hardcoded). backgroundColor enum: `#F1E9DD` (cream), `#ECF278` (yellow), `#A7B795` (sage), `#F4552A` (orange), `#1F1B17` (ink). | Why Join section |
 | `resourcesHeadline` | string | Resources section heading |
-| `resourcesSubcopy` | string | Resources section centered subheading |
-| `resourcesLeftCopy` | string | Resources card left column intro text |
-| `resourceItems` | array (items: `title` string only). Document icon is a fixed asset. | Resources card right column list |
+| `resourcesSubcopy` | string | Resources section subheading (supports the yellow **highlight** mark) |
+| `resourcesLeftCopy` | string | Resources left column intro text (contains the "visit rebuild.us/resources" link) |
+| `resourceItems` | array (items: `title` string, `format` string default "PDF", `file` optional Sanity file upload). "Guide 0X" number and rotating icon color are hardcoded by index; "Download ↓" renders only when a `file` is attached. | Resources right column guide list |
 | `getInvolvedCopy` | string | Get Involved section left copy |
+| `getInvolvedFinePrint` | string | Get Involved fine print (default "No spam — just resources and updates from the network."); "Follow along" label is hardcoded |
 
 ## `siteSettings` fields (Phase 1)
 
@@ -64,12 +73,12 @@ Phase 1 page documents and launch defaults:
 |---|---|---|---|
 | `privacyPage` | `/privacy` | `true` | Full content Phase 1 |
 | `resourcesPage` | `/resources` | `false` | Stub only (Phase 2 content). Controls the `/resources` route and the "visit rebuild.us/resources" inline link in the Resources section. Does NOT control the RESOURCES nav link (that links to the `#resources` scroll target and is always visible). |
-| `aboutPage` | `/about` | `false` | Stub only |
-| `newsPage` | `/news` | `false` | Stub only |
-| `contactPage` | `/contact` | `false` | Stub only |
-| `caseStudiesPage` | `/case-studies` | `false` | Stub only |
-| `memberPortalPage` | `/member-portal` | `false` | Stub only |
-| `joinPage` | `/join` | `false` | Stub only — JOIN nav button links here when `showJoin: true` |
+| `aboutPage` | `/about` | `false` | Stub only. Controls the "More Information" footer link (maps to the About page). |
+| `newsPage` | `/news` | `false` | Stub only. Not linked from the splash. |
+| `contactPage` | `/contact` | `false` | Stub only. Controls the "Contact" footer link. |
+| `caseStudiesPage` | `/case-studies` | `false` | Stub only. Controls the "Case Studies" footer link. |
+| `memberPortalPage` | `/member-portal` | `false` | Stub only. Controls the "Member Portal" footer link. |
+| `joinPage` | `/join` | `false` | Stub only. Not linked from the splash — the Join button scrolls to the on-page `#join` section, not this route. |
 
 Stub documents contain only `title` and `visible` in Phase 1. Full content fields are added in Phase 2.
 
@@ -77,10 +86,15 @@ Stub documents contain only `title` and `visible` in Phase 1. Full content field
 
 | Field | Controls | Default |
 |---|---|---|
-| `showJoin` | "JOIN" nav button | `false` |
+| `showAnnouncement` | Top announcement bar visibility | `true` |
+| `announcementText` | Announcement bar message | "Founding membership is open — only 500 spots." |
+| `announcementCtaLabel` | Announcement bar link label | "Join today →" |
+| `announcementDestination` | Announcement bar link target | `#join` |
 | `showGive` | "GIVE" nav button + "Donate" footer link | `false` |
-| `joinDestination` | URL/hash the JOIN button links to | `#founding-member` |
-| `resourcesDestination` | URL/hash the RESOURCES nav link scrolls to | `#resources` |
+| `joinDestination` | URL/hash the Join buttons (nav, hero, footer, announcement) link to | `#join` |
+| `resourcesDestination` | URL/hash the Resources nav link scrolls to | `#resources` |
+
+The nav **Join** button is visible at launch (it is the primary CTA and points to the on-page founding-member section via `joinDestination`). The old `showJoin` flag is retired — the Join button no longer targets a separate hidden `/join` page.
 
 ### Form embed URLs
 
@@ -107,11 +121,10 @@ These are fixed brand elements — not Sanity fields. They live in `apps/web/pub
 
 | Asset | Source | Used by |
 |---|---|---|
-| `Group 92.svg` (REBUILD badge/stamp) | `rebuild-brand-assets/` | Hero overlay |
-| `Wordmark_1A.svg` (REBUILD wordmark) | `rebuild-brand-assets/` | Nav, Footer |
+| `Wordmark_1A.svg` (REBUILD wordmark) | `rebuild-brand-assets/` | Nav (left-aligned, with tagline lockup), Footer (large) |
 | Instagram, Facebook, YouTube icons | `astro-icon` + `@iconify-json/simple-icons` | Footer, Get Involved |
 
-Both SVG files copy to `apps/web/public/images/`. Social icons are rendered via the `astro-icon` component (no separate SVG files needed).
+The wordmark SVG copies to `apps/web/public/images/`. Social icons are rendered via the `astro-icon` component (no separate SVG files needed). The old `Group 92.svg` badge/stamp is **not used** in the new design — the hero uses a yellow accent block behind the photo instead of a stamp overlay.
 
 ## Sanity seed content
 
@@ -120,8 +133,10 @@ Initial copy for the `splashPage` document comes from `docs/claimready/../splash
 | Field | Seed value |
 |---|---|
 | `heroHeadline` | "When things fall apart, we come together." |
-| `aboutLeft` | "Rebuild is a national membership association built by and for survivors of hurricanes, floods, wildfires, tornadoes, and more." |
-| `aboutRight` | "We come together to share wisdom, advocate for our interests, and build a national network with the strength in numbers to eventually make full recovery for every survivor a reality.\n\nWe know what it takes to get back on your feet, and we're here to help. Rebuild exists so that no survivor has to go through this alone." |
+| `heroSubcopy` | "Rebuild is a national membership association built by and for survivors of hurricanes, floods, wildfires, tornadoes, and more." |
+| `heroImageCaption` | "Community, in action" |
+| `aboutStatement` | "We come together to share wisdom, advocate for our interests, and build a national network with the strength in numbers to eventually make full recovery for every survivor a reality." (highlight "strength in numbers") |
+| `aboutSupport` | "We know what it takes to get back on your feet, and we're here to help. Rebuild exists so that no survivor has to go through this alone." |
 | `foundingCtaHeadline` | "Join today to become one of the 500 Founding Members of Rebuild." |
 | `foundingCtaSubcopy` | "Get first-look access to advice, training, news, and community benefits coming online later this year." |
 | `whyJoinColumns[0].title` | "Build Community" |
@@ -131,10 +146,11 @@ Initial copy for the `splashPage` document comes from `docs/claimready/../splash
 | `whyJoinColumns[2].title` | "Free Trainings" |
 | `whyJoinColumns[2].body` | "Skills that put power back in your hands. Workshops on preparedness, response, leadership, and advocacy, led by survivors and experts who stick around after the cameras leave." |
 | `resourcesHeadline` | "Resources" |
-| `resourcesSubcopy` | "We know from direct experience just how broken the recovery system is — and how hard it is on survivors." |
-| `resourcesLeftCopy` | "Our resource guides are a starting point to help make the process easier" |
-| `resourceItems` | "Applying for FEMA Assistance", "The Survivor's Guide to Mental Health", "Advocating for Yourself in an Insurance Dispute" |
-| `getInvolvedCopy` | "Not ready to become a founding member but want to stay in the loop? Sign up here:" |
+| `resourcesSubcopy` | "We know from direct experience just how broken the recovery system is — and how hard it is on survivors." (highlight "broken the recovery system") |
+| `resourcesLeftCopy` | "Our resource guides are a starting point to help make the process easier. For more survivor resources, visit rebuild.us/resources." (the "rebuild.us/resources" link renders only when `resourcesPage.visible`) |
+| `resourceItems` | "Applying for FEMA Assistance", "The Survivor's Guide to Mental Health", "Advocating for Yourself in an Insurance Dispute" (each `format` "PDF", `file` attached by client when ready) |
+| `getInvolvedCopy` | "Not ready to become a founding member but want to stay in the loop?" |
+| `getInvolvedFinePrint` | "No spam — just resources and updates from the network." |
 
 ## One-time setup (before first deploy)
 

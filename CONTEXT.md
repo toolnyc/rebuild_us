@@ -8,8 +8,14 @@ Shared language for this project. Keep variable, function, file, and content-mod
 A person who has lived through a catastrophic climate disaster (or loves someone who has). The audience the organization serves and organizes.
 _Avoid_: victim — the organization explicitly rejects this framing ("we are not victims; we are agents of change").
 
+**Rebuild**:
+The short name of the organization and the product. Used as the wordmark (`REBUILD★`) and in running copy.
+
+**The National Disaster Survivors Association**:
+The canonical long-form name / descriptor of the organization, shown as a tagline lockup beside the wordmark in the nav and footer and in the copyright line ("© 2026 Rebuild — The National Disaster Survivors Association"). Hardcoded in the layout (not editor-controlled). "Rebuild" is the short name; this is its formal descriptor.
+
 **Association**:
-The organizational positioning of the rebuilt site — "the first-ever national association for disaster survivors." A membership/community framing, not only a fundraising vehicle.
+The organizational positioning of the rebuilt site — a membership/community framing, not only a fundraising vehicle. Its canonical name is **The National Disaster Survivors Association**.
 _Avoid_: charity, fund (when describing the org itself)
 
 **Founding member**:
@@ -17,7 +23,7 @@ A disaster survivor who joins the association during its founding phase ("Become
 _Note:_ "member" collides with ClaimReady's own **member / associate / professional** tier vocabulary. Our member is an association identity; theirs is a ClaimReady account tier. Keep the two senses distinct in code and copy.
 
 **Resource**:
-A guide, article, or video that helps people prepare for and respond to a disaster and navigate recovery. Lives on the Resources page under a **section** (Preparation & Response, or Assistance & Eligibility) and has a **format** (article, video, or downloadable guide).
+A guide, article, or video that helps people prepare for and respond to a disaster and navigate recovery. Lives on the Resources page under a **section** (Preparation & Response, or Assistance & Eligibility) and has a **format** (article, video, or downloadable guide). On the splash, resources appear as numbered "guide" cards labelled by format (e.g. "Guide 01 · PDF") with a download action.
 
 **Impact story**:
 A narrative of an organization's or community's relief/recovery work, featured on the homepage.
@@ -57,5 +63,6 @@ The full rebuild.us product with user auth (Clerk), relational database (Neon), 
 - "member" vs "founding member" — at launch the membership is the founding cohort. Revisit if a general (non-founding) member tier is introduced later.
 - **Claims Ready** vs **ClaimReady** — resolved: "Claims Ready" (with "s") is our page/program; "ClaimReady" (no space) is the vendor. See term definitions above.
 - **Rebuild Foundation** page scope — still TBD; hidden in Phase 1.
+- **Organization name** — resolved: short name **Rebuild**; canonical descriptor **The National Disaster Survivors Association** (hardcoded lockup in nav/footer/copyright).
 - **Identity / auth** — resolved: Phase 2 uses Clerk (phone/email OTP) for real user accounts. Phase 1 has no auth. See ADR-0002.
 - **Newsletter signup** — integration TBD (Solidarity Tech secondary form or Action Network). Stubbed in Phase 1.

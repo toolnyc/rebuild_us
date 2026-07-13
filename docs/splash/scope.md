@@ -1,8 +1,7 @@
 # Phase 1 — Splash Page Scope
 
-> **Design in progress.** The client rejected the current Figma. Visual design decisions in this document (colors, layout, section structure) are provisional until a new Figma is approved. Content model and copy decisions remain valid.
+> **Design approved (mid-fi).** Colors, layout, and section structure below reflect the approved mid-fidelity design (a direction, not a pixel spec). Content model and copy decisions remain valid. See `build-plan.md` for the authoritative section breakdown and Sanity fields.
 
-- Figma: https://www.figma.com/design/LC4ZJUQYVgnoGltxEuElHN/Rebuild-Splash?node-id=4-2
 - Deployment: replaces rebuild.us (WordPress/Pantheon retired on launch)
 - Stack: static Astro + Vercel (see ADR-0001)
 
@@ -10,16 +9,20 @@
 
 Single long-scroll page. One sub-route at launch: `/privacy` (Privacy Policy). No existing privacy policy found at rebuild.us; a stub with placeholder text ships at launch.
 
+Each content section carries a `N°0X` marker eyebrow (number hardcoded, label editable). Full field-level detail lives in `build-plan.md`.
+
 | Section | Notes |
 |---|---|
-| Nav | Centered `Wordmark_1A.svg` asset. All links (RESOURCES, ABOUT, NEWS) and buttons (JOIN, GIVE) hidden via Sanity `siteSettings` visibility flags. |
-| Hero | Full-width photo, yellow (`#ecf278`) accent block — Figma shows `#eaf261`, use the canonical token. "When things fall apart, we come together." display text, `Group 92.svg` badge/stamp overlay. |
-| About | Two-column body copy introducing the association. |
-| Founding Member CTA | "Join today to become one of the 500 Founding Members." headline + Solidarity Tech form embed (see below). |
-| Why Join Rebuild Today? | Three columns, each with a circular photo, yellow badge headline, and body copy. Column order and background color are editor-controlled in Sanity. Available background colors: `#fffffc` (white), `#ecf278` (yellow), `#b7c1ad` (sage), `#fd683e` (orange), `#1c1b19` (black). |
-| Resources | Yellow (`#ecf278`) background. Centered heading + subheading. White card with two columns: left is intro copy + `rebuild.us/resources` link (link hidden at launch via `showResourcesPageLink` flag); right is a list of 3 resource items, each with a fixed document icon and a title. Resource item titles are Sanity-editable. Figma node `4:167`. Build last. |
-| Get Involved | Solidarity Tech iframe embed at `https://act.rebuild.us/join-form/embed`. Prompt: "Not ready to become a founding member but want to stay in the loop?" Appears once on the page, immediately above the footer. Same embed pattern as the founding-member form. |
-| Footer | Dark (`#1c1b19`) background, `Wordmark_1A.svg` asset (large), two columns of footer links (visibility Sanity-controlled). |
+| Announcement bar | Full-width orange bar above the nav. Toggleable + editable via `siteSettings`. Seed: "Founding membership is open — only 500 spots. Join today →". |
+| Nav | Left-aligned `Wordmark_1A.svg` + hardcoded "The National Disaster Survivors Association" tagline lockup. Right side: "Why join" + "Resources" links + filled-orange **Join** button, all visible at launch. GIVE hidden via `showGive`. |
+| Hero | Split serif headline "When things fall apart, we come *together*." + subcopy + "Join today" / "Why join Rebuild →" CTAs. Full-height photo with a yellow (`#ECF278`) accent block behind its lower-left corner and an editable caption. Marker: "Est. 2026 — National". |
+| Stats bar | Three-item band (hardcoded): "500 / Founding member spots", "Nationwide / Survivor-built network", "By & for / Disaster survivors". |
+| About | One large statement + one small supporting paragraph. Highlighted phrases use the yellow highlight mark. |
+| Founding Member CTA | Dark (`#1F1B17`) section. "Join today to become one of the 500 Founding Members." headline + Solidarity Tech form embed (see below). The form's card is ST-rendered (branded via Custom HTML); Astro builds no wrapper. |
+| Why Join Rebuild Today? | Three columns numbered 01/02/03, each with an image on top, title, and body. Column order and background color editor-controlled. Available background colors: `#F1E9DD` (cream), `#ECF278` (yellow), `#A7B795` (sage), `#F4552A` (orange), `#1F1B17` (ink). |
+| Resources | Two-column layout on the cream background (no separate section color / card): left is heading + subcopy + intro copy with the `rebuild.us/resources` link (shown only when `resourcesPage.visible`); right is a list of 3 guide cards ("Guide 0X · PDF" + document icon + title + "Download ↓" when a file is attached). Build last. |
+| Get Involved | Solidarity Tech iframe embed at `https://act.rebuild.us/join-form/embed`. Prompt: "Not ready to become a founding member but want to stay in the loop?" + fine print + "Follow along" social icons. Appears once on the page, immediately above the footer. Same embed pattern as the founding-member form. |
+| Footer | Dark (`#1F1B17`) background, `Wordmark_1A.svg` (large) + tagline lockup + "Join today →" button. Two link columns (visibility Sanity-controlled): **Get involved** (Donate, Member Portal, Contact) and **Explore** (Case Studies, More Information, Privacy Policy). Bottom bar: copyright + "By & for survivors". |
 
 ## Nav and footer link visibility
 
@@ -40,7 +43,7 @@ infrastructure.
 <script src="https://act.rebuild.us/embed/v1.js" async></script>
 ```
 
-**Get Involved form** (Get Involved section, appears twice):
+**Get Involved form** (Get Involved section, appears once, above the footer):
 
 ```html
 <iframe data-st-embed src="https://act.rebuild.us/join-form/embed" allow="payment *" style="width:100%;border:none;min-height:500px;" title="Join Form"></iframe>
@@ -53,7 +56,7 @@ include the `<script>` tag only once (e.g. in the page `<head>` or at the end of
 
 ## Brand identity assets
 
-All brand identity marks are rendered as exported SVG assets, never as font-rendered text. This applies to the wordmark, badge/stamp, and any other logo elements. SVG files live in `apps/web/public/images/`.
+All brand identity marks are rendered as exported SVG assets, never as font-rendered text. This applies to the wordmark and any other logo elements. SVG files live in `apps/web/public/images/`. (The old `Group 92.svg` badge/stamp is not used in the new design.)
 
 ## Fonts
 
@@ -70,16 +73,17 @@ Font files live in `apps/web/public/fonts/`. CSS custom properties:
 
 ## Brand colors
 
+Palette adopted from the approved mid-fi design (exact rendered values). The old `blue` and `maroon` tokens are dropped — they do not appear in the new design (the subscribe/CTA buttons are orange).
+
 | Token | Hex | Usage |
 |---|---|---|
-| `--color-background` | `#fffffc` | Page background |
-| `--color-black` | `#1c1b19` | Nav/footer background, dark sections |
-| `--color-text` | `#18191b` | Body text |
-| `--color-accent-yellow` | `#ecf278` | Hero block, badge backgrounds |
-| `--color-accent-orange` | `#fd683e` | CTAs, column backgrounds |
-| `--color-accent-sage` | `#b7c1ad` | Column backgrounds |
-| `--color-accent-blue` | `#dbf1fe` | Column backgrounds |
-| `--color-accent-maroon` | `#3c222d` | Subscribe button |
+| `--color-cream` | `#F1E9DD` | Page background |
+| `--color-ink` | `#1F1B17` | Text, nav/footer + dark sections (single dark) |
+| `--color-muted` | `#6B655C` | Secondary / supporting text |
+| `--color-white` | `#FFFFFF` | Cards, reversed text on dark |
+| `--color-accent-yellow` | `#ECF278` | Hero accent block, highlight mark, column backgrounds |
+| `--color-accent-orange` | `#F4552A` | CTAs, announcement bar, column backgrounds |
+| `--color-accent-sage` | `#A7B795` | Column backgrounds |
 
 ## Out of scope for Phase 1
 
