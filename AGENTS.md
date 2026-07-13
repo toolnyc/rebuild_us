@@ -6,8 +6,8 @@ See `CONTEXT.md` for the domain language and `docs/adr/` for architectural decis
 
 ## Stack (decided, not yet scaffolded)
 
-- **Frontend:** Astro (Phase 1: static SSG; Phase 2: hybrid SSR via Vercel adapter), Tailwind CSS v4 with brand design tokens
-- **CMS:** Sanity (Studio on Sanity hosting); 7 document types — `siteSettings`, `splashPage`, `newsArticle`, `resource`, `impactStory`, `testimonial`, `person`
+- **Frontend:** Astro hybrid mode (SSG default, SSR opt-in via Vercel adapter from Phase 1), Tailwind CSS v4 with brand design tokens
+- **CMS:** Sanity (Studio on Sanity hosting); document types — `siteSettings`, `splashPage`, `privacyPage`, `resourcesPage`, `aboutPage`, `newsPage`, `contactPage`, `caseStudiesPage`, `memberPortalPage` (stubs with `visible` flag, Phase 1), `newsArticle`, `resource`, `impactStory`, `testimonial`, `person` (Phase 2 content types)
 - **Structure:** pnpm-workspace monorepo (`apps/web`, `apps/studio`)
 - **Hosting:** Vercel, rebuilt on publish via Sanity webhook → Vercel deploy hook
 - **Integrations (Phase 1):** Solidarity Tech — founding-member signup form embed (`act.rebuild.us`) and get-involved form embed (`act.rebuild.us/join-rebuild`)
