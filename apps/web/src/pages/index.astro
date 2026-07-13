@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import { sanityClient } from '../lib/sanity';
+
+const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+---
+
+<BaseLayout>
+  <Nav
+    showJoin={siteSettings?.showJoin}
+    showGive={siteSettings?.showGive}
+    joinDestination={siteSettings?.joinDestination}
+    resourcesDestination={siteSettings?.resourcesDestination}
+  />
+</BaseLayout>

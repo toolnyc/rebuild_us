@@ -1,6 +1,8 @@
 # Phase 1 — Splash Page Scope
 
-- Figma: https://www.figma.com/design/LC4ZJUQYVgnoGltxEuElHN/Rebuild-Splash?node-id=1-2
+> **Design in progress.** The client rejected the current Figma. Visual design decisions in this document (colors, layout, section structure) are provisional until a new Figma is approved. Content model and copy decisions remain valid.
+
+- Figma: https://www.figma.com/design/LC4ZJUQYVgnoGltxEuElHN/Rebuild-Splash?node-id=4-2
 - Deployment: replaces rebuild.us (WordPress/Pantheon retired on launch)
 - Stack: static Astro + Vercel (see ADR-0001)
 
@@ -16,8 +18,7 @@ Single long-scroll page. One sub-route at launch: `/privacy` (Privacy Policy). N
 | Founding Member CTA | "Join today to become one of the 500 Founding Members." headline + Solidarity Tech form embed (see below). |
 | Why Join Rebuild Today? | Three columns, each with a circular photo, yellow badge headline, and body copy. Column order and background color are editor-controlled in Sanity. Available background colors: `#fffffc` (white), `#ecf278` (yellow), `#b7c1ad` (sage), `#fd683e` (orange), `#1c1b19` (black). |
 | Resources | Yellow (`#ecf278`) background. Centered heading + subheading. White card with two columns: left is intro copy + `rebuild.us/resources` link (link hidden at launch via `showResourcesPageLink` flag); right is a list of 3 resource items, each with a fixed document icon and a title. Resource item titles are Sanity-editable. Figma node `4:167`. Build last. |
-| Coming Soon | Two-column: left is association mission copy; right describes upcoming member benefits with a static link to claimreadyapp.com. Build it; can be hidden or removed later via Sanity `siteSettings` flag. |
-| Get Involved (x2) | Solidarity Tech iframe embed at `https://act.rebuild.us/join-rebuild`. Prompt: "Not ready to become a founding member but want to stay in the loop?" Appears twice on the page (matching the Figma). Same embed pattern as the founding-member form. |
+| Get Involved | Solidarity Tech iframe embed at `https://act.rebuild.us/join-form/embed`. Prompt: "Not ready to become a founding member but want to stay in the loop?" Appears once on the page, immediately above the footer. Same embed pattern as the founding-member form. |
 | Footer | Dark (`#1c1b19`) background, `Wordmark_1A.svg` asset (large), two columns of footer links (visibility Sanity-controlled). |
 
 ## Nav and footer link visibility

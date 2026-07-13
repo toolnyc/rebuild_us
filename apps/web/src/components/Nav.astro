@@ -1,0 +1,28 @@
+---
+interface Props {
+  showJoin?: boolean;
+  showGive?: boolean;
+  joinDestination?: string;
+  resourcesDestination?: string;
+}
+
+const {
+  showJoin = false,
+  showGive = false,
+  joinDestination = '#founding-member',
+  resourcesDestination = '#resources',
+} = Astro.props;
+---
+
+<header>
+  <nav>
+    <a href={resourcesDestination}>RESOURCES</a>
+
+    <a href="/" aria-label="Rebuild home">
+      <img src="/images/Wordmark_1A.svg" alt="REBUILD" />
+    </a>
+
+    {showGive && <a href="https://donate.rebuild.us">GIVE</a>}
+    {showJoin && <a href={joinDestination}>JOIN</a>}
+  </nav>
+</header>

@@ -1,5 +1,7 @@
 # Phase 1 Splash — Build Plan
 
+> **Design in progress.** The client rejected the current Figma. Section layout and visual details below are provisional until a new Figma is approved. Infrastructure, content model, and Sanity schema decisions remain valid.
+
 ## Goal
 
 Ship the splash page at rebuild.us, replacing the current WordPress/Pantheon site. Targets the founding-member audience for the July 15 welcome call and beyond.
@@ -26,7 +28,7 @@ Build in this order. Resources is last to keep momentum on higher-traffic sectio
 4. **Founding Member CTA** — headline + sub-copy (Sanity) + Solidarity Tech iframe embed (`act.rebuild.us/founding-member/embed`).
 5. **Why Join Rebuild Today?** — three columns, order and background color editor-controlled. Photos + copy editable via `splashPage`.
 6. **Resources** — yellow (`#ecf278`) background. White card with resource list. See Resources section in splashPage fields. `resourcesPage.visible` controls the "visit rebuild.us/resources" link.
-7. **Newsletter / Get Involved** — two-column layout: left column is custom (copy + social icons, editable via `splashPage`); right column is the Solidarity Tech iframe (`act.rebuild.us/join-form/embed`), which renders its own email/phone/subscribe form UI.
+7. **Get Involved** — two-column layout: left column is custom (copy + social icons, editable via `splashPage`); right column is the Solidarity Tech iframe (`act.rebuild.us/join-form/embed`), which renders its own email/phone/subscribe form UI. Appears once, immediately above the footer.
 8. **Footer** — dark (`#1c1b19`) background, `Wordmark_1A.svg` (large), two link columns visibility-controlled via page documents.
 
 ## Sanity content editing principle

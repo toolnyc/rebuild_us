@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* Brand tokens — values TBD pending approved Figma */
+@theme {
+  --color-background: #fffffc;
+  --color-black: #1c1b19;
+  --color-text: #18191b;
+  --color-accent-yellow: #ecf278;
+  --color-accent-orange: #fd683e;
+  --color-accent-sage: #b7c1ad;
+  --color-accent-blue: #dbf1fe;
+  --color-accent-maroon: #3c222d;
+
+  --font-display: "New Burns Trial", serif;
+  --font-body: "Armand Grotesk Test", sans-serif;
+  --font-ui: "Helvetica Neue", system-ui, sans-serif;
+}
+
+@font-face {
+  font-family: "New Burns Trial";
+  src: url("/fonts/NewBurnsTrial-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Armand Grotesk Test";
+  src: url("/fonts/ArmandGroteskTest-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Armand Grotesk Test";
+  src: url("/fonts/ArmandGroteskTest-SemiLight.otf") format("opentype");
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Armand Grotesk Test";
+  src: url("/fonts/ArmandGroteskTest-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Armand Grotesk Test";
+  src: url("/fonts/ArmandGroteskTest-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Armand Grotesk Test";
+  src: url("/fonts/ArmandGroteskTest-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

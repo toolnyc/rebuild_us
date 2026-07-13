@@ -1,28 +1,11 @@
-# Dependencies
-node_modules/
-.pnpm-store/
-
-# Build output
-dist/
-.output/
-.vercel/
-.astro/
-
-# Sanity
-.sanity/
-
-# Env
+node_modules
+dist
+.output
+.vercel
 .env
 .env.*
 !.env.example
-
-# Logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-
-# OS / editor
+*.local
 .DS_Store
-.idea/
-.vscode/*
-!.vscode/extensions.json
+.astro
+.sanity
