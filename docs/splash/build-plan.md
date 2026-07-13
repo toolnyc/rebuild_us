@@ -93,6 +93,14 @@ Stub documents contain only `title` and `visible` in Phase 1. Full content field
 
 The `<script src="https://act.rebuild.us/embed/v1.js" async></script>` tag is hardcoded once in the base layout `<body>` end. Only the `src` is Sanity-editable; all other iframe attributes (`allow`, `style`, `title`) are structural and live in the Astro component.
 
+### Form styling (ST-side only)
+
+The ST embed is a **cross-origin iframe**; our Astro app cannot inject or override CSS inside it, and there is no theme URL parameter. All brand-matching of the form is done **on the Solidarity Tech side**, using the form builder's per-field `Style` (inline CSS), `Classes`, and `Label style` options, the `Custom HTML` field for arbitrary markup, and the ST website's global CSS/theme. Our Astro app does **not** build a decorative container/frame around the form — the iframe drops into the section flow and the ST-rendered form supplies its own branded appearance (background, padding, rounded card). The Figma "EMBEDDED FORM GOES HERE" rectangle (~916×468) marks the iframe slot, not a wrapper we build.
+
+**Ownership split:** Pete owns the form's *visual styling* only. Form functionality (Stripe, conditional logic, email/text triggers, submission handling) is Paul's; broken form actions are out of scope for the styling work.
+
+**Styling deliverable (copy-paste, not theme-builder):** rather than hand-editing the ST theme builder, we generate a single brand CSS stylesheet (brand tokens + fonts, targeting ST's rendered field classes) that Pete pastes into one `Custom HTML` field at the top of each form as a `<style>` block, plus a few per-field `Style` strings where needed. Prerequisite: the live ST form must exist so we can inspect its rendered DOM/class names before writing selectors. This generation happens in a later session.
+
 ## Static design assets (exported from Figma)
 
 These are fixed brand elements — not Sanity fields. They live in `apps/web/public/images/` and are hardcoded in their components.
@@ -146,8 +154,9 @@ These must be completed before the site can go live. They are not part of the co
 
 | Item | Owner |
 |---|---|
-| Solidarity Tech founding member form (Stripe, conditional logic, email/text triggers) | Paul — embed URL confirmed (`act.rebuild.us/founding-member/embed`) |
+| Solidarity Tech founding member form — build + functionality (Stripe, conditional logic, email/text triggers, submission handling) | Paul — embed URL confirmed (`act.rebuild.us/founding-member/embed`) |
 | Test ST form flow end-to-end | Paul |
+| Solidarity Tech form **visual styling** (brand CSS pasted into ST `Custom HTML` field) | Pete — requires Paul's live form to exist first so DOM/classes can be inspected |
 | Social media account URLs (Instagram, Facebook, YouTube) | Client — added to `siteSettings`; icons suppressed until populated |
 | `rebuild.us/foundingmember` shortlink | Client (newworld.inc) |
 | `donate.rebuild.us` URL | TBD — confirm it is live before launch; GIVE button in nav links to it (currently hidden via `showGive` flag, so not a hard blocker) |
