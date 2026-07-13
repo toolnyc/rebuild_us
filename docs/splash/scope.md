@@ -6,7 +6,7 @@
 
 ## Page structure
 
-Single long-scroll page. No sub-routes at launch except a Privacy Policy stub.
+Single long-scroll page. One sub-route at launch: `/privacy` (Privacy Policy). No existing privacy policy found at rebuild.us; a stub with placeholder text ships at launch.
 
 | Section | Notes |
 |---|---|
@@ -15,9 +15,9 @@ Single long-scroll page. No sub-routes at launch except a Privacy Policy stub.
 | About | Two-column body copy introducing the association. |
 | Founding Member CTA | "Join today to become one of the 500 Founding Members." headline + Solidarity Tech form embed (see below). |
 | Why Join Rebuild Today? | Three-column: Build Community (orange bg), Get Advice (blue bg), Free Trainings. Each has a circular photo, yellow badge headline, body copy. |
-| Resources teaser | Dark (#1c1b19) full-width section, "Resources" heading, one-paragraph description. |
-| Coming Soon | Two-column: left is association mission copy; right describes upcoming member benefits with a static link to claimreadyapp.com. |
-| Newsletter signup (x2) | Email input + SUBSCRIBE button. Integration TBD — stubbed as a static component for now. |
+| Resources | **Design in progress — build last.** Final scope TBD. Copy doc specifies 3 resource thumbnails (FEMA, Mental Health, Insurance) + "Want more?" link to `rebuild.us/resources`. Figma shows a dark teaser only. Implement whatever design is locked when this section is reached. |
+| Coming Soon | Two-column: left is association mission copy; right describes upcoming member benefits with a static link to claimreadyapp.com. Build it; can be hidden or removed later via Sanity `siteSettings` flag. |
+| Get Involved (x2) | Solidarity Tech iframe embed at `https://act.rebuild.us/join-rebuild`. Prompt: "Not ready to become a founding member but want to stay in the loop?" Appears twice on the page (matching the Figma). Same embed pattern as the founding-member form. |
 | Footer | Dark (#1c1b19) background, large REBUILD wordmark, two columns of footer links (visibility Sanity-controlled). |
 
 ## Nav and footer link visibility
@@ -78,4 +78,5 @@ Font files live in `apps/web/public/fonts/`. CSS custom properties:
 - Action Network integration
 - Solidarity Tech API sync
 - CMS-driven content pages (News, Resources, About, etc.)
+- `/resources` route — no separate resources page at launch; only the resources section on the splash page
 - Separate route pages beyond Privacy Policy stub

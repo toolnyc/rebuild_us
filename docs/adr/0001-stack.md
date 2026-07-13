@@ -16,7 +16,7 @@ We are rebuilding rebuild.us (currently WordPress on Pantheon) as a rebrand with
 
 - **Frontend:** Astro. Phase 1 is fully static (SSG), deployed to Vercel. Phase 2 uses Astro hybrid mode with the Vercel adapter so that only `/api/*` routes run server-side; all other pages remain static.
 - **Styling:** Tailwind CSS v4 with brand design tokens. Brand fonts are New Burns Trial (display) and Armand Grotesk Test (body); files live in `apps/web/public/fonts/`. Token names use CSS custom properties (`--font-display`, `--font-body`, `--font-ui`).
-- **CMS:** Sanity. Studio deployed to Sanity's hosting. Document types: `siteSettings`, `newsArticle`, `resource`, `impactStory`, `testimonial`, `person`. `siteSettings` is used from Phase 1 onward to control nav and footer link visibility. Marketing pages are built as Astro components rather than CMS-managed.
+- **CMS:** Sanity. Studio deployed to Sanity's hosting. Document types: `siteSettings`, `splashPage`, `newsArticle`, `resource`, `impactStory`, `testimonial`, `person`. `siteSettings` controls nav/footer link visibility only. `splashPage` is a singleton that holds all editable homepage copy (hero, about, founding member CTA, why-join columns, resources teaser, coming-soon, get-involved). Marketing copy is expected to change frequently and lives in Sanity rather than hardcoded in Astro components.
 - **Repo structure:** pnpm-workspace monorepo — `apps/web` (Astro) and `apps/studio` (Sanity Studio). Sanity Studio is scaffolded from Phase 1 (required for `siteSettings`).
 - **Hosting:** Vercel.
 - **Integrations (Phase 1):** Solidarity Tech. The founding-member signup form is a Solidarity Tech iframe embed (`act.rebuild.us`). Newsletter sections are stubbed pending integration decision. Donations link out to the existing AN-hosted `donate.rebuild.us` page.
@@ -27,5 +27,5 @@ We are rebuilding rebuild.us (currently WordPress on Pantheon) as a rebrand with
 - The public site stays fast and cheap (static CDN), with editor changes going live via a publish-triggered Vercel rebuild. Infrequent edits make this acceptable.
 - Sanity Studio is a Phase 1 dependency (not Phase 2) because `siteSettings` controls nav/footer link visibility on the splash page.
 - The Solidarity Tech iframe embed keeps Phase 1 fully static with no server-side handling required.
-- Marketing pages favor design control and speed over editability; if staff later need to reword them frequently, revisit with a Sanity page-builder.
+- Homepage copy is managed in Sanity via the `splashPage` singleton. `siteSettings` stays thin (nav/footer flags only). This keeps the Studio unambiguous for non-technical editors.
 - Phase 2 hybrid mode is additive: switching individual routes to SSR does not require rebuilding the static pages.
