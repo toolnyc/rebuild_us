@@ -25,8 +25,14 @@ _Note:_ "member" collides with ClaimReady's own **member / associate / professio
 **Resource**:
 Content that helps people prepare for and respond to a disaster and navigate recovery. The umbrella term is realized as two Sanity document types (see ADR-0003):
 
-- **Guide** — a written, downloadable PDF that belongs to one **section** (Preparation & Response, or Assistance & Eligibility). Shown on the Resources page under its section column ("Written Guides") and on the splash as curated, numbered "Guide 01 · PDF" cards with a download action.
-- **Video** — a YouTube video (link/embed). Has no section; shown in a flat "Video Library" grid on the Resources page.
+- **Guide** — a written, downloadable PDF that belongs to one **section** (see four locked values below). Shown on the Resources page grouped by section inside bordered GuideSection cards; each row is a clickable anchor to the file. Also shown on the splash as curated, numbered "Guide 01 · PDF" cards.
+- **Video** — a YouTube video (link/embed). Has no section; shown in a flat "Video Library" grid on the Resources page below the Written Guides section.
+
+**Guide sections** (four locked enum values in the Sanity schema):
+- `disaster-tipsheets` — "Disaster Tipsheets" (accent: orange)
+- `survivors-communities` — "For Survivors & Our Communities" (accent: yellow)
+- `fema-government` — "FEMA & Government Programs" (accent: sage)
+- `insurance` — "Insurance" (accent: blue)
 
 _Note:_ "article" (an on-site or external written resource distinct from a downloadable guide) remains a conceptual format but is deferred — Phase 1 ships only guides and videos.
 
@@ -59,7 +65,7 @@ The full rebuild.us product with user auth (Clerk), relational database (Neon), 
 
 - The **Association** has many **Founding members**.
 - A **News article** carries one **vertical**.
-- A **Guide** belongs to one **section**; a **Video** has no section.
+- A **Guide** belongs to one **section** (one of four locked values); a **Video** has no section.
 - The splash features a curated, ordered subset of **Guides** (referenced from the splash page).
 - **Testimonials** and **Impact stories** are reused across multiple pages.
 

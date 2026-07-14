@@ -128,10 +128,14 @@ canonical and collapse into the tokens below. Cream `#F1E9DD` is retired.
 | `--color-accent-yellow` | `#EAF261` | Highlight bands, marker fills |
 | `--color-accent-sage` | `#B5C1AB` | Section bands, muted surfaces, stat labels on dark |
 | `--color-accent-orange` | `#FD683E` | Primary action, focus ring, resource-card border, emphasis marks |
+| `--color-accent-blue` | `#DBF1FE` | Insurance guide-section accent only |
 
 Contrast notes: `--color-ink` on `--color-white` and `--color-white` on
 `--color-ink` both clear WCAG AA. Orange `#FD683E` is an **action/decoration** color,
 not a text color on white (fails AA for body text); use ink for text.
+
+**Discard these Figma drifts** (appear in the Figma mock but are not canonical):
+`#FF5C29` → use `--color-accent-orange #FD683E`; `#B7C1AD` → use `--color-accent-sage #B5C1AB`.
 
 ---
 
@@ -194,6 +198,7 @@ rules from §1 go at the bottom of the file (omitted here for brevity).
   --color-accent-yellow: #eaf261;
   --color-accent-sage: #b5c1ab;
   --color-accent-orange: #fd683e;
+  --color-accent-blue: #dbf1fe;
 
   --radius: 5px;
 
@@ -326,6 +331,34 @@ label uses `--color-accent-sage` (e.g. "500 / Founding Member Spots",
 - **Nav** — centered logo; right-aligned outline "Join" button; left eyebrow label.
 - **Footer** — dark `--color-ink` band, white text, link columns, wordmark.
 
+### GuideSection card
+
+Used on the Resources page to group guide rows within a sub-section. `5px` radius,
+`2px solid --color-accent-sage` border, white fill. Contains a `ty-h2` sub-section
+heading followed by a list of Guide rows. Laid out in a `2×2` grid
+(`grid-cols-1 lg:grid-cols-2`); two rows render four sub-sections in document order
+(Disaster Tipsheets → For Survivors → FEMA & Government → Insurance).
+
+### Document icon
+
+Inline SVG used as the leading icon in a Guide row. Proportions ~51×67px (scalable).
+Structure: rounded-`5px` body in `--color-white` with a narrow colored top strip
+(the section's accent color) and three simulated gray text lines below.
+The accent color maps to the section:
+
+| Section | Accent token |
+| --- | --- |
+| `disaster-tipsheets` | `--color-accent-orange` |
+| `survivors-communities` | `--color-accent-yellow` |
+| `fema-government` | `--color-accent-sage` |
+| `insurance` | `--color-accent-blue` |
+
+### Guide row
+
+An `<a>` wrapping the entire row (Document icon + title). The anchor's `href` is
+`fileUrl` from Sanity; it opens the PDF. Title uses `ty-h3` (Basis Grotesque Pro
+Bold). No separate "Download" link.
+
 ### Decorative patterns (not components)
 
 - **Section bands** — full-width square blocks in yellow / sage / orange separating
@@ -429,4 +462,6 @@ verification checklist in the HTML file after applying.
 - [ ] Add the 8 font files to `apps/web/public/fonts/`; delete Armand + New Burns.
 - [ ] Replace the `@theme`, `@utility`, and `@font-face` blocks in `global.css` per §5 and §1; remove the global square reset.
 - [ ] Update components (`Button`, `Logo`, `Hero`, sections) to consume the new tokens; drop orange-emphasis in headings.
+- [ ] Rewrite `WrittenGuides.astro` — 4 locked sections, GuideSection card, Document icon SVG, Guide row anchor. Update Sanity `resourceGuide` schema: expand `section` enum to 4 values (`disaster-tipsheets`, `survivors-communities`, `fema-government`, `insurance`).
+- [ ] Add Resources-page-specific vertical bar decorations (22px orange bars, left + right edges; left bar transitions to sage at mid-page).
 - [ ] Rewrite the ST `<style>` block per §7 (gated on font licensing/CORS); re-verify on the live forms.

@@ -34,7 +34,10 @@ forms.
 
 3. **Accents from the palette frame.** Yellow `#EAF261`, Sage `#B5C1AB`, Orange
    `#FD683E` (palette node 34-167 is the source of truth; splash-mock drifts
-   `#B7C1AD` / `#FF5C29` are discarded).
+   `#B7C1AD` / `#FF5C29` are discarded). A fifth accent, Blue `#DBF1FE`, is added
+   for the Insurance guide sub-section on the Resources page (see Resources page
+   comp, node 37-439). It is scoped to that content-type accent and not used as a
+   general-purpose brand color.
 
 4. **Square → rounded.** A single `--radius: 5px` applies to buttons, cards, inputs,
    and image frames; dividers and full-width section bands stay square. The global
@@ -75,5 +78,9 @@ forms.
   `apps/web/public/fonts/` and the `@font-face`/token blocks in `global.css`.
 - The ST font change is gated on confirming a web-font license and CORS-enabled
   hosting for `act.rebuild.us`; until then Helvetica Neue remains the fallback.
-- `CONTEXT.md` is unchanged: it is a domain glossary, and design tokens are not
-  glossary material.
+- `CONTEXT.md` is updated to record the four locked guide section enum values and their
+  section-to-accent-color mapping; the Blue token decision is recorded here and in
+  `docs/design-system.md`.
+- The Resources page comp (node 37-439) contains color drifts (`#FF5C29`, `#B7C1AD`)
+  that differ from the canonical tokens -- discard these in favor of the palette-frame
+  values.
