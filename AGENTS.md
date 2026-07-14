@@ -16,6 +16,18 @@ See `CONTEXT.md` for the domain language and `docs/adr/` for architectural decis
 
 See `docs/adr/0001-stack.md` (Phase 1 architecture) and `docs/adr/0002-backend-auth-integrations.md` (Phase 2 architecture).
 
+## Workflows
+
+### After any Sanity schema change
+
+Schema changes in `apps/studio/schemaTypes/` are not reflected in the live Studio until you redeploy:
+
+```
+cd apps/studio && npx sanity deploy
+```
+
+Studio is hosted at `https://rebuild-us.sanity.studio/`. The web app (`apps/web`) reads the schema at build time via the Sanity client, so no Studio redeploy is needed for web rebuilds — only for making new/changed fields visible to content editors.
+
 ## Agent skills
 
 ### Issue tracker

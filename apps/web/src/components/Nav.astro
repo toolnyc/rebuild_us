@@ -16,16 +16,16 @@ const {
 ---
 
 <header class="border-b border-ink/10 bg-white/95 backdrop-blur">
-  <nav class="mx-auto grid max-w-7xl grid-cols-3 items-center px-4 py-3 sm:px-6 sm:py-4">
-    <div class="flex justify-start">
-      <a href={resourcesDestination} class="ty-eyebrow text-accent-orange">Resources</a>
+  <nav class="mx-auto flex max-w-7xl items-center px-4 py-3 sm:px-6 sm:py-4">
+    <div class="flex flex-1 items-center justify-start">
+      <a href={resourcesDestination} class="border-2 border-accent-orange text-accent-orange text-[0.875rem] font-bold px-3 py-1 rounded-[var(--radius)] transition hover:bg-accent-orange hover:text-white">Resources</a>
     </div>
 
-    <a href="/" aria-label="Rebuild home" class="mx-auto w-fit">
+    <a href="/" aria-label="Rebuild home" class="shrink-0">
       <Logo />
     </a>
 
-    <div class="flex items-center justify-end gap-4">
+    <div class="flex flex-1 items-center justify-end gap-4">
       {showGive && (
         <a href="https://donate.rebuild.us" class="link-alt text-sm">GIVE</a>
       )}

@@ -139,8 +139,16 @@ export const splashPage = defineType({
       group: "whyJoin",
     }),
     defineField({
+      name: "whyJoinBgImage",
+      title: "Why Join background image",
+      type: "image",
+      group: "whyJoin",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt text", type: "string" }],
+    }),
+    defineField({
       name: "whyJoinColumns",
-      title: "Why Join columns",
+      title: "Why Join rows",
       type: "array",
       group: "whyJoin",
       of: [
@@ -149,30 +157,8 @@ export const splashPage = defineType({
           fields: [
             { name: "title", title: "Title", type: "string" },
             { name: "body", title: "Body", type: "text", rows: 4 },
-            {
-              name: "image",
-              title: "Image",
-              type: "image",
-              options: { hotspot: true },
-              fields: [{ name: "alt", title: "Alt text", type: "string" }],
-            },
-            {
-              name: "backgroundColor",
-              title: "Background color",
-              type: "string",
-              options: {
-                list: [
-                  { title: "Cream", value: "#F1E9DD" },
-                  { title: "Yellow", value: "#ECF278" },
-                  { title: "Sage", value: "#A7B795" },
-                  { title: "Orange", value: "#F4552A" },
-                  { title: "Ink", value: "#1F1B17" },
-                ],
-              },
-              initialValue: "#F1E9DD",
-            },
           ],
-          preview: { select: { title: "title", media: "image" } },
+          preview: { select: { title: "title" } },
         },
       ],
     }),

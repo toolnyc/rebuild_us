@@ -72,19 +72,7 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
       <TornEdge position="bottom" color="var(--color-accent-yellow)" />
     </div>
 
-    <!-- Written Guides intro -->
-    <div class="mx-auto max-w-7xl px-6 pt-12 pb-0" data-animate="fade">
-      <h2 class="ty-h2">Written Guides</h2>
-      {
-        page?.writtenGuidesSubcopy && (
-          <p class="mt-4 ty-lead text-muted max-w-2xl">{page.writtenGuidesSubcopy}</p>
-        )
-      }
-    </div>
-
-    <WrittenGuides
-      guides={guides}
-    />
+    <WrittenGuides guides={guides} />
 
     <VideoLibrary heading={page?.videoLibraryHeading} videos={videos} />
 

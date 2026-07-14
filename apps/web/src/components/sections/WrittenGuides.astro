@@ -8,12 +8,10 @@ interface Guide {
 }
 
 interface Props {
-  heading?: string;
-  subcopy?: string;
   guides?: Guide[];
 }
 
-const { heading = 'Written Guides', subcopy, guides = [] } = Astro.props;
+const { guides = [] } = Astro.props;
 
 type SectionKey = 'disaster-tipsheets' | 'survivors-communities' | 'fema-government' | 'insurance';
 
@@ -26,8 +24,8 @@ const SECTION_LABELS: Record<SectionKey, string> = {
 
 const SECTION_ORDER: SectionKey[] = [
   'disaster-tipsheets',
-  'survivors-communities',
   'fema-government',
+  'survivors-communities',
   'insurance',
 ];
 
@@ -38,28 +36,30 @@ const grouped = SECTION_ORDER.map((key) => ({
 }));
 ---
 
-<section id="guides" class="scroll-mt-20 mx-auto max-w-7xl px-6 py-20 lg:py-28">
-  <div class="mt-12 grid gap-8 grid-cols-1 lg:grid-cols-2">
+<section id="guides" class="scroll-mt-20 px-6 pt-16 pb-8 lg:pt-24 lg:pb-10">
+  <div class="mx-auto max-w-7xl space-y-16">
     {
-      grouped.map((col) => (
-        <div
-          class="border-2 border-accent-sage rounded-[var(--radius)] bg-white p-8"
-          data-animate="fade"
-        >
-          <h3 class="ty-h2 mb-6">{col.label}</h3>
-          <div class="flex flex-col gap-5">
-            {col.items.length === 0 && (
-              <p class="ty-body text-muted">No guides yet.</p>
+      grouped.map((section) => (
+        <div data-animate="fade">
+          <h2 class="ty-h2 mb-8">{section.label}</h2>
+          <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {section.items.length === 0 && (
+              <p class="ty-body text-muted col-span-full">No guides yet.</p>
             )}
-            {col.items.map((guide) => (
+            {section.items.map((guide) => (
               <a
                 href={guide.fileUrl ?? '#'}
-                class="flex items-center gap-4 group"
+                class:list={[
+                  'flex items-center gap-4 border border-ink/20 rounded-[var(--radius)] p-5 transition-colors',
+                  guide.fileUrl
+                    ? 'hover:border-ink/50 group cursor-pointer'
+                    : 'pointer-events-none opacity-50',
+                ]}
                 aria-label={guide.title}
                 {...(!guide.fileUrl && { 'aria-disabled': 'true', tabIndex: -1 })}
               >
-                <DocumentIcon section={col.key} />
-                <span class="ty-body font-bold group-hover:text-accent-orange transition-colors">
+                <DocumentIcon section={section.key} />
+                <span class="ty-body font-bold flex-1 group-hover:text-accent-orange transition-colors">
                   {guide.title}
                 </span>
               </a>

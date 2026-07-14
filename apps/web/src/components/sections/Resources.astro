@@ -61,16 +61,20 @@ type Section = 'disaster-tipsheets' | 'survivors-communities' | 'fema-government
       <ul class="flex flex-col" data-animate="fade">
         {
           items.map((item, i) => (
-            <li class:list={['flex items-center gap-4 py-4', i > 0 && 'border-t border-ink']}>
+            <li class:list={['flex items-center gap-4 py-5', i > 0 && 'border-t border-accent-yellow']}>
               <DocumentIcon section={item.section as Section} />
-              <div class="flex-1 font-body font-medium text-[22px] text-ink">{item.title}</div>
-              {item.fileUrl && (
+              <div class="flex-1 ty-body font-medium text-ink">{item.title}</div>
+              {item.fileUrl ? (
                 <a
                   href={item.fileUrl}
-                  class="font-bold text-[18px] text-ink whitespace-nowrap"
+                  class="ty-caption font-bold text-ink whitespace-nowrap hover:opacity-70 transition-opacity"
                 >
                   Download ↓
                 </a>
+              ) : (
+                <span class="ty-caption font-bold text-ink/40 whitespace-nowrap">
+                  Download ↓
+                </span>
               )}
             </li>
           ))

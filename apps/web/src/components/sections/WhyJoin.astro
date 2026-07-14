@@ -1,55 +1,52 @@
 ---
 import { urlFor } from '../../lib/sanity';
 
-interface Column {
+interface Row {
   title?: string;
   body?: string;
-  image?: any;
-  backgroundColor?: string;
 }
 
 interface Props {
   label?: string;
-  columns?: Column[];
+  columns?: Row[];
+  bgImage?: any;
 }
 
-const { label, columns = [] } = Astro.props;
+const { columns = [], bgImage } = Astro.props;
+
+const bgUrl = bgImage
+  ? urlFor(bgImage).width(1600).height(900).fit('crop').url()
+  : null;
 ---
 
-<section id="membership-benefits" class="scroll-mt-20 mx-auto max-w-7xl px-6 py-20 lg:py-28">
-  <h2 class="mb-12 ty-h2 text-center" data-animate="fade">Why join Rebuild today?</h2>
-  <div class="grid gap-6 md:grid-cols-3" data-animate-group>
-    {
-      columns.map((col) => {
-        const imageUrl = col.image ? urlFor(col.image).width(782).height(460).fit('crop').url() : null;
-        return (
-          <article
-            class="flex flex-col overflow-hidden border-2 border-accent-orange rounded-[var(--radius)]"
-            data-animate="fade"
-          >
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt={col.title ?? ''}
-                class="w-full object-cover"
-                style="aspect-ratio:391/230;"
-              />
-            ) : (
-              <div
-                class="flex w-full items-center justify-center bg-muted/10 ty-body text-muted"
-                style="aspect-ratio:391/230;"
-              >
-                Image
-              </div>
-            )}
-            <div class="border-t border-ink"></div>
-            <div class="flex flex-1 flex-col gap-3 p-6">
-              <h3 class="ty-h3">{col.title}</h3>
-              <p class="ty-body text-center">{col.body}</p>
-            </div>
-          </article>
-        );
-      })
-    }
+<section id="membership-benefits" class="scroll-mt-20 relative overflow-hidden">
+  {bgUrl ? (
+    <img
+      src={bgUrl}
+      alt={bgImage?.alt ?? ''}
+      class="absolute inset-0 w-full h-full object-cover"
+      aria-hidden={!bgImage?.alt}
+    />
+  ) : (
+    <div class="absolute inset-0 bg-ink"></div>
+  )}
+  <div class="absolute inset-0 bg-black/55"></div>
+
+  <div class="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:py-28">
+    <h2 class="mb-14 ty-h2 text-center text-white" data-animate="fade">
+      Why join Rebuild today?
+    </h2>
+
+    <div data-animate-group>
+      {columns.map((row) => (
+        <div
+          class="border-t border-accent-yellow grid grid-cols-1 gap-4 py-10 md:grid-cols-[2fr_3fr] md:gap-16 md:py-12"
+          data-animate="fade"
+        >
+          <h3 class="ty-h2 text-white">{row.title}</h3>
+          <p class="ty-lead text-white/75 md:self-center">{row.body}</p>
+        </div>
+      ))}
+    </div>
   </div>
 </section>

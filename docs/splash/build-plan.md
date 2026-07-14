@@ -167,8 +167,37 @@ These must be completed before the site can go live. They are not part of the co
 
 1. **Sanity project** — create under Pete's account; invite client (newworld.inc) as editors. Studio deployed to Sanity hosting.
 2. **Vercel project** — create net new under Pete's Vercel account, connect to the monorepo (`apps/web` as the root), add `rebuild.us` custom domain.
-3. **Vercel deploy hook** — generate in Vercel project settings; paste URL into Sanity webhook config.
-4. **Sanity webhook** — in the Sanity project dashboard, add a webhook that fires on document publish and POSTs to the Vercel deploy hook URL.
+3. **Vercel deploy hook** — generate in Vercel project settings; paste URL into Sanity webhook config. See detailed steps below.
+4. **Sanity webhook** — in the Sanity project dashboard, add a webhook that fires on document publish and POSTs to the Vercel deploy hook URL. See detailed steps below.
+
+### Publish → rebuild wiring (detailed)
+
+Without this, publishing content in Studio does **not** update the live site — the SSG build only regenerates on git push or when this deploy hook fires. (Related: `apps/web/src/lib/sanity.ts` uses `useCdn: false` so each build reads fresh published content instead of racing the ~60s apicdn cache.)
+
+**a. Vercel Deploy Hook**
+
+1. Vercel project (deploying `apps/web`) → **Settings → Git → Deploy Hooks**.
+2. Create one — **Name:** `sanity-publish`, **Branch:** `main`.
+3. Copy the generated URL (`https://api.vercel.com/v1/integrations/deploy/prj_xxx/yyy`). Treat it as a secret.
+
+**b. Sanity webhook**
+
+1. https://www.sanity.io/manage → project `nj0067fd` → **API → Webhooks → Create webhook**.
+2. Settings:
+   - **Name:** `Vercel rebuild on publish`
+   - **URL:** the Vercel Deploy Hook URL from step a
+   - **Dataset:** `production`
+   - **Trigger on:** Create, Update, Delete
+   - **Filter (GROQ):** `!(_id in path("drafts.**"))` (rebuild on publishes only, not autosaved drafts)
+   - **HTTP method:** `POST`
+   - **API version:** `v2021-03-25` (or latest)
+3. Save.
+
+**c. Verify**
+
+1. Publish a trivial edit in Studio.
+2. Vercel → **Deployments** — a new deploy should start within seconds (Source: "Deploy Hook").
+3. After it finishes, reload `survivors.rebuild.us` and confirm the change is live.
 5. **DNS cutover** — update `rebuild.us` A/CNAME records in GoDaddy to point to Vercel (replaces WordPress/Pantheon). Pete has GoDaddy access.
 6. **Environment variables** — added to Vercel project settings:
    - `SANITY_PROJECT_ID`, `SANITY_DATASET`
