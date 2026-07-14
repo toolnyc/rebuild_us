@@ -1,0 +1,792 @@
+<!--
+  REBUILD.US - Solidarity Tech form styling
+  ==========================================
+  WHERE TO PASTE: Solidarity Tech > Website > Settings > Site-wide HTML Head Content.
+  Paste the entire <style> block below (one block, both forms).
+
+  SCOPE: Every rule is scoped under `body.embedded-iframe`, so only the embedded
+  forms (act.rebuild.us/founding-member/embed and /join-form/embed) are affected.
+  Non-embedded Solidarity Tech pages are left untouched.
+
+  FORMS COVERED:
+    Form 1 - Founding Member (/founding-member/embed): 3-step stepper, Stripe, hCaptcha.
+    Form 2 - Join / Get Involved (/join-form/embed): single-step signup.
+
+  BRAND TOKENS:
+    cream  #f1e9dd (surface)   ink    #1f1b17 (text)     muted #6b655c (hints)
+    orange #f4552a (primary)   yellow #ecf278            sage  #a7b795
+  FONT: "Helvetica Neue", system-ui, sans-serif (the site's UI font; system-installed),
+        with slightly tightened tracking to match the site.
+  CORNERS: square everywhere (the brand uses no rounded corners).
+
+  THEME:
+    - Join form: light cream surface, ink text (blends into the cream section).
+    - Founding form: dark ink surface (same as the #join section it sits in) with
+      cream text, so it blends seamlessly. Text inputs + the Stripe box stay
+      light-filled for legibility; choice controls are cream outlines that turn
+      orange when selected. Scoped via :has(.multipage) so only the stepper form
+      gets the dark treatment.
+
+  SECTION GROWTH: smooth resize is handled on the SITE side - the embed iframes in
+  FoundingCta.astro / GetInvolved.astro have `transition: height 0.35s ease`, which
+  animates the height that act.rebuild.us/embed/v1.js applies as the form grows.
+
+  CANNOT BE STYLED (cross-origin iframes):
+    - Stripe card fields (only the .payment-card-container wrapper is reachable).
+    - hCaptcha widget.
+
+  NOTE ON STEP RESIZE: Bootstrap toggles step panes via display:none/block, so the
+  overall height cannot be CSS-animated across a toggle. Smoothness here = the
+  incoming step fades in, plus hard guards so labels/grids never wrap or clip.
+
+  VERIFICATION CHECKLIST (confirm on the live forms after pasting):
+    [ ] Font is Helvetica Neue throughout; all corners square; no ALL-CAPS labels.
+    [ ] Join form: cream surface, blends into the cream section.
+    [ ] Founding form: dark ink surface blends into the dark #join section; cream text.
+    [ ] Type scale: prompts 22px > labels/inputs/options 18px > step 17px > hints/errors 16px (nothing smaller).
+    [ ] Radio/consent option text ("Yes/No", dates) is body-size and legible on the dark surface.
+    [ ] Disabled submit reads as a solid muted button with legible text (not a faded orange).
+    [ ] Unselected donation/recurring buttons: cream text on transparent (never illegible on a light fill).
+    [ ] Inputs: white-filled, orange focus ring; placeholder muted.
+    [ ] Buttons: orange primary; disabled submit dimmed; outline/share buttons ink-outlined.
+    [ ] Stepper (mobile): square number badges, active badge orange, labels don't wrap.
+    [ ] Step 1: donation presets are square buttons; selected one turns orange; "other" input styled.
+    [ ] Step 1: recurring Yes/No styled + selected state.
+    [ ] Step 2: email/name/phone styled; phone flag dropdown (intl-tel-input) styled; survivor/welcome-call radios orange.
+    [ ] Step 3: payment card box bordered; fee checkbox orange; submit enables/styles correctly.
+    [ ] Join form: SMS Yes/No consent + disclaimer links (orange).
+    [ ] Switching steps fades smoothly; nothing wraps or compresses; no horizontal scroll.
+-->
+<style>
+  body.embedded-iframe {
+    --cream: #f1e9dd;
+    --ink: #1f1b17;
+    --muted: #6b655c;
+    --white: #ffffff;
+    --orange: #f4552a;
+    --yellow: #ecf278;
+    --sage: #a7b795;
+    --error: #b3261e;
+
+    background: var(--cream) !important;
+    color: var(--ink) !important;
+    overflow-x: hidden;
+    /* NOTE: the ST page uses a 10px root, so rem units render ~1.6x too small.
+       All sizes below are in px to stay independent of that root. */
+    font-size: 17px;
+    line-height: 1.5;
+    /* Match the site's Helvetica Neue tracking (slightly tightened) */
+    letter-spacing: -0.011em;
+  }
+
+  /* ---- Square everything: the brand uses no rounded corners ---- */
+  body.embedded-iframe *,
+  body.embedded-iframe *::before,
+  body.embedded-iframe *::after {
+    border-radius: 0 !important;
+  }
+
+  /* ---- One font: the site's UI typeface (system-installed) ---- */
+  body.embedded-iframe,
+  body.embedded-iframe input,
+  body.embedded-iframe button,
+  body.embedded-iframe select,
+  body.embedded-iframe textarea,
+  body.embedded-iframe label,
+  body.embedded-iframe legend,
+  body.embedded-iframe h1,
+  body.embedded-iframe h2,
+  body.embedded-iframe h3,
+  body.embedded-iframe h4,
+  body.embedded-iframe p,
+  body.embedded-iframe span,
+  body.embedded-iframe a {
+    font-family: "Helvetica Neue", system-ui, -apple-system, Arial, sans-serif !important;
+    letter-spacing: -0.011em;
+  }
+
+  /* ---- Layout: let the iframe rectangle be the card, with breathing room ---- */
+  body.embedded-iframe .page-wrapper {
+    max-width: 100% !important;
+    background: transparent !important;
+  }
+  body.embedded-iframe .container {
+    max-width: 100% !important;
+    background: transparent !important;
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+  @media (min-width: 480px) {
+    body.embedded-iframe .container {
+      padding-left: 32px !important;
+      padding-right: 32px !important;
+    }
+  }
+
+  /* ================================================================
+     TYPOGRAPHY
+     ================================================================ */
+  body.embedded-iframe .page-header .title,
+  body.embedded-iframe .action-page-form-title {
+    color: var(--ink) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em;
+  }
+  body.embedded-iframe .page-header .subtitle {
+    color: var(--muted) !important;
+  }
+
+  /* Field labels ("Email", "Zip Code", "Payment Card") */
+  body.embedded-iframe .control-label {
+    color: var(--ink) !important;
+    font-weight: 600 !important;
+    font-size: 17px !important;
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+  body.embedded-iframe .control-label.normal {
+    font-weight: 400 !important;
+  }
+  /* Section prompts ("Choose an amount", "Make it monthly!", the radio questions):
+     one small step up, kept close to body size for low variability. */
+  body.embedded-iframe .donation_amount > .col-lg-12 > div > .control-label,
+  body.embedded-iframe .donation_recurring > .col-lg-12 > div > .control-label,
+  body.embedded-iframe .radios-component fieldset > div > .control-label {
+    font-size: 19px !important;
+    font-weight: 700 !important;
+    line-height: 1.3;
+  }
+  /* Radio/consent OPTION labels - ST forces these to 10px; override to body size.
+     High specificity (matches .control-label.normal.ml-10) to beat ST's rule. */
+  body.embedded-iframe .radios-component .control-label.normal.ml-10,
+  body.embedded-iframe .radios-component .control-label.normal,
+  body.embedded-iframe .consent-label {
+    font-size: 17px !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+  }
+
+  body.embedded-iframe .form-hint {
+    color: var(--muted) !important;
+    font-size: 15px;
+    line-height: 1.45;
+    margin-top: 6px;
+  }
+  body.embedded-iframe .help-block.with-errors,
+  body.embedded-iframe .with-errors {
+    color: var(--error) !important;
+    font-size: 15px;
+    line-height: 1.45;
+    margin-top: 6px;
+  }
+
+  /* ================================================================
+     INPUTS
+     ================================================================ */
+  body.embedded-iframe .form-control {
+    background: var(--white) !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--ink) !important;
+    box-shadow: none !important;
+    padding: 11px 13px !important;
+    height: auto !important;
+    width: 100% !important;
+    font-size: 17px !important;
+    line-height: 1.4 !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  body.embedded-iframe .form-control:focus {
+    border-color: var(--orange) !important;
+    box-shadow: 0 0 0 3px rgba(244, 85, 42, 0.2) !important;
+    outline: none !important;
+  }
+  body.embedded-iframe .form-control::placeholder {
+    color: var(--muted) !important;
+    opacity: 1;
+  }
+  body.embedded-iframe textarea.form-control {
+    min-height: 96px;
+  }
+
+  /* Field spacing rhythm */
+  body.embedded-iframe .form-group,
+  body.embedded-iframe .input-component,
+  body.embedded-iframe .user-input-component {
+    margin-bottom: 18px;
+  }
+
+  /* Native radios / checkboxes tint orange */
+  body.embedded-iframe input[type="radio"],
+  body.embedded-iframe input[type="checkbox"] {
+    accent-color: var(--orange);
+  }
+
+  /* ================================================================
+     PHONE - intl-tel-input dropdown
+     ================================================================ */
+  body.embedded-iframe .intl-tel-input {
+    width: 100% !important;
+    display: block;
+  }
+  body.embedded-iframe .intl-tel-input .selected-flag {
+    background: var(--cream) !important;
+    border-right: 1px solid var(--ink) !important;
+    padding: 0 8px 0 10px;
+  }
+  body.embedded-iframe .intl-tel-input .selected-flag:hover,
+  body.embedded-iframe .intl-tel-input .selected-flag:focus {
+    background: rgba(31, 27, 23, 0.06) !important;
+  }
+  body.embedded-iframe .intl-tel-input .country-list {
+    position: absolute !important;
+    background: var(--white) !important;
+    border: 1px solid var(--ink) !important;
+    box-shadow: 0 6px 20px rgba(31, 27, 23, 0.18) !important;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 5;
+    margin: 0;
+  }
+  body.embedded-iframe .intl-tel-input .country {
+    color: var(--ink) !important;
+    padding: 8px 10px;
+  }
+  body.embedded-iframe .intl-tel-input .country:hover,
+  body.embedded-iframe .intl-tel-input .country.highlight,
+  body.embedded-iframe .intl-tel-input .country.active {
+    background: var(--cream) !important;
+  }
+  body.embedded-iframe .intl-tel-input .country .dial-code {
+    color: var(--muted) !important;
+  }
+  body.embedded-iframe .intl-tel-input .country-list .divider {
+    border-bottom: 1px solid rgba(31, 27, 23, 0.15);
+  }
+
+  /* ================================================================
+     BUTTONS
+     ================================================================ */
+  body.embedded-iframe .btn-primary,
+  body.embedded-iframe .submit,
+  body.embedded-iframe .next-step,
+  body.embedded-iframe .go_to_form,
+  body.embedded-iframe #form_submit_button {
+    background: var(--orange) !important;
+    border: 1px solid var(--orange) !important;
+    color: var(--white) !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+    box-shadow: none !important;
+    transition: opacity 0.2s ease;
+  }
+  body.embedded-iframe .btn-primary:hover,
+  body.embedded-iframe .submit:hover,
+  body.embedded-iframe .next-step:hover,
+  body.embedded-iframe #form_submit_button:hover {
+    opacity: 0.9 !important;
+    background: var(--orange) !important;
+    color: var(--white) !important;
+  }
+  body.embedded-iframe .btn.disabled,
+  body.embedded-iframe .btn:disabled,
+  body.embedded-iframe #form_submit_button.disabled {
+    background: var(--muted) !important;
+    border-color: var(--muted) !important;
+    color: var(--cream) !important;
+    opacity: 1 !important;
+    cursor: not-allowed !important;
+  }
+  body.embedded-iframe #form_submit_button.disabled span {
+    color: var(--cream) !important;
+  }
+  body.embedded-iframe .btn,
+  body.embedded-iframe .btn-lg,
+  body.embedded-iframe .btn-primary,
+  body.embedded-iframe .submit,
+  body.embedded-iframe .next-step,
+  body.embedded-iframe #form_submit_button,
+  body.embedded-iframe #form_submit_button span {
+    font-size: 17px !important;
+  }
+
+  /* Outline / secondary / share buttons */
+  body.embedded-iframe .btn-gray-outline,
+  body.embedded-iframe .btn.outline {
+    background: transparent !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  body.embedded-iframe .btn-gray-outline:hover,
+  body.embedded-iframe .btn.outline:hover {
+    background: var(--ink) !important;
+    color: var(--white) !important;
+  }
+
+  /* ================================================================
+     STEPPER (Founding) - embed width is Bootstrap xs, so the MOBILE
+     tracker is what renders on the live site. Desktop rules follow as
+     a fallback for wider embeds.
+     ================================================================ */
+  body.embedded-iframe .multipage,
+  body.embedded-iframe .multipage_subform-component {
+    margin-bottom: 20px;
+  }
+
+  /* Mobile stepper (primary) */
+  body.embedded-iframe .mobile-tracker-labels {
+    text-decoration: none !important;
+    color: var(--ink) !important;
+  }
+  body.embedded-iframe .mobile-round-tab-container .round-tab,
+  body.embedded-iframe .stepper .round-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--white) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+  }
+  body.embedded-iframe .mobile-stepper .active .round-tab,
+  body.embedded-iframe .mobile-round-tab-container.active .round-tab,
+  body.embedded-iframe .stepper .active .round-tab,
+  body.embedded-iframe .stepper .selected .round-tab,
+  body.embedded-iframe .stepper li.active .round-tab {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    color: var(--white) !important;
+  }
+  body.embedded-iframe .step-label,
+  body.embedded-iframe .stepper .nav-tabs > li > span {
+    color: var(--ink) !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.011em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  body.embedded-iframe .mobile-tracker-labels:not(.active_header) .step-label {
+    color: var(--muted) !important;
+  }
+
+  /* Desktop stepper fallback */
+  body.embedded-iframe .stepper .nav-tabs,
+  body.embedded-iframe .stepper .nav-tabs.nav-justified {
+    border-bottom: none !important;
+    display: flex;
+  }
+  body.embedded-iframe .stepper .nav-tabs > li,
+  body.embedded-iframe .stepper .nav-tabs > li.active {
+    border: none !important;
+    background: transparent !important;
+  }
+  body.embedded-iframe .stepper a.persistant {
+    border: none !important;
+    background: transparent !important;
+    text-decoration: none !important;
+  }
+
+  /* ================================================================
+     STEP 1 - Donation amount + recurring
+     ================================================================ */
+  body.embedded-iframe .donation_amount-component,
+  body.embedded-iframe .donation_recurring-component {
+    margin-bottom: 18px;
+  }
+  /* "Choose an amount" heading carries an inline style */
+  body.embedded-iframe .donation_amount .control-label,
+  body.embedded-iframe .donation_recurring .control-label {
+    color: var(--ink) !important;
+    font-weight: 600 !important;
+  }
+
+  /* Preset amounts: hide the raw radio, make the label a square button */
+  body.embedded-iframe .donation-amount-label .radio-inline-input,
+  body.embedded-iframe .donation-recurring-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+  body.embedded-iframe .donation-amount-label,
+  body.embedded-iframe .donation-recurring-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 12px;
+    /* Founding-only elements (dark theme) - styled directly, not via :has */
+    background: var(--ink) !important;
+    border: 1px solid var(--cream) !important;
+    color: var(--cream) !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  body.embedded-iframe .donation-amount-label span,
+  body.embedded-iframe .donation-recurring-label span {
+    font-size: 17px !important;
+  }
+  body.embedded-iframe .donation-amount-label-container {
+    padding: 4px;
+  }
+  body.embedded-iframe .donation-amount-label.selected,
+  body.embedded-iframe .donation-amount-label:has(input:checked),
+  body.embedded-iframe .donation-recurring-label.selected,
+  body.embedded-iframe .donation-recurring-label:has(input:checked) {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    color: var(--white) !important;
+  }
+  /* "Other amount" number field lives inside the last preset label */
+  body.embedded-iframe .donation_amount_other,
+  body.embedded-iframe input[name="donation_amount_other"] {
+    background: var(--white) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
+    padding: 6px 8px !important;
+    width: 100%;
+  }
+  body.embedded-iframe .donation-amount-label:has(input:checked) .donation_amount_other {
+    color: var(--ink) !important;
+  }
+  body.embedded-iframe .donation-recurring-options-container {
+    display: flex;
+    gap: 10px;
+  }
+  /* IMPORTANT: ST sets id="action_page" on the <html> ROOT element (not a div),
+     so it must come BEFORE body.embedded-iframe in the selector - it's an ancestor
+     of <body>, not a descendant. ST paints the recurring wrapper + unselected labels
+     light-gray (#e4e7ea) via #action_page ID rules WITHOUT !important; we mirror that
+     structure (longhand background-color + !important) so our overrides win. These
+     donation elements exist only on the founding (dark) form, so ink/cream is safe. */
+  #action_page body.embedded-iframe .donation-recurring-options-container,
+  #action_page body.embedded-iframe .donation-amount-label-container,
+  #action_page body.embedded-iframe .donation_amount,
+  #action_page body.embedded-iframe .donation_recurring {
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+  #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label:not(.selected),
+  #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label:not(.selected) {
+    background-color: var(--ink) !important;
+    background-image: none !important;
+    border: 1px solid var(--cream) !important;
+    color: var(--cream) !important;
+  }
+  #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label:not(.selected) *,
+  #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label:not(.selected) * {
+    color: var(--cream) !important;
+  }
+  #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label.selected,
+  #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label.selected {
+    background-color: var(--orange) !important;
+    border-color: var(--orange) !important;
+    color: var(--white) !important;
+  }
+  #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label.selected *,
+  #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label.selected * {
+    color: var(--white) !important;
+  }
+
+  /* ================================================================
+     STEP 2 - Details (email suggestion + radio questions)
+     ================================================================ */
+  body.embedded-iframe #email_suggestions_container {
+    margin-bottom: 6px;
+  }
+  body.embedded-iframe #email_suggestions_container.hidden {
+    display: none !important;
+  }
+  body.embedded-iframe #email_suggestion {
+    color: var(--orange) !important;
+    font-weight: 600 !important;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  body.embedded-iframe .radios-component fieldset.pb-fieldset {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body.embedded-iframe .radios-component .control-label.normal.ml-10,
+  body.embedded-iframe .consent-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 18px;
+    color: var(--ink) !important;
+  }
+
+  /* ================================================================
+     STEP 3 - Payment (Stripe wrapper + fee checkbox)
+     ================================================================ */
+  body.embedded-iframe .payment-card-container {
+    background: transparent !important;
+  }
+  body.embedded-iframe .payment-card-label {
+    color: var(--ink) !important;
+    font-weight: 600 !important;
+    margin-bottom: 6px;
+  }
+  body.embedded-iframe #card-element,
+  body.embedded-iframe .StripeElement {
+    background: var(--white) !important;
+    border: 1px solid var(--ink) !important;
+    padding: 12px !important;
+  }
+  body.embedded-iframe #card-errors {
+    color: var(--error) !important;
+    font-size: 15px;
+    margin-top: 6px;
+  }
+  body.embedded-iframe #zero-amount-message {
+    color: var(--muted) !important;
+  }
+  body.embedded-iframe .mt-10 .checkbox label {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: var(--ink) !important;
+  }
+  body.embedded-iframe #processing-fee-amount {
+    color: var(--muted) !important;
+  }
+  body.embedded-iframe .submit-button-container {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  /* ================================================================
+     JOIN FORM - SMS consent + disclaimer
+     ================================================================ */
+  body.embedded-iframe #sms_permission fieldset.pb-fieldset {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body.embedded-iframe #sms_permission legend.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  /* ================================================================
+     DISCLAIMER + LINKS
+     ================================================================ */
+  body.embedded-iframe .action-page-form-disclaimer {
+    color: var(--muted) !important;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(31, 27, 23, 0.15);
+  }
+  body.embedded-iframe .action-page-form-disclaimer a,
+  body.embedded-iframe .page-wrapper a:not(.btn):not(.navbar-brand):not(.round-tab):not(.persistant):not(.mobile-tracker-labels) {
+    color: var(--orange) !important;
+    font-weight: 600 !important;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease;
+  }
+  body.embedded-iframe .action-page-form-disclaimer a:hover,
+  body.embedded-iframe .page-wrapper a:not(.btn):not(.navbar-brand):not(.round-tab):not(.persistant):not(.mobile-tracker-labels):hover {
+    opacity: 0.7;
+  }
+
+  /* ================================================================
+     SHARE OVERLAY (post-submission)
+     ================================================================ */
+  body.embedded-iframe #sharing_overlay .modal-content {
+    background: var(--cream) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
+  }
+  body.embedded-iframe #sharing_overlay .modal-header {
+    border-bottom: 1px solid rgba(31, 27, 23, 0.15) !important;
+  }
+  body.embedded-iframe #sharing_overlay .close {
+    color: var(--ink) !important;
+    opacity: 0.7;
+  }
+  body.embedded-iframe .overlay_text .title {
+    color: var(--ink) !important;
+    font-weight: 700 !important;
+  }
+  body.embedded-iframe .overlay_text .subtitle {
+    color: var(--muted) !important;
+  }
+  body.embedded-iframe .share-link,
+  body.embedded-iframe .btn-facebook,
+  body.embedded-iframe .fb_share_button,
+  body.embedded-iframe .copy-link .btn {
+    background: transparent !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
+    font-weight: 600 !important;
+  }
+  body.embedded-iframe .share-link:hover,
+  body.embedded-iframe .btn-facebook:hover,
+  body.embedded-iframe .copy-link .btn:hover {
+    background: var(--ink) !important;
+    color: var(--white) !important;
+  }
+  body.embedded-iframe .copy-link-input {
+    background: var(--white) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
+  }
+  body.embedded-iframe .copy-success {
+    color: var(--sage) !important;
+  }
+
+  /* ================================================================
+     FOUNDING FORM ONLY - blend into the dark #join section.
+     Scoped via :has(.multipage): only the 3-step donation form has it,
+     so the Join form keeps the light cream treatment above.
+     Surface = the same ink as the site section, so there's no card seam.
+     Text inputs + the Stripe box stay light-filled (legible + Stripe can't
+     be darkened); choice controls become cream outlines on dark.
+     ================================================================ */
+  body.embedded-iframe:has(.multipage) {
+    background: var(--ink) !important;
+    color: var(--cream) !important;
+  }
+  body.embedded-iframe:has(.multipage) .page-header .title,
+  body.embedded-iframe:has(.multipage) .action-page-form-title,
+  body.embedded-iframe:has(.multipage) .control-label,
+  body.embedded-iframe:has(.multipage) .payment-card-label,
+  body.embedded-iframe:has(.multipage) .consent-label,
+  body.embedded-iframe:has(.multipage) .mt-10 .checkbox label,
+  body.embedded-iframe:has(.multipage) #processing-fee-amount {
+    color: var(--cream) !important;
+  }
+  body.embedded-iframe:has(.multipage) .form-hint,
+  body.embedded-iframe:has(.multipage) #zero-amount-message {
+    color: rgba(241, 233, 221, 0.7) !important;
+  }
+  body.embedded-iframe:has(.multipage) .action-page-form-disclaimer {
+    color: rgba(241, 233, 221, 0.65) !important;
+    border-top-color: rgba(241, 233, 221, 0.2) !important;
+  }
+
+  /* Step badges + labels on dark */
+  body.embedded-iframe:has(.multipage) .mobile-tracker-labels,
+  body.embedded-iframe:has(.multipage) .step-label,
+  body.embedded-iframe:has(.multipage) .stepper .nav-tabs > li > span {
+    color: var(--cream) !important;
+  }
+  body.embedded-iframe:has(.multipage) .mobile-tracker-labels:not(.active_header) .step-label {
+    color: rgba(241, 233, 221, 0.55) !important;
+  }
+  body.embedded-iframe:has(.multipage) .mobile-round-tab-container .round-tab,
+  body.embedded-iframe:has(.multipage) .stepper .round-tab {
+    background: transparent !important;
+    border-color: var(--cream) !important;
+    color: var(--cream) !important;
+  }
+
+  /* Radio/consent OPTION text on dark - high specificity to beat ST + the
+     light-theme rule (which forces ink). */
+  body.embedded-iframe:has(.multipage) .radios-component .control-label.normal.ml-10,
+  body.embedded-iframe:has(.multipage) .radios-component .control-label.normal,
+  body.embedded-iframe:has(.multipage) .radios-component .control-label,
+  body.embedded-iframe:has(.multipage) .consent-label,
+  body.embedded-iframe:has(.multipage) .consent-label span,
+  body.embedded-iframe:has(.multipage) .mt-10 .checkbox label {
+    color: var(--cream) !important;
+  }
+
+  /* ST gives the recurring options wrapper a light-gray fill that bleeds through
+     transparent buttons - force it (and the amount grid) transparent on dark. */
+  body.embedded-iframe:has(.multipage) .donation-recurring-options-container,
+  body.embedded-iframe:has(.multipage) .donation-amount-label-container,
+  body.embedded-iframe:has(.multipage) .donation_amount,
+  body.embedded-iframe:has(.multipage) .donation_recurring {
+    background: transparent !important;
+    background-image: none !important;
+  }
+  /* Choice controls: unselected get a SOLID ink fill (so nothing light shows
+     behind cream text), cream outline; orange only when actually chosen. */
+  body.embedded-iframe:has(.multipage) .donation-amount-label:not(.selected),
+  body.embedded-iframe:has(.multipage) .donation-recurring-label:not(.selected),
+  body.embedded-iframe:has(.multipage) .donation-amount-label:not(.selected) span,
+  body.embedded-iframe:has(.multipage) .donation-recurring-label:not(.selected) span {
+    background: var(--ink) !important;
+    background-image: none !important;
+    border-color: var(--cream) !important;
+    color: var(--cream) !important;
+  }
+  body.embedded-iframe:has(.multipage) .donation-amount-label.selected,
+  body.embedded-iframe:has(.multipage) .donation-amount-label:has(input:checked),
+  body.embedded-iframe:has(.multipage) .donation-recurring-label.selected,
+  body.embedded-iframe:has(.multipage) .donation-recurring-label:has(input:checked),
+  body.embedded-iframe:has(.multipage) .donation-amount-label.selected span,
+  body.embedded-iframe:has(.multipage) .donation-amount-label:has(input:checked) span,
+  body.embedded-iframe:has(.multipage) .donation-recurring-label.selected span,
+  body.embedded-iframe:has(.multipage) .donation-recurring-label:has(input:checked) span {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    color: var(--white) !important;
+  }
+
+  /* Text inputs, "other amount", and the Stripe box stay light-filled */
+  body.embedded-iframe:has(.multipage) .form-control,
+  body.embedded-iframe:has(.multipage) .donation_amount_other,
+  body.embedded-iframe:has(.multipage) input[name="donation_amount_other"],
+  body.embedded-iframe:has(.multipage) #card-element,
+  body.embedded-iframe:has(.multipage) .StripeElement {
+    background: var(--white) !important;
+    color: var(--ink) !important;
+    border-color: var(--cream) !important;
+  }
+  body.embedded-iframe:has(.multipage) .intl-tel-input .selected-flag {
+    border-right-color: rgba(31, 27, 23, 0.25) !important;
+  }
+
+  /* ================================================================
+     STEP TRANSITIONS + ANTI-WRAP GUARDS
+     ================================================================ */
+  body.embedded-iframe .tab-content,
+  body.embedded-iframe .multipage_subform-component {
+    transition: min-height 0.3s ease;
+  }
+  body.embedded-iframe .tab-pane.fade {
+    transition: opacity 0.3s ease;
+  }
+  body.embedded-iframe .stepper-pane.active,
+  body.embedded-iframe .tab-pane.fade.in.active {
+    animation: st-fade-in 0.3s ease;
+  }
+  @keyframes st-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Never let the stepper, labels, or preset grid wrap and shove height around */
+  body.embedded-iframe .nav-justified > li,
+  body.embedded-iframe .mobile-tracker-labels,
+  body.embedded-iframe .step-label {
+    white-space: nowrap;
+  }
+  body.embedded-iframe .donation-amount-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

@@ -151,10 +151,25 @@ Single-step signup: Full Name, Email, Phone, SMS opt-in (Yes/No). No payment.
 
 ---
 
-## Open TODOs before writing final CSS
+## Final CSS
 
-- [ ] Re-inspect both forms after Paul finalizes field config; confirm class names haven't changed.
-- [ ] Capture the **phone country-code dropdown** classes from the live rendered DOM (JS-injected, absent from static HTML).
-- [ ] Confirm the **fee-cover checkbox** selector on Step 3 of Form 1.
-- [ ] Decide Navbar/footer visibility (Page Settings "Hide Navbar" / "Hide footer") vs. CSS.
+The paste-ready `<style>` block lives in [`solidarity-tech-form-styles.html`](./solidarity-tech-form-styles.html). Paste it into **Website → Settings → Site-wide HTML Head Content**. All rules are scoped under `body.embedded-iframe`, so only the embedded forms are affected. Font is `"Helvetica Neue", system-ui, sans-serif` (the site's UI font, system-installed — no `@font-face`/CORS/licensing), with slightly tightened tracking. Square corners throughout.
+
+**Two themes:** the **Join** form uses a light cream surface (blends into the cream section); the **Founding** form uses a dark ink surface matching the `#join` section it sits in (cream text, light-filled inputs so the Stripe box stays legible, cream-outline choice controls that turn orange when selected). The founding treatment is scoped via `:has(.multipage)` so only the stepper form gets it.
+
+**Smooth section growth** is handled on the site side: the embed iframes in `FoundingCta.astro` and `GetInvolved.astro` carry `transition: height 0.35s ease`, which animates the height that `act.rebuild.us/embed/v1.js` sets as the form grows/shrinks.
+
+## Resolved (verified against live embed DOM)
+
+- [x] Re-inspected both forms (`/founding-member/embed`, `/join-form/embed`) — selectors confirmed.
+- [x] **Phone country-code dropdown** = the `intl-tel-input` library: `.intl-tel-input.allow-dropdown`, `.flag-container`, `.selected-flag`, `.iti-flag`, `.iti-arrow`, `.country-list`, `.country` (+`.preferred`/`.active`/`.highlight`), `.divider`, `.flag-box`, `.country-name`, `.dial-code`.
+- [x] **Fee-cover checkbox** = `.mt-10 .checkbox > label > input#donor_pays_processing_fee[type=checkbox]` + `span#processing-fee-amount`.
+- [x] **Navbar / footer / language toggle** are auto-hidden in the `/embed` variant (`body.embedded-iframe`); the "Made in Solidarity Tech" branding is also absent. No CSS needed to hide them.
+- [x] **Stepper**: the embed column is ~600px wide = Bootstrap `xs` (<768px), so the **mobile** tracker (`.mobile-tracker-labels`, `.mobile-round-tab-container .round-tab`, `.step-label`, `.active_header`) is what renders on the live site. Desktop `.stepper .nav-tabs` is styled as a fallback only.
+- [x] **Submit** starts with `.disabled` (`#form_submit_button.btn.btn-primary.submit.btn-lg.disabled`, inner `span`); both disabled and enabled states are styled. The disabled state is intentionally a solid muted fill with cream/ink text (legible), not a faded button.
+- [x] **`#action_page` is the `<html>` ROOT element**, not a div inside `<body>`. ST paints the donation preset + recurring wrappers/labels light-gray (`#e4e7ea`) via `#action_page .donation_recurring ...` ID rules. To beat that ID specificity our overrides must put `#action_page` FIRST (it is an ancestor of `<body>`): `#action_page body.embedded-iframe .donation_recurring ...` + longhand `background-color` + `!important`. A `body.embedded-iframe #action_page ...` order never matches. Verified live: unselected "No, donate once" and the presets render solid ink with cream text.
+
+## Remaining checks (post-paste, by owner)
+
 - [ ] Verify Spanish (`?locale=es`) rendering still works once styling is applied.
+- [ ] Re-confirm class names if Paul later changes field config.
