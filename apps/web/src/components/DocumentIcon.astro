@@ -1,0 +1,39 @@
+---
+type Section = 'disaster-tipsheets' | 'survivors-communities' | 'fema-government' | 'insurance';
+
+interface Props {
+  section?: Section;
+  accent?: string;
+}
+
+const { section, accent } = Astro.props;
+
+const accentMap: Record<Section, string> = {
+  'disaster-tipsheets': 'var(--color-accent-orange)',
+  'survivors-communities': 'var(--color-accent-yellow)',
+  'fema-government': 'var(--color-accent-sage)',
+  'insurance': 'var(--color-accent-blue)',
+};
+
+const stripColor = accent ?? (section ? accentMap[section] : 'var(--color-accent-orange)');
+---
+
+<svg
+  width="51"
+  height="67"
+  viewBox="0 0 51 67"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  class="shrink-0"
+>
+  <!-- Body -->
+  <rect x="0.5" y="0.5" width="50" height="66" rx="5" fill="var(--color-white)" stroke="#D9D9D9" />
+  <!-- Colored top strip -->
+  <rect x="0.5" y="0.5" width="50" height="16" rx="5" fill={stripColor} />
+  <rect x="0.5" y="11" width="50" height="6" fill={stripColor} />
+  <!-- Text lines -->
+  <rect x="8" y="28" width="35" height="5" rx="2.5" fill="#D9D9D9" />
+  <rect x="8" y="39" width="35" height="5" rx="2.5" fill="#D9D9D9" />
+  <rect x="8" y="50" width="22" height="5" rx="2.5" fill="#D9D9D9" />
+</svg>

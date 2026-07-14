@@ -26,8 +26,8 @@ const socials = [
 ].filter((s) => s.url);
 ---
 
-<section class="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
-  <div>
+<section class="mx-auto grid max-w-7xl gap-12 px-6 pt-28 pb-20 lg:grid-cols-2 lg:items-start lg:pt-36 lg:pb-28">
+  <div class="lg:pt-12" data-animate="fade">
     {copy && <h2 class="ty-h2">{copy}</h2>}
     {finePrint && <p class="mt-4 ty-body text-muted">{finePrint}</p>}
     {
@@ -51,6 +51,7 @@ const socials = [
       src={formSrc}
       allow="payment *"
       style="width:100%;border:none;min-height:500px;transition:height 0.35s ease;"
-      title="Join Form"></iframe>
+      title="Web Basic"
+    ></iframe>
   </div>
 </section>

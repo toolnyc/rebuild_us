@@ -1,6 +1,4 @@
 ---
-import SectionMarker from '../SectionMarker.astro';
-
 interface Props {
   label?: string;
   headline?: string;
@@ -16,20 +14,24 @@ const {
 } = Astro.props;
 ---
 
-<section id="join" class="scroll-mt-20 bg-ink text-white">
+<section id="join" class="scroll-mt-20 bg-accent-sage">
   <div class="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
-    <div>
-      <SectionMarker number="03" label={label} class="mb-8 text-white" />
+    <div data-animate="fade">
       {headline && <h2 class="ty-h1">{headline}</h2>}
-      {subcopy && <p class="mt-6 max-w-md ty-lead text-white/70">{subcopy}</p>}
+      {subcopy && <p class="mt-6 max-w-md ty-lead">{subcopy}</p>}
     </div>
     <div>
       <iframe
         data-st-embed
         src={formSrc}
         allow="payment *"
-        style="width:100%;border:none;min-height:500px;transition:height 0.35s ease;"
-        title="Become a Founding Member"></iframe>
+        allowtransparency="true"
+        style="width:100%;border:none;min-height:600px;transition:height 0.35s ease;background:transparent;"
+        title="Become a Founding Member"
+      ></iframe>
     </div>
   </div>
+
+  <!-- Orange divider strip at the bottom -->
+  <div class="w-full h-[30px] bg-accent-orange"></div>
 </section>

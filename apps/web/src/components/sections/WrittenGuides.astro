@@ -1,5 +1,5 @@
 ---
-import SectionMarker from "../SectionMarker.astro";
+import DocumentIcon from '../DocumentIcon.astro';
 
 interface Guide {
   title?: string;
@@ -13,54 +13,58 @@ interface Props {
   guides?: Guide[];
 }
 
-const { heading = "Written Guides", subcopy, guides = [] } = Astro.props;
+const { heading = 'Written Guides', subcopy, guides = [] } = Astro.props;
 
-const sections = ["Preparation & Response", "Assistance & Eligibility"];
-const columns = sections.map((section) => ({
-  section,
-  items: guides.filter((g) => g.section === section),
+type SectionKey = 'disaster-tipsheets' | 'survivors-communities' | 'fema-government' | 'insurance';
+
+const SECTION_LABELS: Record<SectionKey, string> = {
+  'disaster-tipsheets': 'Disaster Tipsheets',
+  'survivors-communities': 'For Survivors & Our Communities',
+  'fema-government': 'FEMA & Government Programs',
+  'insurance': 'Insurance',
+};
+
+const SECTION_ORDER: SectionKey[] = [
+  'disaster-tipsheets',
+  'survivors-communities',
+  'fema-government',
+  'insurance',
+];
+
+const grouped = SECTION_ORDER.map((key) => ({
+  key,
+  label: SECTION_LABELS[key],
+  items: guides.filter((g) => g.section === key),
 }));
-
-const columnColors = ["#ECF278", "#A7B795"];
 ---
 
 <section id="guides" class="scroll-mt-20 mx-auto max-w-7xl px-6 py-20 lg:py-28">
-  <SectionMarker number="01" label="Resources" class="mb-10 text-ink" />
-  {heading && <h2 class="ty-h1 text-center">{heading}</h2>}
-  {
-    subcopy && (
-      <p class="mx-auto mt-6 max-w-2xl text-center ty-lead text-muted">
-        {subcopy}
-      </p>
-    )
-  }
-
-  <div class="mt-14 grid gap-8 lg:grid-cols-2">
+  <div class="mt-12 grid gap-8 grid-cols-1 lg:grid-cols-2">
     {
-      columns.map((col, i) => (
+      grouped.map((col) => (
         <div
-          class="p-8"
-          style={`background-color:${columnColors[i % columnColors.length]}`}
+          class="border-2 border-accent-sage rounded-[var(--radius)] bg-white p-8"
+          data-animate="fade"
         >
-          <h3 class="ty-h3 font-bold">{col.section}</h3>
-          <ul class="mt-6 flex flex-col gap-5">
+          <h3 class="ty-h2 mb-6">{col.label}</h3>
+          <div class="flex flex-col gap-5">
+            {col.items.length === 0 && (
+              <p class="ty-body text-muted">No guides yet.</p>
+            )}
             {col.items.map((guide) => (
-              <li class="flex items-start gap-3">
-                <span class="mt-0.5 shrink-0 ty-body" aria-hidden="true">
-                  ▤
+              <a
+                href={guide.fileUrl ?? '#'}
+                class="flex items-center gap-4 group"
+                aria-label={guide.title}
+                {...(!guide.fileUrl && { 'aria-disabled': 'true', tabIndex: -1 })}
+              >
+                <DocumentIcon section={col.key} />
+                <span class="ty-body font-bold group-hover:text-accent-orange transition-colors">
+                  {guide.title}
                 </span>
-                <div class="flex-1">
-                  {guide.fileUrl ? (
-                    <a href={guide.fileUrl} class="link-alt ty-body">
-                      {guide.title}
-                    </a>
-                  ) : (
-                    <span class="ty-body">{guide.title}</span>
-                  )}
-                </div>
-              </li>
+              </a>
             ))}
-          </ul>
+          </div>
         </div>
       ))
     }

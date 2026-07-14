@@ -1,5 +1,4 @@
 ---
-import SectionMarker from '../SectionMarker.astro';
 import { urlFor } from '../../lib/sanity';
 
 interface Column {
@@ -15,34 +14,38 @@ interface Props {
 }
 
 const { label, columns = [] } = Astro.props;
-
-const isDark = (hex?: string) => hex === '#1F1B17' || hex === '#F4552A';
 ---
 
 <section id="membership-benefits" class="scroll-mt-20 mx-auto max-w-7xl px-6 py-20 lg:py-28">
-  <SectionMarker number="04" label={label} class="mb-6 text-ink" />
-  <h2 class="mb-12 ty-h1">Why Join Rebuild?</h2>
-  <div class="grid gap-6 md:grid-cols-3">
+  <h2 class="mb-12 ty-h2 text-center" data-animate="fade">Why join Rebuild today?</h2>
+  <div class="grid gap-6 md:grid-cols-3" data-animate-group>
     {
-      columns.map((col, i) => {
-        const dark = isDark(col.backgroundColor);
-        const imageUrl = col.image ? urlFor(col.image).width(700).height(500).fit('crop').url() : null;
+      columns.map((col) => {
+        const imageUrl = col.image ? urlFor(col.image).width(782).height(460).fit('crop').url() : null;
         return (
           <article
-            class:list={['flex flex-col overflow-hidden', dark ? 'text-white' : 'text-ink']}
-            style={`background-color:${col.backgroundColor ?? '#F1E9DD'}`}
+            class="flex flex-col overflow-hidden border-2 border-accent-orange rounded-[var(--radius)]"
+            data-animate="fade"
           >
             {imageUrl ? (
-              <img src={imageUrl} alt={col.title ?? ''} class="aspect-[7/5] w-full object-cover" />
+              <img
+                src={imageUrl}
+                alt={col.title ?? ''}
+                class="w-full object-cover"
+                style="aspect-ratio:391/230;"
+              />
             ) : (
-              <div class="flex aspect-[7/5] w-full items-center justify-center bg-black/10 ty-body">
+              <div
+                class="flex w-full items-center justify-center bg-muted/10 ty-body text-muted"
+                style="aspect-ratio:391/230;"
+              >
                 Image
               </div>
             )}
+            <div class="border-t border-ink"></div>
             <div class="flex flex-1 flex-col gap-3 p-6">
-              <span class="ty-eyebrow font-semibold opacity-70">0{i + 1}</span>
               <h3 class="ty-h3">{col.title}</h3>
-              <p class:list={['ty-body', dark ? 'text-white/80' : 'text-muted']}>{col.body}</p>
+              <p class="ty-body text-center">{col.body}</p>
             </div>
           </article>
         );

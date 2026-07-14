@@ -1,8 +1,10 @@
 import { defineType, defineField } from "sanity";
 
 const SECTIONS = [
-  { title: "Preparation & Response", value: "Preparation & Response" },
-  { title: "Assistance & Eligibility", value: "Assistance & Eligibility" },
+  { title: "Disaster Tipsheets", value: "disaster-tipsheets" },
+  { title: "For Survivors & Our Communities", value: "survivors-communities" },
+  { title: "FEMA & Government Programs", value: "fema-government" },
+  { title: "Insurance", value: "insurance" },
 ];
 
 export const resourceGuide = defineType({

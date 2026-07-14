@@ -172,7 +172,16 @@ responsive without `lg:` variants.
 ### Emphasis convention
 
 Inline emphasis in serif headings is **Instrument Serif italic only** — same ink
-color, no orange. The previous italic + orange treatment is dropped.
+color, no orange *text*. The previous italic + orange treatment is dropped.
+
+A **yellow marker highlight** (`--color-accent-yellow` fill behind the phrase, per
+the splash comp's "strength in numbers") is a sanctioned pattern and does not
+conflict with the rule above: the ban is on colored text, not marker fills. The
+highlight is editor-controlled (rich-text highlight decorator → `Highlight.astro`
+`<mark>`) and **animatable**: implement the fill as a `linear-gradient` background
+with `background-size: 0% 100%` swept to `100% 100%` on scroll (GSAP ScrollTrigger),
+with `box-decoration-clone` so the sweep survives line wraps. Static
+`background-color` fills are the no-JS fallback.
 
 ```html
 <h1 class="ty-display">When things fall apart, we come <em>together.</em></h1>
@@ -316,7 +325,9 @@ placeholder, orange focus ring (`0 0 0 3px rgba(244,85,42,0.2)`).
 ### Eyebrow / SectionMarker
 
 `ty-eyebrow` (Basis Mono Bold, uppercase). Orange (`RESOURCES`) or ink depending on
-surface. Used as section kickers and nav labels.
+surface. Used for nav labels only — the numbered section kickers ("01 About", …)
+are retired; section headings stand bare per the splash/resources comps. The
+Sanity `*Label` fields remain in the schema but are unrendered.
 
 ### Stat
 
@@ -329,7 +340,12 @@ label uses `--color-accent-sage` (e.g. "500 / Founding Member Spots",
 - **Logo** — `REBUILD★` wordmark lockup ("Rebuild — The National Disaster Survivors
   Association"); black on light, white on dark. Hardcoded, not editor-controlled.
 - **Nav** — centered logo; right-aligned outline "Join" button; left eyebrow label.
-- **Footer** — dark `--color-ink` band, white text, link columns, wordmark.
+- **Footer** — full-width `--color-accent-orange` band (per the splash/resources
+  comps): large `REBUILD★` wordmark lockup in ink, hairline rule, triangle notch
+  at the band's top-left. Below the lockup, a slim utility row in ink text:
+  Privacy Policy, Contact (visibility-flag gated), the © line, and the "Edit" link
+  to the Sanity Studio (`https://rebuild-us.sanity.studio`). The previous dark
+  ink link-column footer is retired.
 
 ### GuideSection card
 
@@ -364,8 +380,21 @@ Bold). No separate "Download" link.
 - **Section bands** — full-width square blocks in yellow / sage / orange separating
   sections.
 - **Arrow / polygon accents** — directional marks pointing to CTAs and headings.
+- **Edge bars** — 22px vertical bars along the viewport edges (yellow on the
+  splash, orange/sage on Resources). Hidden below `lg:`.
 
 Document as reusable patterns/utilities, not as first-class components.
+
+**Implementation rule: decoratives live in code, not asset files.**
+
+1. *Pure geometry* (footer triangle notch, arrows/polygons, straight bands):
+   inline SVG or CSS `clip-path: polygon(...)`, colored via tokens.
+2. *Organic torn/rough edges* (ragged section-band tops): extract the path data
+   from Figma once, embed as an inline SVG `mask-image`/`clip-path` on a
+   token-colored section. No runtime image requests.
+3. *Raster textures* (halftone/grain behind the wordmark): the only true image
+   assets — export once to `public/`, apply as `mask-image` over a token-colored
+   fill so they recolor with the palette.
 
 ---
 

@@ -1,0 +1,48 @@
+---
+/**
+ * TornEdge — rectangular step transition between sections.
+ * Matches the Figma shape: a clean L-step notch at the LEFT ~27% of the
+ * 1440px width, at half the element height. The rest of the edge is straight.
+ *
+ * position="top"    — colored fill intrudes UP into the section above.
+ *                     Notch visible at TOP-LEFT. Place directly before
+ *                     the colored section in DOM order.
+ * position="bottom" — colored fill extends DOWN into the section below.
+ *                     Notch visible at BOTTOM-LEFT. Place directly after
+ *                     the colored section in DOM order.
+ */
+interface Props {
+  position?: 'top' | 'bottom';
+  color?: string;
+  class?: string;
+}
+
+const { position = 'top', color = 'var(--color-accent-sage)', class: className = '' } = Astro.props;
+
+const marginStyle = position === 'top' ? 'margin-bottom: -1px;' : 'margin-top: -1px;';
+---
+
+<div
+  class:list={['w-full overflow-hidden pointer-events-none', className]}
+  aria-hidden="true"
+  style={`height: 60px; ${marginStyle}`}
+>
+  <svg
+    viewBox="0 0 1440 60"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={`width:100%;height:100%;display:block;${position === 'bottom' ? 'transform:scaleY(-1);' : ''}`}
+  >
+    <!--
+      position="top": fill from bottom, step at top-left.
+      x=0..390: fill from y=30 to y=60 only (notch cuts top-left)
+      x=390..1440: fill full height y=0..60
+
+      When scaleY(-1) (position="bottom"): notch moves to bottom-left.
+    -->
+    <path
+      d="M0,60 L1440,60 L1440,0 L390,0 L390,30 L0,30 Z"
+      fill={color}
+    />
+  </svg>
+</div>

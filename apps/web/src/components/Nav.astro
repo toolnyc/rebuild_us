@@ -15,25 +15,21 @@ const {
 } = Astro.props;
 ---
 
-<header class="border-b border-ink/10 bg-cream/95 backdrop-blur">
+<header class="border-b border-ink/10 bg-white/95 backdrop-blur">
   <nav class="mx-auto grid max-w-7xl grid-cols-3 items-center px-4 py-3 sm:px-6 sm:py-4">
-    <div class="flex justify-start font-ui text-sm sm:text-base">
-      <a href={resourcesDestination} class="link-alt">Resources</a>
+    <div class="flex justify-start">
+      <a href={resourcesDestination} class="ty-eyebrow text-accent-orange">Resources</a>
     </div>
 
-    <a href="#top" aria-label="Rebuild home" class="mx-auto w-fit">
+    <a href="/" aria-label="Rebuild home" class="mx-auto w-fit">
       <Logo />
     </a>
 
-    <div class="flex items-center justify-end gap-4 font-ui text-sm sm:gap-6 sm:text-base">
-      {
-        showGive && (
-          <a href="https://donate.rebuild.us" class="link-alt">
-            GIVE
-          </a>
-        )
-      }
-      <Button href={joinDestination} size="sm">Join</Button>
+    <div class="flex items-center justify-end gap-4">
+      {showGive && (
+        <a href="https://donate.rebuild.us" class="link-alt text-sm">GIVE</a>
+      )}
+      <Button href={joinDestination} variant="small">Join</Button>
     </div>
   </nav>
 </header>

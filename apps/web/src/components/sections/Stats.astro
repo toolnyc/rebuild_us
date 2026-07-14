@@ -6,15 +6,38 @@ const stats = [
 ];
 ---
 
-<section class="border-y border-ink/10 bg-ink text-white">
+<section class="bg-ink text-white" data-animate="stat">
   <div class="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
     {
-      stats.map((s) => (
-        <div class="px-6 py-8 text-center">
-          <div class="stat-value ty-h2">{s.value}</div>
-          <div class="mt-2 ty-eyebrow text-white/70">{s.label}</div>
-        </div>
-      ))
+      stats.map((s, i) => {
+        const notchPos = i % 2 === 0 ? 'bottom' : 'top';
+        return (
+          <div class="relative px-6 py-10 text-center">
+            {/* Notch spans are NOT inside the animated inner div */}
+            {notchPos === 'top' && (
+              <span class="absolute left-1/2 -translate-x-1/2 hidden sm:block" style="top: -1px;" aria-hidden="true">
+                <svg width="55" height="11" viewBox="0 0 110 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="0,0 110,0 55,22" fill="var(--color-white)" />
+                </svg>
+              </span>
+            )}
+
+            {/* Inner div — this is what motion.ts animates */}
+            <div data-stat-content>
+              <div class="stat-value font-display text-[35px] leading-tight">{s.value}</div>
+              <div class="mt-2 ty-caption text-accent-sage uppercase tracking-wider">{s.label}</div>
+            </div>
+
+            {notchPos === 'bottom' && (
+              <span class="absolute left-1/2 -translate-x-1/2 hidden sm:block" style="bottom: -1px;" aria-hidden="true">
+                <svg width="55" height="11" viewBox="0 0 110 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="0,22 110,22 55,0" fill="var(--color-white)" />
+                </svg>
+              </span>
+            )}
+          </div>
+        );
+      })
     }
   </div>
 </section>

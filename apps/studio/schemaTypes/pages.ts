@@ -79,7 +79,7 @@ export const splashPage = defineType({
     }),
     defineField({
       name: "heroHeadlineAccent",
-      title: "Hero headline accent (orange italic)",
+      title: "Hero headline accent (italic)",
       type: "string",
       group: "hero",
     }),

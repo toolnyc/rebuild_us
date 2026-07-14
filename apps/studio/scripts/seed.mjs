@@ -41,7 +41,6 @@ const block = (text, marks = []) => ({
   children: [{ _type: "span", _key: "s0", text, marks }],
 });
 
-// A block with a highlighted phrase in the middle.
 const highlightedBlock = (before, highlighted, after) => ({
   _type: "block",
   _key: `b${Math.random().toString(36).slice(2, 8)}`,
@@ -50,6 +49,19 @@ const highlightedBlock = (before, highlighted, after) => ({
   children: [
     { _type: "span", _key: "s0", text: before, marks: [] },
     { _type: "span", _key: "s1", text: highlighted, marks: ["highlight"] },
+    { _type: "span", _key: "s2", text: after, marks: [] },
+  ],
+});
+
+// A block with emphasis on a phrase, plus a highlight mark.
+const emphHighlightBlock = (before, emph, after) => ({
+  _type: "block",
+  _key: `b${Math.random().toString(36).slice(2, 8)}`,
+  style: "normal",
+  markDefs: [],
+  children: [
+    { _type: "span", _key: "s0", text: before, marks: [] },
+    { _type: "span", _key: "s1", text: emph, marks: ["em", "highlight"] },
     { _type: "span", _key: "s2", text: after, marks: [] },
   ],
 });
@@ -65,71 +77,30 @@ const siteSettings = {
   joinDestination: "#join",
   resourcesDestination: "/resources",
   foundingMemberFormSrc: "https://act.rebuild.us/founding-member/embed",
-  getInvolvedFormSrc: "https://act.rebuild.us/join-form/embed",
+  getInvolvedFormSrc: "https://act.rebuild.us/web/embed",
 };
 
+// Four locked sections in canonical order.
 const resourceGuides = [
-  ["guide-evacuation", "Tips for Evacuation", "Preparation & Response", 1],
-  [
-    "guide-key-documents",
-    "Tips for Protecting Key Documents",
-    "Preparation & Response",
-    2,
-  ],
-  [
-    "guide-wildfire",
-    "Tips for Before, During, and After a Wildfire",
-    "Preparation & Response",
-    3,
-  ],
-  [
-    "guide-hurricane",
-    "Tips for Before, During, and After a Hurricane",
-    "Preparation & Response",
-    4,
-  ],
-  [
-    "guide-flood",
-    "Tips for Before, During, and After a Flood",
-    "Preparation & Response",
-    5,
-  ],
-  [
-    "guide-sba",
-    "What is the Small Business Administration (SBA) and how to apply for assistance",
-    "Assistance & Eligibility",
-    1,
-  ],
-  [
-    "guide-fema",
-    "What is the Federal Emergency Management Agency (FEMA) and how to apply for assistance",
-    "Assistance & Eligibility",
-    2,
-  ],
-  [
-    "guide-fema-eligibility",
-    "Guidelines for Citizen and Non-citizen FEMA eligibility",
-    "Assistance & Eligibility",
-    3,
-  ],
-  [
-    "guide-ale",
-    "Understanding Your Assisted Living Expense (ALE) Coverage",
-    "Assistance & Eligibility",
-    4,
-  ],
-  [
-    "guide-insurance-dispute",
-    "How to Self-Advocate During an Insurance Dispute",
-    "Assistance & Eligibility",
-    5,
-  ],
-  [
-    "guide-other-relief",
-    "Other Government Disaster Relief Programs You May Be Eligible For",
-    "Assistance & Eligibility",
-    6,
-  ],
+  // disaster-tipsheets
+  ["guide-wildfire",    "Before, During, and After a Wildfire",    "disaster-tipsheets", 1],
+  ["guide-hurricane",   "Before, During, and After a Hurricane",   "disaster-tipsheets", 2],
+  ["guide-flood",       "Before, During, and After a Flood",       "disaster-tipsheets", 3],
+
+  // survivors-communities
+  ["guide-mental-health", "Disaster Mental Health Guide",          "survivors-communities", 1],
+  ["guide-evacuation",    "Evacuation Guide",                      "survivors-communities", 2],
+  ["guide-key-documents", "Guide to Protecting Key Documents",     "survivors-communities", 3],
+
+  // fema-government
+  ["guide-federal-system", "Understanding the Federal Disaster Recovery System", "fema-government", 1],
+  ["guide-sba",            "Small Business Administration (SBA) Loans",          "fema-government", 2],
+  ["guide-fema",           "Federal Emergency Management Agency (FEMA) Assistance", "fema-government", 3],
+  ["guide-other-relief",   "Other Government Disaster Relief Programs",          "fema-government", 4],
+
+  // insurance
+  ["guide-ale",            "Guide to Assisted Living Expense (ALE) Coverage",   "insurance", 1],
+  ["guide-insurance-dispute", "How to Self-Advocate During an Insurance Dispute", "insurance", 2],
 ].map(([_id, title, section, order]) => ({
   _id,
   _type: "resourceGuide",
@@ -165,11 +136,8 @@ const resourceVideos = [
   order,
 }));
 
-const featuredGuideIds = [
-  "guide-fema",
-  "guide-insurance-dispute",
-  "guide-other-relief",
-];
+// Featured guides on splash: FEMA Assistance, Mental Health, Insurance Dispute.
+const featuredGuideIds = ["guide-fema", "guide-mental-health", "guide-insurance-dispute"];
 
 const resourcesPage = {
   _id: "resourcesPage",
@@ -198,10 +166,9 @@ const splashPage = {
   heroHeadlineAccent: "together.",
   heroSubcopy:
     "Rebuild is a national membership association built by and for survivors of hurricanes, floods, wildfires, tornadoes, and more.",
-  heroImageCaption: "Community, in action",
   aboutLabel: "Why we exist",
   aboutStatement: [
-    highlightedBlock(
+    emphHighlightBlock(
       "We come together to share wisdom, advocate for our interests, and build a national network with the ",
       "strength in numbers",
       " to eventually make full recovery for every survivor a reality.",
@@ -221,21 +188,18 @@ const splashPage = {
       _type: "object",
       title: "Build Community",
       body: "A growing network of survivors, leaders, and subject matter experts nationwide, so wherever disaster hits next, you're connected to people who've been there.",
-      backgroundColor: "#F1E9DD",
     },
     {
       ...key(1),
       _type: "object",
       title: "Get Advice",
       body: "A growing library of tools and resources to help you take on insurance claims, FEMA denials, and everything between, built by and for survivors. We also share hard to find news like detailed weather forecasts and updates on changes at FEMA.",
-      backgroundColor: "#ECF278",
     },
     {
       ...key(2),
       _type: "object",
       title: "Free Trainings",
       body: "Skills that put power back in your hands. Workshops on preparedness, response, leadership, and advocacy, led by survivors and experts who stick around after the cameras leave.",
-      backgroundColor: "#A7B795",
     },
   ],
   resourcesLabel: "Resources",

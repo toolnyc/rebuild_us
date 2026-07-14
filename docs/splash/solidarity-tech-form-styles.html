@@ -13,19 +13,14 @@
     Form 2 - Join / Get Involved (/join-form/embed): single-step signup.
 
   BRAND TOKENS:
-    cream  #f1e9dd (surface)   ink    #1f1b17 (text)     muted #6b655c (hints)
-    orange #f4552a (primary)   yellow #ecf278            sage  #a7b795
-  FONT: "Helvetica Neue", system-ui, sans-serif (the site's UI font; system-installed),
-        with slightly tightened tracking to match the site.
-  CORNERS: square everywhere (the brand uses no rounded corners).
+    white  #fffffc (surface)   ink    #1c1b19 (text)     muted #6b655c (hints)
+    orange #fd683e (primary)   yellow #eaf261            sage  #b5c1ab
+  FONT: "Helvetica Neue", system-ui, sans-serif.
+        NOTE: Basis Grotesque Pro @font-face NOT added here — licensing/CORS gate
+        unresolved. Swap once cleared.
+  CORNERS: 5px radius (var(--radius)) everywhere on controls.
 
-  THEME:
-    - Join form: light cream surface, ink text (blends into the cream section).
-    - Founding form: dark ink surface (same as the #join section it sits in) with
-      cream text, so it blends seamlessly. Text inputs + the Stripe box stay
-      light-filled for legibility; choice controls are cream outlines that turn
-      orange when selected. Scoped via :has(.multipage) so only the stepper form
-      gets the dark treatment.
+  THEME: Single light theme. White surface, ink text. Both forms share this treatment.
 
   SECTION GROWTH: smooth resize is handled on the SITE side - the embed iframes in
   FoundingCta.astro / GetInvolved.astro have `transition: height 0.35s ease`, which
@@ -40,17 +35,16 @@
   incoming step fades in, plus hard guards so labels/grids never wrap or clip.
 
   VERIFICATION CHECKLIST (confirm on the live forms after pasting):
-    [ ] Font is Helvetica Neue throughout; all corners square; no ALL-CAPS labels.
-    [ ] Join form: cream surface, blends into the cream section.
-    [ ] Founding form: dark ink surface blends into the dark #join section; cream text.
+    [ ] Font is Helvetica Neue throughout; all controls have 5px radius.
+    [ ] Both forms: white surface, ink text, blends into the light section.
     [ ] Type scale: prompts 22px > labels/inputs/options 18px > step 17px > hints/errors 16px (nothing smaller).
-    [ ] Radio/consent option text ("Yes/No", dates) is body-size and legible on the dark surface.
+    [ ] Radio/consent option text ("Yes/No", dates) is body-size and legible.
     [ ] Disabled submit reads as a solid muted button with legible text (not a faded orange).
-    [ ] Unselected donation/recurring buttons: cream text on transparent (never illegible on a light fill).
+    [ ] Unselected donation/recurring buttons: white text on transparent (never illegible on a light fill).
     [ ] Inputs: white-filled, orange focus ring; placeholder muted.
     [ ] Buttons: orange primary; disabled submit dimmed; outline/share buttons ink-outlined.
-    [ ] Stepper (mobile): square number badges, active badge orange, labels don't wrap.
-    [ ] Step 1: donation presets are square buttons; selected one turns orange; "other" input styled.
+    [ ] Stepper (mobile): 5px radius number badges, active badge orange, labels don't wrap.
+    [ ] Step 1: donation presets are 5px radius buttons; selected one turns orange; "other" input styled.
     [ ] Step 1: recurring Yes/No styled + selected state.
     [ ] Step 2: email/name/phone styled; phone flag dropdown (intl-tel-input) styled; survivor/welcome-call radios orange.
     [ ] Step 3: payment card box bordered; fee checkbox orange; submit enables/styles correctly.
@@ -59,34 +53,38 @@
 -->
 <style>
   body.embedded-iframe {
-    --cream: #f1e9dd;
-    --ink: #1f1b17;
+    --white: #fffffc;
+    --ink:   #1c1b19;
     --muted: #6b655c;
-    --white: #ffffff;
-    --orange: #f4552a;
-    --yellow: #ecf278;
-    --sage: #a7b795;
+    --orange:#fd683e;
+    --yellow:#eaf261;
+    --sage:  #b5c1ab;
+    --radius: 5px;
     --error: #b3261e;
 
-    background: var(--cream) !important;
+    background: var(--white) !important;
     color: var(--ink) !important;
     overflow-x: hidden;
     /* NOTE: the ST page uses a 10px root, so rem units render ~1.6x too small.
        All sizes below are in px to stay independent of that root. */
     font-size: 17px;
     line-height: 1.5;
-    /* Match the site's Helvetica Neue tracking (slightly tightened) */
     letter-spacing: -0.011em;
   }
 
-  /* ---- Square everything: the brand uses no rounded corners ---- */
-  body.embedded-iframe *,
-  body.embedded-iframe *::before,
-  body.embedded-iframe *::after {
-    border-radius: 0 !important;
+  /* ---- 5px radius on controls (replaces the previous border-radius:0 square reset) ---- */
+  body.embedded-iframe .form-control,
+  body.embedded-iframe .btn,
+  body.embedded-iframe .btn-primary,
+  body.embedded-iframe .donation-amount-label,
+  body.embedded-iframe .donation-recurring-label,
+  body.embedded-iframe .round-tab,
+  body.embedded-iframe #card-element,
+  body.embedded-iframe .StripeElement {
+    border-radius: 5px !important;
   }
 
-  /* ---- One font: the site's UI typeface (system-installed) ---- */
+  /* ---- One font: Helvetica Neue (Basis Grotesque swap pending licensing/CORS) ---- */
   body.embedded-iframe,
   body.embedded-iframe input,
   body.embedded-iframe button,
@@ -136,7 +134,7 @@
     color: var(--muted) !important;
   }
 
-  /* Field labels ("Email", "Zip Code", "Payment Card") */
+  /* Field labels */
   body.embedded-iframe .control-label {
     color: var(--ink) !important;
     font-weight: 600 !important;
@@ -147,8 +145,7 @@
   body.embedded-iframe .control-label.normal {
     font-weight: 400 !important;
   }
-  /* Section prompts ("Choose an amount", "Make it monthly!", the radio questions):
-     one small step up, kept close to body size for low variability. */
+  /* Section prompts */
   body.embedded-iframe .donation_amount > .col-lg-12 > div > .control-label,
   body.embedded-iframe .donation_recurring > .col-lg-12 > div > .control-label,
   body.embedded-iframe .radios-component fieldset > div > .control-label {
@@ -156,8 +153,7 @@
     font-weight: 700 !important;
     line-height: 1.3;
   }
-  /* Radio/consent OPTION labels - ST forces these to 10px; override to body size.
-     High specificity (matches .control-label.normal.ml-10) to beat ST's rule. */
+  /* Radio/consent OPTION labels */
   body.embedded-iframe .radios-component .control-label.normal.ml-10,
   body.embedded-iframe .radios-component .control-label.normal,
   body.embedded-iframe .consent-label {
@@ -197,7 +193,7 @@
   }
   body.embedded-iframe .form-control:focus {
     border-color: var(--orange) !important;
-    box-shadow: 0 0 0 3px rgba(244, 85, 42, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(253, 104, 62, 0.2) !important;
     outline: none !important;
   }
   body.embedded-iframe .form-control::placeholder {
@@ -228,25 +224,23 @@
     width: 100% !important;
     display: block;
   }
-  /* Make room for the flag/country-code dropdown so the placeholder/helper
-     text isn't hidden underneath the .selected-flag. */
   body.embedded-iframe .intl-tel-input .form-control {
     padding-left: 52px !important;
   }
   body.embedded-iframe .intl-tel-input .selected-flag {
-    background: var(--cream) !important;
+    background: var(--white) !important;
     border-right: 1px solid var(--ink) !important;
     padding: 0 8px 0 10px;
   }
   body.embedded-iframe .intl-tel-input .selected-flag:hover,
   body.embedded-iframe .intl-tel-input .selected-flag:focus {
-    background: rgba(31, 27, 23, 0.06) !important;
+    background: rgba(28, 27, 25, 0.06) !important;
   }
   body.embedded-iframe .intl-tel-input .country-list {
     position: absolute !important;
     background: var(--white) !important;
     border: 1px solid var(--ink) !important;
-    box-shadow: 0 6px 20px rgba(31, 27, 23, 0.18) !important;
+    box-shadow: 0 6px 20px rgba(28, 27, 25, 0.18) !important;
     max-height: 220px;
     overflow-y: auto;
     z-index: 5;
@@ -259,13 +253,13 @@
   body.embedded-iframe .intl-tel-input .country:hover,
   body.embedded-iframe .intl-tel-input .country.highlight,
   body.embedded-iframe .intl-tel-input .country.active {
-    background: var(--cream) !important;
+    background: rgba(28, 27, 25, 0.06) !important;
   }
   body.embedded-iframe .intl-tel-input .country .dial-code {
     color: var(--muted) !important;
   }
   body.embedded-iframe .intl-tel-input .country-list .divider {
-    border-bottom: 1px solid rgba(31, 27, 23, 0.15);
+    border-bottom: 1px solid rgba(28, 27, 25, 0.15);
   }
 
   /* ================================================================
@@ -297,12 +291,12 @@
   body.embedded-iframe #form_submit_button.disabled {
     background: var(--muted) !important;
     border-color: var(--muted) !important;
-    color: var(--cream) !important;
+    color: var(--white) !important;
     opacity: 1 !important;
     cursor: not-allowed !important;
   }
   body.embedded-iframe #form_submit_button.disabled span {
-    color: var(--cream) !important;
+    color: var(--white) !important;
   }
   body.embedded-iframe .btn,
   body.embedded-iframe .btn-lg,
@@ -364,8 +358,8 @@
   body.embedded-iframe .stepper .active .round-tab,
   body.embedded-iframe .stepper .selected .round-tab,
   body.embedded-iframe .stepper li.active .round-tab {
-    background: var(--orange) !important;
-    border-color: var(--orange) !important;
+    background: var(--ink) !important;
+    border-color: var(--ink) !important;
     color: var(--white) !important;
   }
   body.embedded-iframe .step-label,
@@ -406,14 +400,13 @@
   body.embedded-iframe .donation_recurring-component {
     margin-bottom: 18px;
   }
-  /* "Choose an amount" heading carries an inline style */
   body.embedded-iframe .donation_amount .control-label,
   body.embedded-iframe .donation_recurring .control-label {
     color: var(--ink) !important;
     font-weight: 600 !important;
   }
 
-  /* Preset amounts: hide the raw radio, make the label a square button */
+  /* Preset amounts: hide the raw radio, make the label a button */
   body.embedded-iframe .donation-amount-label .radio-inline-input,
   body.embedded-iframe .donation-recurring-label input[type="radio"] {
     position: absolute;
@@ -430,10 +423,9 @@
     width: 100%;
     min-height: 48px;
     padding: 10px 12px;
-    /* Founding-only elements (dark theme) - styled directly, not via :has */
-    background: var(--ink) !important;
-    border: 1px solid var(--cream) !important;
-    color: var(--cream) !important;
+    background: var(--white) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
     font-size: 17px !important;
     font-weight: 600 !important;
     text-align: center;
@@ -456,7 +448,7 @@
     border-color: var(--orange) !important;
     color: var(--white) !important;
   }
-  /* "Other amount" number field lives inside the last preset label */
+  /* "Other amount" number field */
   body.embedded-iframe .donation_amount_other,
   body.embedded-iframe input[name="donation_amount_other"] {
     background: var(--white) !important;
@@ -464,20 +456,13 @@
     color: var(--ink) !important;
     padding: 6px 8px !important;
     width: 100%;
-  }
-  body.embedded-iframe .donation-amount-label:has(input:checked) .donation_amount_other {
-    color: var(--ink) !important;
+    border-radius: 5px !important;
   }
   body.embedded-iframe .donation-recurring-options-container {
     display: flex;
     gap: 10px;
   }
-  /* IMPORTANT: ST sets id="action_page" on the <html> ROOT element (not a div),
-     so it must come BEFORE body.embedded-iframe in the selector - it's an ancestor
-     of <body>, not a descendant. ST paints the recurring wrapper + unselected labels
-     light-gray (#e4e7ea) via #action_page ID rules WITHOUT !important; we mirror that
-     structure (longhand background-color + !important) so our overrides win. These
-     donation elements exist only on the founding (dark) form, so ink/cream is safe. */
+  /* ST paints containers light-gray via #action_page ID rules; override to transparent */
   #action_page body.embedded-iframe .donation-recurring-options-container,
   #action_page body.embedded-iframe .donation-amount-label-container,
   #action_page body.embedded-iframe .donation_amount,
@@ -487,23 +472,15 @@
   }
   #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label:not(.selected),
   #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label:not(.selected) {
-    background-color: var(--ink) !important;
+    background-color: var(--white) !important;
     background-image: none !important;
-    border: 1px solid var(--cream) !important;
-    color: var(--cream) !important;
-  }
-  #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label:not(.selected) *,
-  #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label:not(.selected) * {
-    color: var(--cream) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
   }
   #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label.selected,
   #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label.selected {
     background-color: var(--orange) !important;
     border-color: var(--orange) !important;
-    color: var(--white) !important;
-  }
-  #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label.selected *,
-  #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label.selected * {
     color: var(--white) !important;
   }
 
@@ -600,7 +577,7 @@
     line-height: 1.5;
     margin-top: 18px;
     padding-top: 14px;
-    border-top: 1px solid rgba(31, 27, 23, 0.15);
+    border-top: 1px solid rgba(28, 27, 25, 0.15);
   }
   body.embedded-iframe .action-page-form-disclaimer a,
   body.embedded-iframe .page-wrapper a:not(.btn):not(.navbar-brand):not(.round-tab):not(.persistant):not(.mobile-tracker-labels) {
@@ -619,12 +596,13 @@
      SHARE OVERLAY (post-submission)
      ================================================================ */
   body.embedded-iframe #sharing_overlay .modal-content {
-    background: var(--cream) !important;
+    background: var(--white) !important;
     border: 1px solid var(--ink) !important;
     color: var(--ink) !important;
+    border-radius: 5px !important;
   }
   body.embedded-iframe #sharing_overlay .modal-header {
-    border-bottom: 1px solid rgba(31, 27, 23, 0.15) !important;
+    border-bottom: 1px solid rgba(28, 27, 25, 0.15) !important;
   }
   body.embedded-iframe #sharing_overlay .close {
     color: var(--ink) !important;
@@ -662,110 +640,6 @@
   }
 
   /* ================================================================
-     FOUNDING FORM ONLY - blend into the dark #join section.
-     Scoped via :has(.multipage): only the 3-step donation form has it,
-     so the Join form keeps the light cream treatment above.
-     Surface = the same ink as the site section, so there's no card seam.
-     Text inputs + the Stripe box stay light-filled (legible + Stripe can't
-     be darkened); choice controls become cream outlines on dark.
-     ================================================================ */
-  body.embedded-iframe:has(.multipage) {
-    background: var(--ink) !important;
-    color: var(--cream) !important;
-  }
-  body.embedded-iframe:has(.multipage) .page-header .title,
-  body.embedded-iframe:has(.multipage) .action-page-form-title,
-  body.embedded-iframe:has(.multipage) .control-label,
-  body.embedded-iframe:has(.multipage) .payment-card-label,
-  body.embedded-iframe:has(.multipage) .consent-label,
-  body.embedded-iframe:has(.multipage) .mt-10 .checkbox label,
-  body.embedded-iframe:has(.multipage) #processing-fee-amount {
-    color: var(--cream) !important;
-  }
-  body.embedded-iframe:has(.multipage) .form-hint,
-  body.embedded-iframe:has(.multipage) #zero-amount-message {
-    color: rgba(241, 233, 221, 0.7) !important;
-  }
-  body.embedded-iframe:has(.multipage) .action-page-form-disclaimer {
-    color: rgba(241, 233, 221, 0.65) !important;
-    border-top-color: rgba(241, 233, 221, 0.2) !important;
-  }
-
-  /* Step badges + labels on dark */
-  body.embedded-iframe:has(.multipage) .mobile-tracker-labels,
-  body.embedded-iframe:has(.multipage) .step-label,
-  body.embedded-iframe:has(.multipage) .stepper .nav-tabs > li > span {
-    color: var(--cream) !important;
-  }
-  body.embedded-iframe:has(.multipage) .mobile-tracker-labels:not(.active_header) .step-label {
-    color: rgba(241, 233, 221, 0.55) !important;
-  }
-  body.embedded-iframe:has(.multipage) .mobile-round-tab-container .round-tab,
-  body.embedded-iframe:has(.multipage) .stepper .round-tab {
-    background: transparent !important;
-    border-color: var(--cream) !important;
-    color: var(--cream) !important;
-  }
-
-  /* Radio/consent OPTION text on dark - high specificity to beat ST + the
-     light-theme rule (which forces ink). */
-  body.embedded-iframe:has(.multipage) .radios-component .control-label.normal.ml-10,
-  body.embedded-iframe:has(.multipage) .radios-component .control-label.normal,
-  body.embedded-iframe:has(.multipage) .radios-component .control-label,
-  body.embedded-iframe:has(.multipage) .consent-label,
-  body.embedded-iframe:has(.multipage) .consent-label span,
-  body.embedded-iframe:has(.multipage) .mt-10 .checkbox label {
-    color: var(--cream) !important;
-  }
-
-  /* ST gives the recurring options wrapper a light-gray fill that bleeds through
-     transparent buttons - force it (and the amount grid) transparent on dark. */
-  body.embedded-iframe:has(.multipage) .donation-recurring-options-container,
-  body.embedded-iframe:has(.multipage) .donation-amount-label-container,
-  body.embedded-iframe:has(.multipage) .donation_amount,
-  body.embedded-iframe:has(.multipage) .donation_recurring {
-    background: transparent !important;
-    background-image: none !important;
-  }
-  /* Choice controls: unselected get a SOLID ink fill (so nothing light shows
-     behind cream text), cream outline; orange only when actually chosen. */
-  body.embedded-iframe:has(.multipage) .donation-amount-label:not(.selected),
-  body.embedded-iframe:has(.multipage) .donation-recurring-label:not(.selected),
-  body.embedded-iframe:has(.multipage) .donation-amount-label:not(.selected) span,
-  body.embedded-iframe:has(.multipage) .donation-recurring-label:not(.selected) span {
-    background: var(--ink) !important;
-    background-image: none !important;
-    border-color: var(--cream) !important;
-    color: var(--cream) !important;
-  }
-  body.embedded-iframe:has(.multipage) .donation-amount-label.selected,
-  body.embedded-iframe:has(.multipage) .donation-amount-label:has(input:checked),
-  body.embedded-iframe:has(.multipage) .donation-recurring-label.selected,
-  body.embedded-iframe:has(.multipage) .donation-recurring-label:has(input:checked),
-  body.embedded-iframe:has(.multipage) .donation-amount-label.selected span,
-  body.embedded-iframe:has(.multipage) .donation-amount-label:has(input:checked) span,
-  body.embedded-iframe:has(.multipage) .donation-recurring-label.selected span,
-  body.embedded-iframe:has(.multipage) .donation-recurring-label:has(input:checked) span {
-    background: var(--orange) !important;
-    border-color: var(--orange) !important;
-    color: var(--white) !important;
-  }
-
-  /* Text inputs, "other amount", and the Stripe box stay light-filled */
-  body.embedded-iframe:has(.multipage) .form-control,
-  body.embedded-iframe:has(.multipage) .donation_amount_other,
-  body.embedded-iframe:has(.multipage) input[name="donation_amount_other"],
-  body.embedded-iframe:has(.multipage) #card-element,
-  body.embedded-iframe:has(.multipage) .StripeElement {
-    background: var(--white) !important;
-    color: var(--ink) !important;
-    border-color: var(--cream) !important;
-  }
-  body.embedded-iframe:has(.multipage) .intl-tel-input .selected-flag {
-    border-right-color: rgba(31, 27, 23, 0.25) !important;
-  }
-
-  /* ================================================================
      STEP TRANSITIONS + ANTI-WRAP GUARDS
      ================================================================ */
   body.embedded-iframe .tab-content,
@@ -793,5 +667,44 @@
   body.embedded-iframe .donation-amount-label {
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /* ================================================================
+     FOUNDING MEMBER FORM — sage surface to blend into the #join section.
+     Scoped via :has(.multipage): only the 3-step donation form has it.
+     Form controls stay white-filled for legibility.
+     ================================================================ */
+  body.embedded-iframe:has(.multipage) {
+    background: transparent !important;
+  }
+  /* Ensure inputs and Stripe box stay white on sage */
+  body.embedded-iframe:has(.multipage) .form-control,
+  body.embedded-iframe:has(.multipage) .donation_amount_other,
+  body.embedded-iframe:has(.multipage) input[name="donation_amount_other"],
+  body.embedded-iframe:has(.multipage) #card-element,
+  body.embedded-iframe:has(.multipage) .StripeElement {
+    background: var(--white) !important;
+    border-color: var(--ink) !important;
+    color: var(--ink) !important;
+  }
+  /* Donation amount / recurring buttons on sage: white fill, ink border */
+  body.embedded-iframe:has(.multipage) .donation-amount-label:not(.selected),
+  body.embedded-iframe:has(.multipage) .donation-recurring-label:not(.selected) {
+    background: var(--white) !important;
+    border-color: var(--ink) !important;
+    color: var(--ink) !important;
+  }
+  #action_page body.embedded-iframe:has(.multipage) .donation_recurring .donation-recurring-options-container .donation-recurring-label:not(.selected),
+  #action_page body.embedded-iframe:has(.multipage) .donation_amount .donation-amount-label-container label.donation-amount-label:not(.selected) {
+    background-color: var(--white) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--ink) !important;
+  }
+  /* Step badge on sage: inactive = white fill */
+  body.embedded-iframe:has(.multipage) .mobile-round-tab-container:not(.active) .round-tab,
+  body.embedded-iframe:has(.multipage) .stepper li:not(.active) .round-tab {
+    background: var(--white) !important;
+    border-color: var(--ink) !important;
+    color: var(--ink) !important;
   }
 </style>

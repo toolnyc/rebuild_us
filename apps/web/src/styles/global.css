@@ -1,150 +1,150 @@
 @import "tailwindcss";
 
-/* Brand tokens — adopted from the approved mid-fi design (see ADR-0001) */
 @theme {
-  --color-cream: #f1e9dd;
-  --color-ink: #1f1b17;
+  --color-white: #fffffc;
+  --color-ink: #1c1b19;
   --color-muted: #6b655c;
-  --color-white: #ffffff;
-  --color-accent-yellow: #ecf278;
-  --color-accent-orange: #f4552a;
-  --color-accent-sage: #a7b795;
+  --color-accent-yellow: #eaf261;
+  --color-accent-sage: #b5c1ab;
+  --color-accent-orange: #fd683e;
+  --color-accent-blue: #dbf1fe;
 
-  --font-display: "New Burns Trial", serif;
-  --font-body: "Armand Grotesk Test", sans-serif;
-  --font-ui: "Helvetica Neue", system-ui, sans-serif;
+  --radius: 5px;
+
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body: "Basis Grotesque Pro", system-ui, sans-serif;
+  --font-mono: "Basis Grotesque Mono Pro", ui-monospace, monospace;
 }
 
 body {
-  background-color: var(--color-cream);
+  background-color: var(--color-white);
   color: var(--color-ink);
   font-family: var(--font-body);
 }
 
-/* ────────────────────────────────────────────────────────────────────────
-   Typography scale. One well-defined system:
-   - Display (New Burns serif): display / h1 / h2 / h3
-   - Body (Armand): lead / body / small
-   - UI (Helvetica): eyebrow (uppercase labels) / caption (meta text)
-   Sizes use clamp() so a single token is responsive without lg: variants.
-   ──────────────────────────────────────────────────────────────────────── */
 @utility ty-display {
   font-family: var(--font-display);
-  font-size: clamp(1.875rem, 5vw + 1rem, 4.5rem);
-  line-height: 1.05;
+  font-size: clamp(2.5rem, 6vw + 1rem, 5.625rem);
+  line-height: 1.02;
   letter-spacing: -0.01em;
 }
 @utility ty-h1 {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw + 1rem, 3rem);
-  line-height: 1.1;
+  font-size: clamp(2rem, 4vw + 1rem, 4.375rem);
+  line-height: 1.05;
 }
 @utility ty-h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.375rem, 2vw + 1rem, 2.25rem);
-  line-height: 1.2;
+  font-size: clamp(1.75rem, 3vw + 1rem, 3.4375rem);
+  line-height: 1.1;
 }
 @utility ty-h3 {
-  font-family: var(--font-display);
-  font-size: clamp(1.125rem, 1.5vw + 0.75rem, 1.5rem);
-  line-height: 1.25;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(1.375rem, 1.5vw + 0.75rem, 1.875rem);
+  line-height: 1.15;
 }
 @utility ty-lead {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 1vw + 0.5rem, 1.25rem);
-  line-height: 1.5;
+  font-size: clamp(1.125rem, 1vw + 0.5rem, 1.375rem);
+  line-height: 1.36;
 }
 @utility ty-body {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 1.125rem;
   line-height: 1.55;
 }
 @utility ty-eyebrow {
-  font-family: var(--font-ui);
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.875rem;
   line-height: 1.4;
-  font-weight: 600;
-  text-transform: capitalize;
-  letter-spacing: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 @utility ty-caption {
-  font-family: var(--font-ui);
-  font-size: 0.75rem;
-  line-height: 1.4;
+  font-family: var(--font-body);
   font-weight: 400;
-  letter-spacing: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
 }
 
-/* Border-radius stance: the brand is square. No pills, no rounded corners. */
-*,
-::before,
-::after {
-  border-radius: 0 !important;
-}
-
-/* Link stance: one main, one alt. Reused across nav, footer, and body copy. */
 .link-main {
-  font-family: var(--font-ui);
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-weight: 700;
   color: var(--color-accent-orange);
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: opacity 0.2s;
 }
-.link-main:hover {
-  opacity: 0.7;
+.link-main:hover { opacity: 0.7; }
+.link-alt { font-family: var(--font-body); transition: color 0.2s; }
+.link-alt:hover { color: var(--color-accent-orange); }
+
+mark, .mark-highlight {
+  background: linear-gradient(var(--color-accent-yellow), var(--color-accent-yellow))
+    left center / 0% 100% no-repeat;
+  color: var(--color-ink);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding-inline: 0.15em;
 }
-.link-alt {
-  font-family: var(--font-ui);
-  transition: color 0.2s;
-}
-.link-alt:hover {
-  color: var(--color-accent-orange);
-}
+.no-js mark, mark.mark-static { background-size: 100% 100%; }
 
 @font-face {
-  font-family: "New Burns Trial";
-  src: url("/fonts/NewBurnsTrial-Regular.otf") format("opentype");
+  font-family: "Instrument Serif";
+  src: url("/fonts/InstrumentSerif-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/InstrumentSerif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
 
 @font-face {
-  font-family: "Armand Grotesk Test";
-  src: url("/fonts/ArmandGroteskTest-Light.otf") format("opentype");
+  font-family: "Basis Grotesque Pro";
+  src: url("/fonts/BasisGrotesquePro-Lt.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: "Armand Grotesk Test";
-  src: url("/fonts/ArmandGroteskTest-SemiLight.otf") format("opentype");
-  font-weight: 350;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Armand Grotesk Test";
-  src: url("/fonts/ArmandGroteskTest-Regular.otf") format("opentype");
+  font-family: "Basis Grotesque Pro";
+  src: url("/fonts/BasisGrotesquePro.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: "Armand Grotesk Test";
-  src: url("/fonts/ArmandGroteskTest-SemiBold.otf") format("opentype");
-  font-weight: 600;
+  font-family: "Basis Grotesque Pro";
+  src: url("/fonts/BasisGrotesquePro-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basis Grotesque Pro";
+  src: url("/fonts/BasisGrotesquePro-Md.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Basis Grotesque Pro";
+  src: url("/fonts/BasisGrotesquePro-Bold.otf") format("opentype");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Armand Grotesk Test";
-  src: url("/fonts/ArmandGroteskTest-Bold.otf") format("opentype");
+  font-family: "Basis Grotesque Mono Pro";
+  src: url("/fonts/BasisGrotesqueMonoPro-Bd.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
