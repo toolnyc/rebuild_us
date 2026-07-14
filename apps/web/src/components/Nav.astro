@@ -15,21 +15,116 @@ const {
 } = Astro.props;
 ---
 
-<header class="border-b border-ink/10 bg-white/95 backdrop-blur">
+<header class="border-b border-ink/10 bg-white/95 backdrop-blur relative z-50">
   <nav class="mx-auto flex max-w-7xl items-center px-4 py-3 sm:px-6 sm:py-4">
-    <div class="flex flex-1 items-center justify-start">
+    <!-- Desktop left -->
+    <div class="hidden sm:flex flex-1 items-center justify-start">
       <a href={resourcesDestination} class="border-2 border-accent-orange text-accent-orange text-[0.875rem] font-bold px-3 py-1 rounded-[var(--radius)] transition hover:bg-accent-orange hover:text-white">Resources</a>
     </div>
+
+    <!-- Mobile: spacer to balance hamburger -->
+    <div class="flex sm:hidden flex-1"></div>
 
     <a href="/" aria-label="Rebuild home" class="shrink-0">
       <Logo />
     </a>
 
-    <div class="flex flex-1 items-center justify-end gap-4">
+    <!-- Desktop right -->
+    <div class="hidden sm:flex flex-1 items-center justify-end gap-4">
       {showGive && (
         <a href="https://donate.rebuild.us" class="link-alt text-sm">GIVE</a>
       )}
       <Button href={joinDestination} variant="small">Join</Button>
     </div>
+
+    <!-- Mobile hamburger -->
+    <div class="flex sm:hidden flex-1 items-center justify-end">
+      <button
+        id="nav-open"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        class="p-2 -mr-2 text-ink"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </div>
   </nav>
 </header>
+
+<!-- Mobile full-screen overlay -->
+<div
+  id="mobile-nav"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+  class="fixed inset-0 z-50 flex flex-col bg-white translate-x-full transition-transform duration-300 sm:hidden"
+>
+  <div class="flex items-center justify-between px-4 py-3 border-b border-ink/10">
+    <a href="/" aria-label="Rebuild home" onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')">
+      <Logo />
+    </a>
+    <button
+      id="nav-close"
+      aria-label="Close menu"
+      class="p-2 -mr-2 text-ink"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="4" y1="4" x2="20" y2="20" />
+        <line x1="20" y1="4" x2="4" y2="20" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="flex flex-col gap-4 px-6 py-8">
+    <a
+      href={resourcesDestination}
+      class="ty-h2 text-ink hover:text-accent-orange transition-colors"
+      onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')"
+    >Resources</a>
+    {showGive && (
+      <a
+        href="https://donate.rebuild.us"
+        class="ty-h2 text-ink hover:text-accent-orange transition-colors"
+        onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')"
+      >Give</a>
+    )}
+  </nav>
+
+  <div class="px-6 mt-auto pb-10">
+    <a
+      href={joinDestination}
+      class="flex items-center justify-center w-full bg-accent-orange text-white font-bold text-lg py-4 rounded-[var(--radius)] hover:opacity-90 transition"
+      onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')"
+    >Join Rebuild</a>
+  </div>
+</div>
+
+<script>
+  const openBtn = document.getElementById('nav-open');
+  const closeBtn = document.getElementById('nav-close');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  function openNav() {
+    mobileNav?.classList.remove('translate-x-full');
+    openBtn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeNav() {
+    mobileNav?.classList.add('translate-x-full');
+    openBtn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  openBtn?.addEventListener('click', openNav);
+  closeBtn?.addEventListener('click', closeNav);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeNav();
+  });
+</script>
