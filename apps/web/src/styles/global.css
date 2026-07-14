@@ -21,6 +21,60 @@ body {
   font-family: var(--font-body);
 }
 
+/* ────────────────────────────────────────────────────────────────────────
+   Typography scale. One well-defined system:
+   - Display (New Burns serif): display / h1 / h2 / h3
+   - Body (Armand): lead / body / small
+   - UI (Helvetica): eyebrow (uppercase labels) / caption (meta text)
+   Sizes use clamp() so a single token is responsive without lg: variants.
+   ──────────────────────────────────────────────────────────────────────── */
+@utility ty-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 5vw + 1rem, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+@utility ty-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 3vw + 1rem, 3rem);
+  line-height: 1.15;
+}
+@utility ty-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2vw + 1rem, 2.25rem);
+  line-height: 1.2;
+}
+@utility ty-h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+@utility ty-lead {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+@utility ty-body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+@utility ty-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0;
+}
+@utility ty-caption {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
 /* Border-radius stance: the brand is square. No pills, no rounded corners. */
 *,
 ::before,

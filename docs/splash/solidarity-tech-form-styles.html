@@ -228,6 +228,11 @@
     width: 100% !important;
     display: block;
   }
+  /* Make room for the flag/country-code dropdown so the placeholder/helper
+     text isn't hidden underneath the .selected-flag. */
+  body.embedded-iframe .intl-tel-input .form-control {
+    padding-left: 52px !important;
+  }
   body.embedded-iframe .intl-tel-input .selected-flag {
     background: var(--cream) !important;
     border-right: 1px solid var(--ink) !important;

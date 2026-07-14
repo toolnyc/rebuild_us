@@ -41,11 +41,11 @@ const leftCopyHtml =
   <SectionMarker number="05" label={label} class="mb-10 text-ink" />
   <div class="grid gap-12 lg:grid-cols-2">
     <div>
-      {headline && <h2 class="font-display text-4xl lg:text-5xl">{headline}</h2>}
-      <div class="mt-6 text-xl text-ink [&_mark]:box-decoration-clone">
+      {headline && <h2 class="ty-h1">{headline}</h2>}
+      <div class="mt-6 ty-lead text-ink [&_mark]:box-decoration-clone">
         <RichText value={subcopy} />
       </div>
-      {leftCopyHtml && <p class="mt-6 text-muted" set:html={leftCopyHtml} />}
+      {leftCopyHtml && <p class="mt-6 ty-body text-muted" set:html={leftCopyHtml} />}
     </div>
 
     <ul class="flex flex-col gap-4">
@@ -53,19 +53,19 @@ const leftCopyHtml =
         items.map((item, i) => (
           <li class="flex items-center gap-4 border-b border-ink/10 pb-4">
             <span
-              class="flex h-12 w-10 items-end justify-center pb-1 font-ui text-[10px] font-bold text-ink"
+              class="flex h-12 w-10 items-end justify-center pb-1 ty-caption font-bold text-ink"
               style={`background-color:${iconColors[i % iconColors.length]}`}
             >
               {item.format ?? 'PDF'}
             </span>
             <div class="flex-1">
-              <div class="font-ui text-xs uppercase tracking-widest text-muted">
+              <div class="ty-eyebrow text-muted pb-2">
                 Guide 0{i + 1} · {item.format ?? 'PDF'}
               </div>
-              <div class="font-display text-xl">{item.title}</div>
+              <div class="ty-h3">{item.title}</div>
             </div>
             {item.fileUrl && (
-              <a href={item.fileUrl} class="link-alt text-sm font-semibold">
+              <a href={item.fileUrl} class="link-alt ty-body font-semibold">
                 Download ↓
               </a>
             )}

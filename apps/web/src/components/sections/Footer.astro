@@ -39,7 +39,7 @@ const columns = [
         <div class="mt-6 flex flex-wrap justify-center gap-x-16 gap-y-8 text-left">
           {columns.map((col) => (
             <div>
-              <div class="font-ui text-xs uppercase tracking-widest text-white/50">{col.title}</div>
+              <div class="ty-eyebrow text-white/50">{col.title}</div>
               <ul class="mt-4 flex flex-col gap-2 font-ui text-base">
                 {col.links.map((l) => (
                   <li>
@@ -57,7 +57,7 @@ const columns = [
   </div>
 
   <div class="border-t border-white/10">
-    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 font-ui text-xs text-white/50 sm:flex-row">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 ty-caption text-white/50 sm:flex-row">
       <span>© 2026 Rebuild — The National Disaster Survivors Association</span>
       <div class="flex items-center gap-4">
         {
@@ -67,6 +67,14 @@ const columns = [
             </a>
           )
         }
+        <a
+          href="https://rebuild-us.sanity.studio"
+          target="_blank"
+          rel="noopener"
+          class="hover:text-accent-orange"
+        >
+          Edit
+        </a>
         <span>By &amp; for survivors</span>
       </div>
     </div>

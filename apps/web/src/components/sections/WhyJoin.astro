@@ -21,7 +21,7 @@ const isDark = (hex?: string) => hex === '#1F1B17' || hex === '#F4552A';
 
 <section id="membership-benefits" class="scroll-mt-20 mx-auto max-w-7xl px-6 py-20 lg:py-28">
   <SectionMarker number="04" label={label} class="mb-6 text-ink" />
-  <h2 class="mb-12 font-display text-4xl lg:text-5xl">Why Join Rebuild?</h2>
+  <h2 class="mb-12 ty-h1">Why Join Rebuild?</h2>
   <div class="grid gap-6 md:grid-cols-3">
     {
       columns.map((col, i) => {
@@ -35,14 +35,14 @@ const isDark = (hex?: string) => hex === '#1F1B17' || hex === '#F4552A';
             {imageUrl ? (
               <img src={imageUrl} alt={col.title ?? ''} class="aspect-[7/5] w-full object-cover" />
             ) : (
-              <div class="flex aspect-[7/5] w-full items-center justify-center bg-black/10 font-ui text-sm">
+              <div class="flex aspect-[7/5] w-full items-center justify-center bg-black/10 ty-body">
                 Image
               </div>
             )}
             <div class="flex flex-1 flex-col gap-3 p-6">
-              <span class="font-ui text-sm font-semibold opacity-70">0{i + 1}</span>
-              <h3 class="font-display text-2xl">{col.title}</h3>
-              <p class:list={['text-sm', dark ? 'text-white/80' : 'text-muted']}>{col.body}</p>
+              <span class="ty-eyebrow font-semibold opacity-70">0{i + 1}</span>
+              <h3 class="ty-h3">{col.title}</h3>
+              <p class:list={['ty-body', dark ? 'text-white/80' : 'text-muted']}>{col.body}</p>
             </div>
           </article>
         );

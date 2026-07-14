@@ -27,12 +27,12 @@ const imageUrl = image ? urlFor(image).width(1200).height(1400).fit('crop').url(
 
 <section id="top" class="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2 lg:items-center lg:py-24">
   <div>
-    <div class="mb-6 font-ui text-xs uppercase tracking-widest text-muted">Est. 2026 — National</div>
-    <h1 class="font-display text-5xl leading-[1.05] sm:text-6xl lg:text-7xl">
+    <div class="mb-6 ty-eyebrow text-muted">Est. 2026 — National</div>
+    <h1 class="ty-display">
       {headline}{' '}
       {headlineAccent && <em class="italic text-accent-orange">{headlineAccent}</em>}
     </h1>
-    {subcopy && <p class="mt-6 max-w-xl text-lg text-muted">{subcopy}</p>}
+    {subcopy && <p class="mt-6 max-w-xl ty-lead text-muted">{subcopy}</p>}
     <div class="mt-8 flex flex-wrap items-center gap-6">
       <Button href={joinDestination} size="lg">Join Rebuild</Button>
     </div>
@@ -45,14 +45,14 @@ const imageUrl = image ? urlFor(image).width(1200).height(1400).fit('crop').url(
         imageUrl ? (
           <img src={imageUrl} alt={imageAlt ?? ''} class="aspect-[6/7] w-full object-cover" />
         ) : (
-          <div class="flex aspect-[6/7] w-full items-center justify-center bg-muted/20 font-ui text-sm text-muted">
+          <div class="flex aspect-[6/7] w-full items-center justify-center bg-muted/20 ty-body text-muted">
             Hero photo
           </div>
         )
       }
       {
         caption && (
-          <figcaption class="absolute bottom-4 left-4 bg-ink/80 px-3 py-1 font-ui text-xs text-white">
+          <figcaption class="absolute bottom-4 left-4 bg-ink/80 px-3 py-1 ty-caption text-white">
             {caption}
           </figcaption>
         )

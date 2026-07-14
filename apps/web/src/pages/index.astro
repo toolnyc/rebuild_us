@@ -32,21 +32,23 @@ const joinDestination = siteSettings?.joinDestination ?? '#join';
 ---
 
 <BaseLayout>
-  {
-    siteSettings?.showAnnouncement && (
-      <Announcement
-        text={siteSettings?.announcementText}
-        ctaLabel={siteSettings?.announcementCtaLabel}
-        destination={siteSettings?.announcementDestination}
-      />
-    )
-  }
+  <div class="sticky top-0 z-50">
+    {
+      siteSettings?.showAnnouncement && (
+        <Announcement
+          text={siteSettings?.announcementText}
+          ctaLabel={siteSettings?.announcementCtaLabel}
+          destination={siteSettings?.announcementDestination}
+        />
+      )
+    }
 
-  <Nav
-    showGive={siteSettings?.showGive}
-    joinDestination={joinDestination}
-    resourcesDestination={siteSettings?.resourcesDestination}
-  />
+    <Nav
+      showGive={siteSettings?.showGive}
+      joinDestination={joinDestination}
+      resourcesDestination={siteSettings?.resourcesDestination}
+    />
+  </div>
 
   <main>
     <Hero
@@ -107,6 +109,9 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add((time) => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 
+const stickyHeader = document.querySelector('.sticky') as HTMLElement | null;
+const headerOffset = () => -((stickyHeader?.offsetHeight ?? 80) + 16);
+
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener('click', (e) => {
     const id = link.getAttribute('href');
@@ -114,7 +119,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     const target = document.querySelector(id);
     if (!target) return;
     e.preventDefault();
-    lenis.scrollTo(target as HTMLElement, { offset: -80 });
+    lenis.scrollTo(target as HTMLElement, { offset: headerOffset() });
   });
 });
 
@@ -140,20 +145,23 @@ if (heroLeft) {
   if (eyebrow) gsap.from(eyebrow, fade({ y: 0, duration: 0.5, delay: 0.1 }));
   if (h1)      gsap.from(h1,      fade({ duration: 1.1, delay: 0.2 }));
   if (p)       gsap.from(p,       fade({ delay: 0.5 }));
-  if (links.length) gsap.from(links, fade({ delay: 0.75, stagger: 0.1 }));
+  if (links.length) {
+    gsap.from(links, fade({ delay: 0.35, duration: 0.6, stagger: 0.08, overwrite: 'auto', clearProps: 'opacity,transform' }));
+    // Safety net: never leave the primary CTA stranded invisible if a tween stalls.
+    gsap.delayedCall(1.5, () => gsap.set(links, { clearProps: 'opacity,visibility,transform' }));
+  }
 }
 if (heroRight) gsap.from(heroRight, fade({ delay: 0.35 }));
 
 // ── Announcement banner: pops in after the hero cascade settles ──────────
 const announcement = document.querySelector('[data-announcement]');
 if (announcement) {
-  gsap.set(announcement, { transformOrigin: 'top center' });
   gsap.from(announcement, {
-    yPercent: -100,
-    opacity: 0,
+    autoAlpha: 0,
     duration: 0.6,
     ease: 'power3.out',
     delay: 1.4,
+    clearProps: 'opacity,visibility',
   });
 }
 
@@ -167,7 +175,7 @@ if (statItems.length) {
     scrollTrigger: { trigger: statSection ?? statItems[0], start: 'top bottom', once: true },
   });
 }
-document.querySelectorAll('.bg-ink .font-display').forEach((el) => {
+document.querySelectorAll('.stat-value').forEach((el) => {
   const num = parseInt(el.textContent ?? '');
   if (!isNaN(num) && num > 1) {
     const proxy = { val: 0 };
@@ -185,10 +193,10 @@ document.querySelectorAll('.bg-ink .font-display').forEach((el) => {
 interface SectionCfg { marker?: string; h2?: string; body?: string; items?: string }
 
 const sections: SectionCfg[] = [
-  { marker: '#about .font-ui.uppercase',               body: '#about .font-display, #about p' },
-  { marker: '#join .font-ui.uppercase',                h2: '#join h2',                    body: '#join p, #join iframe' },
-  { marker: '#membership-benefits .font-ui.uppercase', h2: '#membership-benefits h2',     items: '#membership-benefits article' },
-  { marker: '#resources .font-ui.uppercase',           h2: '#resources h2',               body: '#resources .text-xl', items: '#resources li' },
+  { marker: '#about .section-marker',               body: '#about .ty-h1, #about p' },
+  { marker: '#join .section-marker',                h2: '#join h2',                    body: '#join p, #join iframe' },
+  { marker: '#membership-benefits .section-marker', h2: '#membership-benefits h2',     items: '#membership-benefits article' },
+  { marker: '#resources .section-marker',           h2: '#resources h2',               body: '#resources .ty-lead', items: '#resources li' },
   {                                                    h2: 'main section:last-of-type h2', body: 'main section:last-of-type p, main section:last-of-type .flex.gap-4, main section:last-of-type iframe' },
 ];
 
