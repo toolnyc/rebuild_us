@@ -13,10 +13,10 @@ const { label, statement, support } = Astro.props;
 
 <section id="about" class="mx-auto max-w-7xl px-6 py-20 lg:py-28">
   <SectionMarker number="02" label={label} class="mb-10 text-ink" />
-  <div class="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-end">
+  <div class="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-center">
     <div class="font-display text-3xl leading-snug sm:text-4xl lg:text-5xl [&_mark]:box-decoration-clone">
       <RichText value={statement} />
     </div>
-    {support && <p class="text-lg text-muted">{support}</p>}
+    {support && <p class="text-xl leading-relaxed text-muted lg:text-2xl">{support}</p>}
   </div>
 </section>

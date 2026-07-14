@@ -8,7 +8,7 @@ interface Props {
 const { text, ctaLabel, destination = '#join' } = Astro.props;
 ---
 
-<div class="bg-accent-orange text-white">
+<div data-announcement class="bg-accent-orange text-white">
   <div class="mx-auto flex max-w-7xl items-center justify-center gap-2 px-6 py-2 text-center font-ui text-sm">
     <span>{text}</span>
     {

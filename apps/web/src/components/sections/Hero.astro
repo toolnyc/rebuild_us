@@ -1,4 +1,5 @@
 ---
+import Button from '../Button.astro';
 import { urlFor } from '../../lib/sanity';
 
 interface Props {
@@ -33,15 +34,7 @@ const imageUrl = image ? urlFor(image).width(1200).height(1400).fit('crop').url(
     </h1>
     {subcopy && <p class="mt-6 max-w-xl text-lg text-muted">{subcopy}</p>}
     <div class="mt-8 flex flex-wrap items-center gap-6">
-      <a
-        href={joinDestination}
-        class="rounded-full bg-accent-orange px-6 py-3 font-ui font-semibold text-white transition hover:opacity-90"
-      >
-        Join Today
-      </a>
-      <a href="#membership-benefits" class="font-ui text-sm font-semibold hover:text-accent-orange">
-        Why Join Rebuild →
-      </a>
+      <Button href={joinDestination} size="lg">Join Rebuild</Button>
     </div>
   </div>
 

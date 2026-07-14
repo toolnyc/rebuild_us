@@ -1,4 +1,7 @@
 ---
+import Button from './Button.astro';
+import Logo from './Logo.astro';
+
 interface Props {
   showGive?: boolean;
   joinDestination?: string;
@@ -14,31 +17,23 @@ const {
 
 <header class="sticky top-0 z-40 border-b border-ink/10 bg-cream/95 backdrop-blur">
   <nav class="mx-auto grid max-w-7xl grid-cols-3 items-center px-6 py-4">
-    <div class="flex justify-start font-ui text-sm">
-      <a href={resourcesDestination} class="hover:text-accent-orange">Resources</a>
+    <div class="flex justify-start font-ui text-base">
+      <a href={resourcesDestination} class="link-alt">Resources</a>
     </div>
 
-    <a href="#top" aria-label="Rebuild home" class="mx-auto flex w-fit flex-col items-start gap-1">
-      <img src="/images/Wordmark_1A.svg" alt="REBUILD" class="h-10 w-auto sm:h-12" />
-      <span class="whitespace-nowrap font-ui text-[11px] leading-tight text-ink sm:text-xs">
-        The National Disaster Survivors Association
-      </span>
+    <a href="#top" aria-label="Rebuild home" class="mx-auto w-fit">
+      <Logo />
     </a>
 
-    <div class="flex items-center justify-end gap-6 font-ui text-sm">
+    <div class="flex items-center justify-end gap-6 font-ui text-base">
       {
         showGive && (
-          <a href="https://donate.rebuild.us" class="hover:text-accent-orange">
+          <a href="https://donate.rebuild.us" class="link-alt">
             GIVE
           </a>
         )
       }
-      <a
-        href={joinDestination}
-        class="rounded-full bg-accent-orange px-5 py-2 font-semibold text-white transition hover:opacity-90"
-      >
-        Join
-      </a>
+      <Button href={joinDestination} size="sm">Join</Button>
     </div>
   </nav>
 </header>

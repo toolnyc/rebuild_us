@@ -32,7 +32,7 @@ const leftCopyHtml =
   leftCopy && resourcesPageVisible
     ? leftCopy.replace(
         /rebuild\.us\/resources/,
-        '<a href="/resources" class="underline underline-offset-2 hover:text-accent-orange">rebuild.us/resources</a>'
+        '<a href="/resources" class="link-main">rebuild.us/resources</a>'
       )
     : leftCopy;
 ---
@@ -65,7 +65,7 @@ const leftCopyHtml =
               <div class="font-display text-xl">{item.title}</div>
             </div>
             {item.fileUrl && (
-              <a href={item.fileUrl} class="font-ui text-sm font-semibold hover:text-accent-orange">
+              <a href={item.fileUrl} class="link-alt text-sm font-semibold">
                 Download ↓
               </a>
             )}

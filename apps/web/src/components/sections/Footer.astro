@@ -1,4 +1,7 @@
 ---
+import Button from '../Button.astro';
+import Logo from '../Logo.astro';
+
 interface Props {
   joinDestination?: string;
   showGive?: boolean;
@@ -26,18 +29,10 @@ const columns = [
 
 <footer class="bg-ink text-white">
   <div class="mx-auto flex max-w-7xl flex-col items-center gap-6 px-6 py-16">
-    <div class="flex w-fit flex-col items-start gap-1.5">
-      <img src="/images/Wordmark_1A.svg" alt="REBUILD" class="h-12 w-auto brightness-0 invert" />
-      <p class="whitespace-nowrap font-ui text-sm text-white">
-        The National Disaster Survivors Association
-      </p>
+    <div class="flex flex-col items-center gap-6">
+      <Logo invert />
+      <Button href={joinDestination}>Join Rebuild →</Button>
     </div>
-    <a
-      href={joinDestination}
-      class="rounded-full bg-accent-orange px-6 py-3 font-ui font-semibold text-white transition hover:opacity-90"
-    >
-      Join Today →
-    </a>
 
     {
       columns.length > 0 && (
@@ -45,10 +40,10 @@ const columns = [
           {columns.map((col) => (
             <div>
               <div class="font-ui text-xs uppercase tracking-widest text-white/50">{col.title}</div>
-              <ul class="mt-4 flex flex-col gap-2 font-ui text-sm">
+              <ul class="mt-4 flex flex-col gap-2 font-ui text-base">
                 {col.links.map((l) => (
                   <li>
-                    <a href={l.href} class="hover:text-accent-orange">
+                    <a href={l.href} class="link-alt">
                       {l.label}
                     </a>
                   </li>
