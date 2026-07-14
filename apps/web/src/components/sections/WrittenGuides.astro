@@ -1,0 +1,68 @@
+---
+import SectionMarker from "../SectionMarker.astro";
+
+interface Guide {
+  title?: string;
+  section?: string;
+  fileUrl?: string | null;
+}
+
+interface Props {
+  heading?: string;
+  subcopy?: string;
+  guides?: Guide[];
+}
+
+const { heading = "Written Guides", subcopy, guides = [] } = Astro.props;
+
+const sections = ["Preparation & Response", "Assistance & Eligibility"];
+const columns = sections.map((section) => ({
+  section,
+  items: guides.filter((g) => g.section === section),
+}));
+
+const columnColors = ["#ECF278", "#A7B795"];
+---
+
+<section id="guides" class="scroll-mt-20 mx-auto max-w-7xl px-6 py-20 lg:py-28">
+  <SectionMarker number="01" label="Resources" class="mb-10 text-ink" />
+  {heading && <h2 class="ty-h1 text-center">{heading}</h2>}
+  {
+    subcopy && (
+      <p class="mx-auto mt-6 max-w-2xl text-center ty-lead text-muted">
+        {subcopy}
+      </p>
+    )
+  }
+
+  <div class="mt-14 grid gap-8 lg:grid-cols-2">
+    {
+      columns.map((col, i) => (
+        <div
+          class="p-8"
+          style={`background-color:${columnColors[i % columnColors.length]}`}
+        >
+          <h3 class="ty-h3 font-bold">{col.section}</h3>
+          <ul class="mt-6 flex flex-col gap-5">
+            {col.items.map((guide) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 shrink-0 ty-body" aria-hidden="true">
+                  ▤
+                </span>
+                <div class="flex-1">
+                  {guide.fileUrl ? (
+                    <a href={guide.fileUrl} class="link-alt ty-body">
+                      {guide.title}
+                    </a>
+                  ) : (
+                    <span class="ty-body">{guide.title}</span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>

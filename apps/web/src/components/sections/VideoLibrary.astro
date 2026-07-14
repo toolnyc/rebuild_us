@@ -1,0 +1,93 @@
+---
+import SectionMarker from "../SectionMarker.astro";
+
+interface Video {
+  title?: string;
+  youtubeUrl?: string;
+}
+
+interface Props {
+  heading?: string;
+  videos?: Video[];
+}
+
+const { heading = "Video Library", videos = [] } = Astro.props;
+
+const youtubeId = (url?: string): string | null => {
+  if (!url) return null;
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/,
+  );
+  return match ? match[1] : null;
+};
+
+const cards = videos
+  .map((v) => ({ title: v.title, id: youtubeId(v.youtubeUrl) }))
+  .filter((v) => v.id);
+---
+
+{
+  cards.length > 0 && (
+    <section
+      id="videos"
+      class="scroll-mt-20 mx-auto max-w-7xl px-6 py-20 lg:py-28"
+    >
+      <SectionMarker number="02" label="Resources" class="mb-10 text-ink" />
+      {heading && <h2 class="ty-h1 text-center">{heading}</h2>}
+
+      <div class="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {cards.map((video) => (
+          <div class="flex flex-col gap-3">
+            <button
+              type="button"
+              class="video-facade group relative block aspect-video w-full overflow-hidden bg-ink"
+              data-video-id={video.id}
+              aria-label={`Play video: ${video.title}`}
+            >
+              <img
+                src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
+                alt=""
+                loading="lazy"
+                class="h-full w-full object-cover transition group-hover:opacity-90"
+              />
+              <span class="absolute inset-0 flex items-center justify-center">
+                <span class="flex h-14 w-14 items-center justify-center bg-accent-orange text-white">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+              </span>
+            </button>
+            <p class="ty-body">{video.title}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>(".video-facade")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.videoId;
+        if (!id) return;
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+        iframe.title = btn.getAttribute("aria-label") ?? "Video";
+        iframe.allow =
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        iframe.className = "absolute inset-0 h-full w-full border-0";
+        btn.replaceChildren(iframe);
+        btn.classList.remove("group");
+      });
+    });
+</script>

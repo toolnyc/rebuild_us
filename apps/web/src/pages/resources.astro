@@ -1,0 +1,136 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Nav from "../components/Nav.astro";
+import Announcement from "../components/sections/Announcement.astro";
+import WrittenGuides from "../components/sections/WrittenGuides.astro";
+import VideoLibrary from "../components/sections/VideoLibrary.astro";
+import GetInvolved from "../components/sections/GetInvolved.astro";
+import Footer from "../components/sections/Footer.astro";
+import { sanityClient } from "../lib/sanity";
+
+const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+
+const page = await sanityClient.fetch(`*[_type == "resourcesPage"][0]`);
+
+const guides = await sanityClient.fetch(
+  `*[_type == "resourceGuide"]{ title, section, "fileUrl": file.asset->url, order } | order(order asc)`,
+);
+
+const videos = await sanityClient.fetch(
+  `*[_type == "resourceVideo"]{ title, youtubeUrl, order } | order(order asc)`,
+);
+
+const visibility = await sanityClient.fetch(`{
+  "privacyPage": *[_type == "privacyPage"][0].visible,
+  "resourcesPage": *[_type == "resourcesPage"][0].visible,
+  "aboutPage": *[_type == "aboutPage"][0].visible,
+  "contactPage": *[_type == "contactPage"][0].visible,
+  "caseStudiesPage": *[_type == "caseStudiesPage"][0].visible,
+  "memberPortalPage": *[_type == "memberPortalPage"][0].visible
+}`);
+
+const joinDestination = siteSettings?.joinDestination ?? "#join";
+---
+
+<BaseLayout title={`${page?.title ?? "Resources"} — Rebuild`}>
+  <div class="sticky top-0 z-50">
+    {
+      siteSettings?.showAnnouncement && (
+        <Announcement
+          text={siteSettings?.announcementText}
+          ctaLabel={siteSettings?.announcementCtaLabel}
+          destination={siteSettings?.announcementDestination}
+        />
+      )
+    }
+
+    <Nav
+      showGive={siteSettings?.showGive}
+      joinDestination={joinDestination}
+      resourcesDestination={siteSettings?.resourcesDestination}
+    />
+  </div>
+
+  <main>
+    <section class="mx-auto max-w-3xl px-6 pt-20 pb-6 text-center lg:pt-28">
+      <h1 class="ty-display">{page?.heroHeadline ?? "Resources"}</h1>
+      {
+        page?.heroSubcopy && (
+          <p class="mx-auto mt-6 max-w-2xl ty-lead text-muted">
+            {page.heroSubcopy}
+          </p>
+        )
+      }
+    </section>
+
+    <WrittenGuides
+      heading={page?.writtenGuidesHeading}
+      subcopy={page?.writtenGuidesSubcopy}
+      guides={guides}
+    />
+
+    <VideoLibrary heading={page?.videoLibraryHeading} videos={videos} />
+
+    <GetInvolved
+      copy={page?.newsletterCopy}
+      finePrint={page?.newsletterFinePrint}
+      formSrc={siteSettings?.getInvolvedFormSrc}
+      instagramUrl={siteSettings?.instagramUrl}
+      facebookUrl={siteSettings?.facebookUrl}
+      youtubeUrl={siteSettings?.youtubeUrl}
+    />
+  </main>
+
+  <Footer
+    joinDestination={joinDestination}
+    showGive={siteSettings?.showGive}
+    visibility={visibility}
+  />
+</BaseLayout>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Lenis from "lenis";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const lenis = new Lenis({ lerp: 0.12 });
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  const stickyHeader = document.querySelector(".sticky") as HTMLElement | null;
+  const headerOffset = () => -((stickyHeader?.offsetHeight ?? 80) + 16);
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const id = link.getAttribute("href");
+      if (!id || id === "#") return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target as HTMLElement, { offset: headerOffset() });
+    });
+  });
+
+  const EASE = "power2.out";
+  const fade = (o: gsap.TweenVars = {}): gsap.TweenVars => ({
+    y: 20,
+    opacity: 0,
+    duration: 0.9,
+    ease: EASE,
+    ...o,
+  });
+
+  document
+    .querySelectorAll(
+      "main section .section-marker, main section h1, main section h2, main section h3, main section p, main section .grid > *",
+    )
+    .forEach((el) => {
+      gsap.from(el, {
+        ...fade(),
+        scrollTrigger: { trigger: el, start: "top 95%", once: true },
+      });
+    });
+</script>

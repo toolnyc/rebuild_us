@@ -1,22 +1,22 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Nav from '../components/Nav.astro';
-import Announcement from '../components/sections/Announcement.astro';
-import Hero from '../components/sections/Hero.astro';
-import Stats from '../components/sections/Stats.astro';
-import About from '../components/sections/About.astro';
-import FoundingCta from '../components/sections/FoundingCta.astro';
-import WhyJoin from '../components/sections/WhyJoin.astro';
-import Resources from '../components/sections/Resources.astro';
-import GetInvolved from '../components/sections/GetInvolved.astro';
-import Footer from '../components/sections/Footer.astro';
-import { sanityClient } from '../lib/sanity';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Nav from "../components/Nav.astro";
+import Announcement from "../components/sections/Announcement.astro";
+import Hero from "../components/sections/Hero.astro";
+import Stats from "../components/sections/Stats.astro";
+import About from "../components/sections/About.astro";
+import FoundingCta from "../components/sections/FoundingCta.astro";
+import WhyJoin from "../components/sections/WhyJoin.astro";
+import Resources from "../components/sections/Resources.astro";
+import GetInvolved from "../components/sections/GetInvolved.astro";
+import Footer from "../components/sections/Footer.astro";
+import { sanityClient } from "../lib/sanity";
 
 const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
 
 const splash = await sanityClient.fetch(`*[_type == "splashPage"][0]{
   ...,
-  resourceItems[]{ title, format, "fileUrl": file.asset->url }
+  featuredResources[]->{ title, "fileUrl": file.asset->url }
 }`);
 
 const visibility = await sanityClient.fetch(`{
@@ -28,7 +28,7 @@ const visibility = await sanityClient.fetch(`{
   "memberPortalPage": *[_type == "memberPortalPage"][0].visible
 }`);
 
-const joinDestination = siteSettings?.joinDestination ?? '#join';
+const joinDestination = siteSettings?.joinDestination ?? "#join";
 ---
 
 <BaseLayout>
@@ -63,7 +63,11 @@ const joinDestination = siteSettings?.joinDestination ?? '#join';
 
     <Stats />
 
-    <About label={splash?.aboutLabel} statement={splash?.aboutStatement} support={splash?.aboutSupport} />
+    <About
+      label={splash?.aboutLabel}
+      statement={splash?.aboutStatement}
+      support={splash?.aboutSupport}
+    />
 
     <FoundingCta
       label={splash?.foundingLabel}
@@ -79,7 +83,7 @@ const joinDestination = siteSettings?.joinDestination ?? '#join';
       headline={splash?.resourcesHeadline}
       subcopy={splash?.resourcesSubcopy}
       leftCopy={splash?.resourcesLeftCopy}
-      items={splash?.resourceItems}
+      items={splash?.featuredResources}
       resourcesPageVisible={visibility?.resourcesPage}
     />
 
@@ -93,123 +97,186 @@ const joinDestination = siteSettings?.joinDestination ?? '#join';
     />
   </main>
 
-  <Footer joinDestination={joinDestination} showGive={siteSettings?.showGive} visibility={visibility} />
+  <Footer
+    joinDestination={joinDestination}
+    showGive={siteSettings?.showGive}
+    visibility={visibility}
+  />
 </BaseLayout>
 
 <script>
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Lenis from "lenis";
 
-gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 
-// ── Smooth scroll: subtle momentum, synced with ScrollTrigger ────────────
-const lenis = new Lenis({ lerp: 0.12 });
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add((time) => lenis.raf(time * 1000));
-gsap.ticker.lagSmoothing(0);
+  // ── Smooth scroll: subtle momentum, synced with ScrollTrigger ────────────
+  const lenis = new Lenis({ lerp: 0.12 });
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
 
-const stickyHeader = document.querySelector('.sticky') as HTMLElement | null;
-const headerOffset = () => -((stickyHeader?.offsetHeight ?? 80) + 16);
+  const stickyHeader = document.querySelector(".sticky") as HTMLElement | null;
+  const headerOffset = () => -((stickyHeader?.offsetHeight ?? 80) + 16);
 
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
-  link.addEventListener('click', (e) => {
-    const id = link.getAttribute('href');
-    if (!id || id === '#') return;
-    const target = document.querySelector(id);
-    if (!target) return;
-    e.preventDefault();
-    lenis.scrollTo(target as HTMLElement, { offset: headerOffset() });
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const id = link.getAttribute("href");
+      if (!id || id === "#") return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target as HTMLElement, { offset: headerOffset() });
+    });
   });
-});
 
-const EASE = 'power2.out';
-const DUR  = 0.9;
-const Y    = 20;
+  const EASE = "power2.out";
+  const DUR = 0.9;
+  const Y = 20;
 
-const fade = (o: gsap.TweenVars = {}): gsap.TweenVars =>
-  ({ y: Y, opacity: 0, duration: DUR, ease: EASE, ...o });
+  const fade = (o: gsap.TweenVars = {}): gsap.TweenVars => ({
+    y: Y,
+    opacity: 0,
+    duration: DUR,
+    ease: EASE,
+    ...o,
+  });
 
-const sc = (el: Element) =>
-  ({ trigger: el, start: 'top 95%', once: true });
+  const sc = (el: Element) => ({ trigger: el, start: "top 95%", once: true });
 
-// ── Hero: load-time cascade ──────────────────────────────────────────────
-const heroLeft  = document.querySelector('#top > div:first-child');
-const heroRight = document.querySelector('#top > div.relative');
+  // ── Hero: load-time cascade ──────────────────────────────────────────────
+  const heroLeft = document.querySelector("#top > div:first-child");
+  const heroRight = document.querySelector("#top > div.relative");
 
-if (heroLeft) {
-  const eyebrow = heroLeft.querySelector('div');
-  const h1      = heroLeft.querySelector('h1');
-  const p       = heroLeft.querySelector('p');
-  const links   = heroLeft.querySelectorAll('a');
-  if (eyebrow) gsap.from(eyebrow, fade({ y: 0, duration: 0.5, delay: 0.1 }));
-  if (h1)      gsap.from(h1,      fade({ duration: 1.1, delay: 0.2 }));
-  if (p)       gsap.from(p,       fade({ delay: 0.5 }));
-  if (links.length) {
-    gsap.from(links, fade({ delay: 0.35, duration: 0.6, stagger: 0.08, overwrite: 'auto', clearProps: 'opacity,transform' }));
-    // Safety net: never leave the primary CTA stranded invisible if a tween stalls.
-    gsap.delayedCall(1.5, () => gsap.set(links, { clearProps: 'opacity,visibility,transform' }));
+  if (heroLeft) {
+    const eyebrow = heroLeft.querySelector("div");
+    const h1 = heroLeft.querySelector("h1");
+    const p = heroLeft.querySelector("p");
+    const links = heroLeft.querySelectorAll("a");
+    if (eyebrow) gsap.from(eyebrow, fade({ y: 0, duration: 0.5, delay: 0.1 }));
+    if (h1) gsap.from(h1, fade({ duration: 1.1, delay: 0.2 }));
+    if (p) gsap.from(p, fade({ delay: 0.5 }));
+    if (links.length) {
+      gsap.from(
+        links,
+        fade({
+          delay: 0.35,
+          duration: 0.6,
+          stagger: 0.08,
+          overwrite: "auto",
+          clearProps: "opacity,transform",
+        }),
+      );
+      // Safety net: never leave the primary CTA stranded invisible if a tween stalls.
+      gsap.delayedCall(1.5, () =>
+        gsap.set(links, { clearProps: "opacity,visibility,transform" }),
+      );
+    }
   }
-}
-if (heroRight) gsap.from(heroRight, fade({ delay: 0.35 }));
+  if (heroRight) gsap.from(heroRight, fade({ delay: 0.35 }));
 
-// ── Announcement banner: pops in after the hero cascade settles ──────────
-const announcement = document.querySelector('[data-announcement]');
-if (announcement) {
-  gsap.from(announcement, {
-    autoAlpha: 0,
-    duration: 0.6,
-    ease: 'power3.out',
-    delay: 1.4,
-    clearProps: 'opacity,visibility',
-  });
-}
-
-// ── Stats: trigger as section enters so count-up is live when readable ───
-const statSection = document.querySelector('.bg-ink');
-const statItems   = document.querySelectorAll('.bg-ink > div > div');
-
-if (statItems.length) {
-  gsap.from(statItems, {
-    ...fade({ stagger: 0.1 }),
-    scrollTrigger: { trigger: statSection ?? statItems[0], start: 'top bottom', once: true },
-  });
-}
-document.querySelectorAll('.stat-value').forEach((el) => {
-  const num = parseInt(el.textContent ?? '');
-  if (!isNaN(num) && num > 1) {
-    const proxy = { val: 0 };
-    const snap  = el.textContent;
-    gsap.to(proxy, {
-      val: num, duration: 2, ease: EASE,
-      onUpdate()  { el.textContent = String(Math.round(proxy.val)); },
-      onComplete() { el.textContent = snap; },
-      scrollTrigger: { trigger: statSection ?? el, start: 'top bottom', once: true },
+  // ── Announcement banner: pops in after the hero cascade settles ──────────
+  const announcement = document.querySelector("[data-announcement]");
+  if (announcement) {
+    gsap.from(announcement, {
+      autoAlpha: 0,
+      duration: 0.6,
+      ease: "power3.out",
+      delay: 1.4,
+      clearProps: "opacity,visibility",
     });
   }
-});
 
-// ── Sections: marker → h2 → body copy → staggered lists ─────────────────
-interface SectionCfg { marker?: string; h2?: string; body?: string; items?: string }
+  // ── Stats: trigger as section enters so count-up is live when readable ───
+  const statSection = document.querySelector(".bg-ink");
+  const statItems = document.querySelectorAll(".bg-ink > div > div");
 
-const sections: SectionCfg[] = [
-  { marker: '#about .section-marker',               body: '#about .ty-h1, #about p' },
-  { marker: '#join .section-marker',                h2: '#join h2',                    body: '#join p, #join iframe' },
-  { marker: '#membership-benefits .section-marker', h2: '#membership-benefits h2',     items: '#membership-benefits article' },
-  { marker: '#resources .section-marker',           h2: '#resources h2',               body: '#resources .ty-lead', items: '#resources li' },
-  {                                                    h2: 'main section:last-of-type h2', body: 'main section:last-of-type p, main section:last-of-type .flex.gap-4, main section:last-of-type iframe' },
-];
-
-sections.forEach(({ marker: ms, h2: hs, body: bs, items: is }) => {
-  const marker = ms ? document.querySelector(ms) : null;
-  const h2     = hs ? document.querySelector(hs) : null;
-  const items  = is ? document.querySelectorAll(is) : null;
-
-  if (marker) gsap.from(marker, { ...fade({ x: -16, y: 0 }), scrollTrigger: sc(marker) });
-  if (h2)     gsap.from(h2,     { ...fade(),                  scrollTrigger: sc(h2) });
-  if (bs) document.querySelectorAll(bs).forEach((el) => {
-    gsap.from(el, { ...fade(), scrollTrigger: sc(el) });
+  if (statItems.length) {
+    gsap.from(statItems, {
+      ...fade({ stagger: 0.1 }),
+      scrollTrigger: {
+        trigger: statSection ?? statItems[0],
+        start: "top bottom",
+        once: true,
+      },
+    });
+  }
+  document.querySelectorAll(".stat-value").forEach((el) => {
+    const num = parseInt(el.textContent ?? "");
+    if (!isNaN(num) && num > 1) {
+      const proxy = { val: 0 };
+      const snap = el.textContent;
+      gsap.to(proxy, {
+        val: num,
+        duration: 2,
+        ease: EASE,
+        onUpdate() {
+          el.textContent = String(Math.round(proxy.val));
+        },
+        onComplete() {
+          el.textContent = snap;
+        },
+        scrollTrigger: {
+          trigger: statSection ?? el,
+          start: "top bottom",
+          once: true,
+        },
+      });
+    }
   });
-  if (items?.length) gsap.from(items, { ...fade({ stagger: 0.1 }), scrollTrigger: sc(items[0]) });
-});
+
+  // ── Sections: marker → h2 → body copy → staggered lists ─────────────────
+  interface SectionCfg {
+    marker?: string;
+    h2?: string;
+    body?: string;
+    items?: string;
+  }
+
+  const sections: SectionCfg[] = [
+    { marker: "#about .section-marker", body: "#about .ty-h1, #about p" },
+    {
+      marker: "#join .section-marker",
+      h2: "#join h2",
+      body: "#join p, #join iframe",
+    },
+    {
+      marker: "#membership-benefits .section-marker",
+      h2: "#membership-benefits h2",
+      items: "#membership-benefits article",
+    },
+    {
+      marker: "#resources .section-marker",
+      h2: "#resources h2",
+      body: "#resources .ty-lead",
+      items: "#resources li",
+    },
+    {
+      h2: "main section:last-of-type h2",
+      body: "main section:last-of-type p, main section:last-of-type .flex.gap-4, main section:last-of-type iframe",
+    },
+  ];
+
+  sections.forEach(({ marker: ms, h2: hs, body: bs, items: is }) => {
+    const marker = ms ? document.querySelector(ms) : null;
+    const h2 = hs ? document.querySelector(hs) : null;
+    const items = is ? document.querySelectorAll(is) : null;
+
+    if (marker)
+      gsap.from(marker, {
+        ...fade({ x: -16, y: 0 }),
+        scrollTrigger: sc(marker),
+      });
+    if (h2) gsap.from(h2, { ...fade(), scrollTrigger: sc(h2) });
+    if (bs)
+      document.querySelectorAll(bs).forEach((el) => {
+        gsap.from(el, { ...fade(), scrollTrigger: sc(el) });
+      });
+    if (items?.length)
+      gsap.from(items, {
+        ...fade({ stagger: 0.1 }),
+        scrollTrigger: sc(items[0]),
+      });
+  });
 </script>

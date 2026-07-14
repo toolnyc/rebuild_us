@@ -1,4 +1,4 @@
-import { siteSettings } from './siteSettings';
+import { siteSettings } from "./siteSettings";
 import {
   splashPage,
   privacyPage,
@@ -8,7 +8,8 @@ import {
   contactPage,
   caseStudiesPage,
   memberPortalPage,
-} from './pages';
+} from "./pages";
+import { resourceGuide, resourceVideo } from "./resources";
 
 export const schemaTypes = [
   siteSettings,
@@ -20,4 +21,6 @@ export const schemaTypes = [
   contactPage,
   caseStudiesPage,
   memberPortalPage,
+  resourceGuide,
+  resourceVideo,
 ];
