@@ -57,7 +57,7 @@ export const siteSettings = defineType({
       name: 'getInvolvedFormSrc',
       title: 'Get Involved form embed URL',
       type: 'string',
-      initialValue: 'https://act.rebuild.us/join-form/embed',
+      initialValue: 'https://act.rebuild.us/web/embed',
     }),
     defineField({
       name: 'instagramUrl',
