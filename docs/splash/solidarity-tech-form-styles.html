@@ -15,12 +15,15 @@
   BRAND TOKENS:
     white  #fffffc (surface)   ink    #1c1b19 (text)     muted #6b655c (hints)
     orange #fd683e (primary)   yellow #eaf261            sage  #b5c1ab
-  FONT: "Helvetica Neue", system-ui, sans-serif.
-        NOTE: Basis Grotesque Pro @font-face NOT added here — licensing/CORS gate
-        unresolved. Swap once cleared.
+  FONT: "Basis Grotesque Pro" via @font-face (400 + 700 weights, served from rebuild.us).
+        CORS: apps/web/vercel.json adds Access-Control-Allow-Origin: * on /fonts/*.
+        Host: https://survivors.rebuild.us/fonts/
+        Fallback: "Helvetica Neue", system-ui, sans-serif.
   CORNERS: 5px radius (var(--radius)) everywhere on controls.
 
   THEME: Single light theme. White surface, ink text. Both forms share this treatment.
+         Exception: the Founding Member form (3-step stepper) has a transparent body so
+         the sage section background shows through; form controls remain white-filled.
 
   SECTION GROWTH: smooth resize is handled on the SITE side - the embed iframes in
   FoundingCta.astro / GetInvolved.astro have `transition: height 0.35s ease`, which
@@ -40,7 +43,7 @@
     [ ] Type scale: prompts 22px > labels/inputs/options 18px > step 17px > hints/errors 16px (nothing smaller).
     [ ] Radio/consent option text ("Yes/No", dates) is body-size and legible.
     [ ] Disabled submit reads as a solid muted button with legible text (not a faded orange).
-    [ ] Unselected donation/recurring buttons: white text on transparent (never illegible on a light fill).
+    [ ] Unselected donation/recurring buttons: ink text on transparent (sage shows through on founding form; on white bg they still look fine).
     [ ] Inputs: white-filled, orange focus ring; placeholder muted.
     [ ] Buttons: orange primary; disabled submit dimmed; outline/share buttons ink-outlined.
     [ ] Stepper (mobile): 5px radius number badges, active badge orange, labels don't wrap.
@@ -52,6 +55,28 @@
     [ ] Switching steps fades smoothly; nothing wraps or compresses; no horizontal scroll.
 -->
 <style>
+  @font-face {
+    font-family: "Basis Grotesque Pro";
+    src: url("https://survivors.rebuild.us/fonts/BasisGrotesquePro.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Basis Grotesque Pro";
+    src: url("https://survivors.rebuild.us/fonts/BasisGrotesquePro-Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Basis Grotesque Pro";
+    src: url("https://survivors.rebuild.us/fonts/BasisGrotesquePro-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
   body.embedded-iframe {
     --white: #fffffc;
     --ink:   #1c1b19;
@@ -84,7 +109,7 @@
     border-radius: 5px !important;
   }
 
-  /* ---- One font: Helvetica Neue (Basis Grotesque swap pending licensing/CORS) ---- */
+  /* ---- Font: Basis Grotesque Pro (falls back to Helvetica Neue) ---- */
   body.embedded-iframe,
   body.embedded-iframe input,
   body.embedded-iframe button,
@@ -99,7 +124,7 @@
   body.embedded-iframe p,
   body.embedded-iframe span,
   body.embedded-iframe a {
-    font-family: "Helvetica Neue", system-ui, -apple-system, Arial, sans-serif !important;
+    font-family: "Basis Grotesque Pro", "Helvetica Neue", system-ui, -apple-system, Arial, sans-serif !important;
     letter-spacing: -0.011em;
   }
 
@@ -423,7 +448,7 @@
     width: 100%;
     min-height: 48px;
     padding: 10px 12px;
-    background: var(--white) !important;
+    background: transparent !important;
     border: 1px solid var(--ink) !important;
     color: var(--ink) !important;
     font-size: 17px !important;
@@ -472,7 +497,7 @@
   }
   #action_page body.embedded-iframe .donation_recurring .donation-recurring-options-container .donation-recurring-label:not(.selected),
   #action_page body.embedded-iframe .donation_amount .donation-amount-label-container label.donation-amount-label:not(.selected) {
-    background-color: var(--white) !important;
+    background-color: transparent !important;
     background-image: none !important;
     border: 1px solid var(--ink) !important;
     color: var(--ink) !important;
@@ -670,40 +695,19 @@
   }
 
   /* ================================================================
-     FOUNDING MEMBER FORM — sage surface to blend into the #join section.
+     FOUNDING MEMBER FORM — transparent body + transparent choice
+     buttons so the sage section background shows through everything.
      Scoped via :has(.multipage): only the 3-step donation form has it.
-     Form controls stay white-filled for legibility.
+     Text inputs and the Stripe box keep white fills (from the main
+     light-theme rules above) so they remain legible on sage.
      ================================================================ */
   body.embedded-iframe:has(.multipage) {
     background: transparent !important;
   }
-  /* Ensure inputs and Stripe box stay white on sage */
-  body.embedded-iframe:has(.multipage) .form-control,
-  body.embedded-iframe:has(.multipage) .donation_amount_other,
-  body.embedded-iframe:has(.multipage) input[name="donation_amount_other"],
-  body.embedded-iframe:has(.multipage) #card-element,
-  body.embedded-iframe:has(.multipage) .StripeElement {
-    background: var(--white) !important;
-    border-color: var(--ink) !important;
-    color: var(--ink) !important;
-  }
-  /* Donation amount / recurring buttons on sage: white fill, ink border */
-  body.embedded-iframe:has(.multipage) .donation-amount-label:not(.selected),
-  body.embedded-iframe:has(.multipage) .donation-recurring-label:not(.selected) {
-    background: var(--white) !important;
-    border-color: var(--ink) !important;
-    color: var(--ink) !important;
-  }
-  #action_page body.embedded-iframe:has(.multipage) .donation_recurring .donation-recurring-options-container .donation-recurring-label:not(.selected),
-  #action_page body.embedded-iframe:has(.multipage) .donation_amount .donation-amount-label-container label.donation-amount-label:not(.selected) {
-    background-color: var(--white) !important;
-    border: 1px solid var(--ink) !important;
-    color: var(--ink) !important;
-  }
-  /* Step badge on sage: inactive = white fill */
+  /* Step badges on sage: inactive = transparent so sage shows through */
   body.embedded-iframe:has(.multipage) .mobile-round-tab-container:not(.active) .round-tab,
   body.embedded-iframe:has(.multipage) .stepper li:not(.active) .round-tab {
-    background: var(--white) !important;
+    background: transparent !important;
     border-color: var(--ink) !important;
     color: var(--ink) !important;
   }
