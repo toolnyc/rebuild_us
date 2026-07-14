@@ -15,6 +15,10 @@
   --font-ui: "Helvetica Neue", system-ui, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-cream);
   color: var(--color-ink);
