@@ -1,0 +1,56 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  copy?: string;
+  finePrint?: string;
+  formSrc?: string;
+  instagramUrl?: string;
+  facebookUrl?: string;
+  youtubeUrl?: string;
+}
+
+const {
+  copy,
+  finePrint,
+  formSrc = 'https://act.rebuild.us/join-form/embed',
+  instagramUrl,
+  facebookUrl,
+  youtubeUrl,
+} = Astro.props;
+
+const socials = [
+  { url: instagramUrl, icon: 'simple-icons:instagram', label: 'Instagram' },
+  { url: facebookUrl, icon: 'simple-icons:facebook', label: 'Facebook' },
+  { url: youtubeUrl, icon: 'simple-icons:youtube', label: 'YouTube' },
+].filter((s) => s.url);
+---
+
+<section class="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
+  <div>
+    {copy && <h2 class="font-display text-3xl lg:text-4xl">{copy}</h2>}
+    {finePrint && <p class="mt-4 text-sm text-muted">{finePrint}</p>}
+    {
+      socials.length > 0 && (
+        <div class="mt-8">
+          <div class="font-ui text-xs uppercase tracking-widest text-muted">Follow along</div>
+          <div class="mt-3 flex gap-4">
+            {socials.map((s) => (
+              <a href={s.url} aria-label={s.label} class="hover:text-accent-orange">
+                <Icon name={s.icon} class="h-6 w-6" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+  <div>
+    <iframe
+      data-st-embed
+      src={formSrc}
+      allow="payment *"
+      style="width:100%;border:none;min-height:500px;"
+      title="Join Form"></iframe>
+  </div>
+</section>

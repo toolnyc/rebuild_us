@@ -1,16 +1,95 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
+import Announcement from '../components/sections/Announcement.astro';
+import Hero from '../components/sections/Hero.astro';
+import Stats from '../components/sections/Stats.astro';
+import About from '../components/sections/About.astro';
+import FoundingCta from '../components/sections/FoundingCta.astro';
+import WhyJoin from '../components/sections/WhyJoin.astro';
+import Resources from '../components/sections/Resources.astro';
+import GetInvolved from '../components/sections/GetInvolved.astro';
+import Footer from '../components/sections/Footer.astro';
 import { sanityClient } from '../lib/sanity';
 
 const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+
+const splash = await sanityClient.fetch(`*[_type == "splashPage"][0]{
+  ...,
+  resourceItems[]{ title, format, "fileUrl": file.asset->url }
+}`);
+
+const visibility = await sanityClient.fetch(`{
+  "privacyPage": *[_type == "privacyPage"][0].visible,
+  "resourcesPage": *[_type == "resourcesPage"][0].visible,
+  "aboutPage": *[_type == "aboutPage"][0].visible,
+  "contactPage": *[_type == "contactPage"][0].visible,
+  "caseStudiesPage": *[_type == "caseStudiesPage"][0].visible,
+  "memberPortalPage": *[_type == "memberPortalPage"][0].visible
+}`);
+
+const joinDestination = siteSettings?.joinDestination ?? '#join';
 ---
 
 <BaseLayout>
+  {
+    siteSettings?.showAnnouncement && (
+      <Announcement
+        text={siteSettings?.announcementText}
+        ctaLabel={siteSettings?.announcementCtaLabel}
+        destination={siteSettings?.announcementDestination}
+      />
+    )
+  }
+
   <Nav
-    showJoin={siteSettings?.showJoin}
     showGive={siteSettings?.showGive}
-    joinDestination={siteSettings?.joinDestination}
+    joinDestination={joinDestination}
     resourcesDestination={siteSettings?.resourcesDestination}
   />
+
+  <main>
+    <Hero
+      headline={splash?.heroHeadline}
+      headlineAccent={splash?.heroHeadlineAccent}
+      subcopy={splash?.heroSubcopy}
+      image={splash?.heroImage}
+      imageAlt={splash?.heroImage?.alt}
+      caption={splash?.heroImageCaption}
+      joinDestination={joinDestination}
+    />
+
+    <Stats />
+
+    <About label={splash?.aboutLabel} statement={splash?.aboutStatement} support={splash?.aboutSupport} />
+
+    <FoundingCta
+      label={splash?.foundingLabel}
+      headline={splash?.foundingCtaHeadline}
+      subcopy={splash?.foundingCtaSubcopy}
+      formSrc={siteSettings?.foundingMemberFormSrc}
+    />
+
+    <WhyJoin label={splash?.benefitsLabel} columns={splash?.whyJoinColumns} />
+
+    <Resources
+      label={splash?.resourcesLabel}
+      headline={splash?.resourcesHeadline}
+      subcopy={splash?.resourcesSubcopy}
+      leftCopy={splash?.resourcesLeftCopy}
+      items={splash?.resourceItems}
+      resourcesPageVisible={visibility?.resourcesPage}
+    />
+
+    <GetInvolved
+      copy={splash?.getInvolvedCopy}
+      finePrint={splash?.getInvolvedFinePrint}
+      formSrc={siteSettings?.getInvolvedFormSrc}
+      instagramUrl={siteSettings?.instagramUrl}
+      facebookUrl={siteSettings?.facebookUrl}
+      youtubeUrl={siteSettings?.youtubeUrl}
+    />
+  </main>
+
+  <Footer joinDestination={joinDestination} showGive={siteSettings?.showGive} visibility={visibility} />
 </BaseLayout>

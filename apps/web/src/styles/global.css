@@ -1,19 +1,24 @@
 @import "tailwindcss";
 
-/* Brand tokens — values TBD pending approved Figma */
+/* Brand tokens — adopted from the approved mid-fi design (see ADR-0001) */
 @theme {
-  --color-background: #fffffc;
-  --color-black: #1c1b19;
-  --color-text: #18191b;
+  --color-cream: #f1e9dd;
+  --color-ink: #1f1b17;
+  --color-muted: #6b655c;
+  --color-white: #ffffff;
   --color-accent-yellow: #ecf278;
-  --color-accent-orange: #fd683e;
-  --color-accent-sage: #b7c1ad;
-  --color-accent-blue: #dbf1fe;
-  --color-accent-maroon: #3c222d;
+  --color-accent-orange: #f4552a;
+  --color-accent-sage: #a7b795;
 
   --font-display: "New Burns Trial", serif;
   --font-body: "Armand Grotesk Test", sans-serif;
   --font-ui: "Helvetica Neue", system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
 }
 
 @font-face {

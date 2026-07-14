@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RichText from '../components/RichText.astro';
+import { sanityClient } from '../lib/sanity';
+
+const page = await sanityClient.fetch(`*[_type == "privacyPage"][0]`);
+---
+
+<BaseLayout title={`${page?.title ?? 'Privacy Policy'} — Rebuild`}>
+  <main class="mx-auto max-w-3xl px-6 py-20">
+    <h1 class="font-display text-4xl lg:text-5xl">{page?.title ?? 'Privacy Policy'}</h1>
+    <div class="prose mt-8 text-ink [&_p]:mt-4">
+      <RichText value={page?.body} />
+    </div>
+    <a href="/" class="mt-10 inline-block font-ui text-sm font-semibold hover:text-accent-orange">← Back home</a>
+  </main>
+</BaseLayout>

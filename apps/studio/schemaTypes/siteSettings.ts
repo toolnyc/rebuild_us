@@ -6,10 +6,28 @@ export const siteSettings = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'showJoin',
-      title: 'Show JOIN button',
+      name: 'showAnnouncement',
+      title: 'Show announcement bar',
       type: 'boolean',
-      initialValue: false,
+      initialValue: true,
+    }),
+    defineField({
+      name: 'announcementText',
+      title: 'Announcement text',
+      type: 'string',
+      initialValue: 'Founding membership is open — only 500 spots.',
+    }),
+    defineField({
+      name: 'announcementCtaLabel',
+      title: 'Announcement CTA label',
+      type: 'string',
+      initialValue: 'Join Today →',
+    }),
+    defineField({
+      name: 'announcementDestination',
+      title: 'Announcement destination (URL or hash)',
+      type: 'string',
+      initialValue: '#join',
     }),
     defineField({
       name: 'showGive',
@@ -21,7 +39,7 @@ export const siteSettings = defineType({
       name: 'joinDestination',
       title: 'JOIN destination (URL or hash)',
       type: 'string',
-      initialValue: '#founding-member',
+      initialValue: '#join',
     }),
     defineField({
       name: 'resourcesDestination',

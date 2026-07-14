@@ -1,0 +1,52 @@
+---
+import SectionMarker from '../SectionMarker.astro';
+import { urlFor } from '../../lib/sanity';
+
+interface Column {
+  title?: string;
+  body?: string;
+  image?: any;
+  backgroundColor?: string;
+}
+
+interface Props {
+  label?: string;
+  columns?: Column[];
+}
+
+const { label, columns = [] } = Astro.props;
+
+const isDark = (hex?: string) => hex === '#1F1B17' || hex === '#F4552A';
+---
+
+<section id="membership-benefits" class="scroll-mt-20 mx-auto max-w-7xl px-6 py-20 lg:py-28">
+  <SectionMarker number="04" label={label} class="mb-6 text-ink" />
+  <h2 class="mb-12 font-display text-4xl lg:text-5xl">Why Join Rebuild?</h2>
+  <div class="grid gap-6 md:grid-cols-3">
+    {
+      columns.map((col, i) => {
+        const dark = isDark(col.backgroundColor);
+        const imageUrl = col.image ? urlFor(col.image).width(700).height(500).fit('crop').url() : null;
+        return (
+          <article
+            class:list={['flex flex-col overflow-hidden', dark ? 'text-white' : 'text-ink']}
+            style={`background-color:${col.backgroundColor ?? '#F1E9DD'}`}
+          >
+            {imageUrl ? (
+              <img src={imageUrl} alt={col.title ?? ''} class="aspect-[7/5] w-full object-cover" />
+            ) : (
+              <div class="flex aspect-[7/5] w-full items-center justify-center bg-black/10 font-ui text-sm">
+                Image
+              </div>
+            )}
+            <div class="flex flex-1 flex-col gap-3 p-6">
+              <span class="font-ui text-sm font-semibold opacity-70">0{i + 1}</span>
+              <h3 class="font-display text-2xl">{col.title}</h3>
+              <p class:list={['text-sm', dark ? 'text-white/80' : 'text-muted']}>{col.body}</p>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>

@@ -1,0 +1,22 @@
+---
+import SectionMarker from '../SectionMarker.astro';
+import RichText from '../RichText.astro';
+
+interface Props {
+  label?: string;
+  statement?: any;
+  support?: string;
+}
+
+const { label, statement, support } = Astro.props;
+---
+
+<section id="about" class="mx-auto max-w-7xl px-6 py-20 lg:py-28">
+  <SectionMarker number="02" label={label} class="mb-10 text-ink" />
+  <div class="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-end">
+    <div class="font-display text-3xl leading-snug sm:text-4xl lg:text-5xl [&_mark]:box-decoration-clone">
+      <RichText value={statement} />
+    </div>
+    {support && <p class="text-lg text-muted">{support}</p>}
+  </div>
+</section>

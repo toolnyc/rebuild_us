@@ -18,6 +18,14 @@ Ship the splash page at rebuild.us, replacing the current WordPress/Pantheon sit
 | `/api/preview` + `/api/disable-preview` | SSR routes (Vercel adapter). Enable Sanity draft-preview mode via a signed secret cookie. Used by Sanity Studio's Presentation tool. |
 | Vercel deploy | Hybrid mode (SSG default + SSR preview routes). Rebuilt on Sanity publish via webhook → Vercel deploy hook. Net new project — must be created before deploy. See setup steps below. |
 
+## Rendering & dev tooling (decided)
+
+- **Rich text:** `astro-portabletext` renders block fields (`aboutStatement`, `aboutSupport`, `resourcesSubcopy`). The yellow **highlight** is a `highlight` mark on those block fields, rendered via a custom mark component (`<mark>` with `--color-accent-yellow`).
+- **Images:** `@sanity/image-url` builds `heroImage` / `whyJoinColumns[].image` URLs. Figma/Unsplash stand-ins are acceptable at launch (see launch gates).
+- **Icons:** `astro-icon` + `@iconify-json/simple-icons` for the footer / Get Involved social icons.
+- **Dev drafts:** dev fetches use a read token + `perspective: 'previewDrafts'` so Studio edits appear without publishing. The signed-cookie preview routes (`/api/preview`, `/api/disable-preview`) and Sanity Presentation tool are deferred to a later session (not part of this tracer bullet).
+- **Seeding:** an idempotent `apps/studio` seed script (`@sanity/client`, `createOrReplace`, fixed IDs `splashPage` + `siteSettings`) writes the seed copy below; re-runnable and version-controlled.
+
 ## Splash page sections (build order)
 
 Build in this order. Resources is last to keep momentum on higher-traffic sections first.
@@ -26,7 +34,7 @@ Each content section carries a hardcoded editorial **section marker** eyebrow: a
 
 0. **Announcement bar** — full-width orange bar above the nav. Toggleable + editable via `siteSettings` (`showAnnouncement`, `announcementText`, `announcementCtaLabel`, `announcementDestination`). Seed: "Founding membership is open — only 500 spots. Join today →".
 1. **Nav** — left-aligned `Wordmark_1A.svg` + hardcoded tagline lockup "The National Disaster Survivors Association". Right side: "Why join" link (scrolls to `#membership-benefits`), "Resources" link (scrolls to `#resources`), and a filled-orange **Join** button. All three are visible at launch; the Join button scrolls to the on-page founding-member section (`joinDestination`, default `#join`). GIVE stays hidden via `showGive`. `resourcesDestination` / `joinDestination` in `siteSettings` let editors upgrade scroll targets to full-page URLs without a deploy.
-2. **Hero** (`#join` targets section 4; hero id `#top`) — split serif headline ("When things fall apart, we come **_together_**." with "together." in orange italic), `heroSubcopy`, "Join today" (primary, → `joinDestination`) + "Why join Rebuild →" (secondary text link, → `#membership-benefits`). Full-height photo (Sanity image) with a yellow accent block behind its lower-left corner and an editable caption (`heroImageCaption`, default "Community, in action").
+2. **Hero** (`#join` targets section 4; hero id `#top`) — split serif headline: `heroHeadline` ("When things fall apart, we come") followed by `heroHeadlineAccent` ("together.") rendered orange italic, `heroSubcopy`, "Join today" (primary, → `joinDestination`) + "Why join Rebuild →" (secondary text link, → `#membership-benefits`). Full-height photo (Sanity image) with a yellow accent block behind its lower-left corner and an editable caption (`heroImageCaption`, default "Community, in action").
 3. **Stats bar** — three-item band: value + label per item. Hardcoded for launch: "500 / Founding member spots", "Nationwide / Survivor-built network", "By & for / Disaster survivors". Keep "500" consistent with the announcement bar and founding CTA copy.
 4. **About** (`#membership-benefits` is section 5; about id `#about`) — one large statement (`aboutStatement`, rich text) + one small supporting paragraph (`aboutSupport`). Highlighted phrases (e.g. "strength in numbers") use the yellow **highlight** mark.
 5. **Founding Member CTA** (`#join`) — dark (`#1F1B17`) section. Editable headline (`foundingCtaHeadline`) + sub-copy (`foundingCtaSubcopy`) in the left column; the right column is the Solidarity Tech iframe (`act.rebuild.us/founding-member/embed`). The bordered card around the form in the design is the **ST-rendered** form (branded via the pasted Custom HTML brand CSS) — Astro builds **no** wrapper around the iframe.
@@ -46,7 +54,8 @@ Section eyebrow labels are editable strings (numbers are hardcoded). Add one str
 | Field | Type | Used by |
 |---|---|---|
 | `heroImage` | image (+ alt) | Hero section |
-| `heroHeadline` | string | Hero display text ("together." styled orange italic in the component) |
+| `heroHeadline` | string | Hero display text (leading, non-accent portion) |
+| `heroHeadlineAccent` | string | Trailing accent phrase appended to the headline, rendered orange italic in the component (e.g. "together.") |
 | `heroSubcopy` | string | Hero supporting line under the headline |
 | `heroImageCaption` | string | Hero photo caption overlay (default "Community, in action") |
 | `aboutStatement` | rich text | About section large statement (supports the yellow **highlight** mark) |
@@ -78,7 +87,6 @@ Phase 1 page documents and launch defaults:
 | `contactPage` | `/contact` | `false` | Stub only. Controls the "Contact" footer link. |
 | `caseStudiesPage` | `/case-studies` | `false` | Stub only. Controls the "Case Studies" footer link. |
 | `memberPortalPage` | `/member-portal` | `false` | Stub only. Controls the "Member Portal" footer link. |
-| `joinPage` | `/join` | `false` | Stub only. Not linked from the splash — the Join button scrolls to the on-page `#join` section, not this route. |
 
 Stub documents contain only `title` and `visible` in Phase 1. Full content fields are added in Phase 2.
 
@@ -132,7 +140,8 @@ Initial copy for the `splashPage` document comes from `docs/claimready/../splash
 
 | Field | Seed value |
 |---|---|
-| `heroHeadline` | "When things fall apart, we come together." |
+| `heroHeadline` | "When things fall apart, we come" |
+| `heroHeadlineAccent` | "together." |
 | `heroSubcopy` | "Rebuild is a national membership association built by and for survivors of hurricanes, floods, wildfires, tornadoes, and more." |
 | `heroImageCaption` | "Community, in action" |
 | `aboutStatement` | "We come together to share wisdom, advocate for our interests, and build a national network with the strength in numbers to eventually make full recovery for every survivor a reality." (highlight "strength in numbers") |
