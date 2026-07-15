@@ -21,9 +21,9 @@
         Fallback: "Helvetica Neue", system-ui, sans-serif.
   CORNERS: 5px radius (var(--radius)) everywhere on controls.
 
-  THEME: Single light theme. White surface, ink text. Both forms share this treatment.
-         Exception: the Founding Member form (3-step stepper) has a transparent body so
-         the sage section background shows through; form controls remain white-filled.
+  THEME: Single light theme. Ink text. Both forms share this treatment.
+         Body is transparent so the parent section background shows through (sage for
+         the Founding form, white/cream for the Join form). Form controls remain white-filled.
 
   SECTION GROWTH: smooth resize is handled on the SITE side - the embed iframes in
   FoundingCta.astro / GetInvolved.astro have `transition: height 0.35s ease`, which
@@ -87,7 +87,7 @@
     --radius: 5px;
     --error: #b3261e;
 
-    background: var(--white) !important;
+    background: transparent !important;
     color: var(--ink) !important;
     overflow-x: hidden;
     /* NOTE: the ST page uses a 10px root, so rem units render ~1.6x too small.
@@ -695,18 +695,11 @@
   }
 
   /* ================================================================
-     FOUNDING MEMBER FORM — transparent body + transparent choice
-     buttons so the sage section background shows through everything.
-     Scoped via :has(.multipage): only the 3-step donation form has it.
-     Text inputs and the Stripe box keep white fills (from the main
-     light-theme rules above) so they remain legible on sage.
+     STEP BADGES — inactive badges are transparent so the section
+     background (sage on the Founding form) shows through.
      ================================================================ */
-  body.embedded-iframe:has(.multipage) {
-    background: transparent !important;
-  }
-  /* Step badges on sage: inactive = transparent so sage shows through */
-  body.embedded-iframe:has(.multipage) .mobile-round-tab-container:not(.active) .round-tab,
-  body.embedded-iframe:has(.multipage) .stepper li:not(.active) .round-tab {
+  body.embedded-iframe .mobile-round-tab-container:not(.active) .round-tab,
+  body.embedded-iframe .stepper li:not(.active) .round-tab {
     background: transparent !important;
     border-color: var(--ink) !important;
     color: var(--ink) !important;
