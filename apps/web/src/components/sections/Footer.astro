@@ -3,11 +3,10 @@ import Logo from '../Logo.astro';
 
 interface Props {
   joinDestination?: string;
-  showGive?: boolean;
   visibility?: Record<string, boolean>;
 }
 
-const { joinDestination = '#join', showGive = false, visibility = {} } = Astro.props;
+const { joinDestination = '#join', visibility = {} } = Astro.props;
 ---
 
 <!--

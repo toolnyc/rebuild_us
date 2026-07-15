@@ -52,8 +52,11 @@ A time-stamped update published under News. Carries a **vertical** (a tag used f
 A nav destination referring to the foundation entity (currently TBD — hidden via Sanity `siteSettings` in Phase 1).
 
 **Solidarity Tech**:
-The CRM and form platform used by rebuild.us. The Solidarity Tech instance is hosted at `act.rebuild.us`. In Phase 1 it provides an iframe embed for the founding-member signup form. In Phase 2 it is the primary CRM, with bidirectional member data sync to Neon.
+The CRM and form platform used by rebuild.us. The Solidarity Tech instance is hosted at `act.rebuild.us`. In Phase 1 it provides an iframe embed for the founding-member signup form; on submission it fires a bubbling DOM event (`st:embed:submitted`) on `document` that triggers the Fundraise Up handoff. In Phase 2 it is the primary CRM, with bidirectional member data sync to Neon.
 _Avoid_: "Action Network" as a synonym — these are two distinct platforms.
+
+**Fundraise Up**:
+The payment processing platform used for donations. Integrated via an org-specific async `<script>` in `<head>` (account `AEFYDEJU`). In Phase 1 the Checkout Modal is opened programmatically via `FundraiseUp.openCheckout(campaignId, options)` after the Solidarity Tech founding-member form submits, creating a capture-then-pay flow. Campaign ID `FUNKBGQPBRY` is the founding-member campaign; the `c4` code is its reporting label in event payloads only.
 
 **Phase 1 / splash**:
 The launch-ready static splash page at rebuild.us. Single long-scroll page, centered logo only in nav, Solidarity Tech founding-member form embed, no user auth or backend. Replaces the current WordPress site on deploy.

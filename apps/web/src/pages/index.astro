@@ -36,7 +36,6 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
 
   <div class="sticky top-0 z-50">
     <Nav
-      showGive={siteSettings?.showGive}
       joinDestination={joinDestination}
       resourcesDestination={siteSettings?.resourcesDestination}
     />
@@ -71,6 +70,7 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
       headline={splash?.foundingCtaHeadline}
       subcopy={splash?.foundingCtaSubcopy}
       formSrc={siteSettings?.foundingMemberFormSrc}
+      fundraiseUpCampaignId={siteSettings?.fundraiseUpCampaignId}
     />
 
     <WhyJoin label={splash?.benefitsLabel} columns={splash?.whyJoinColumns} bgImage={splash?.whyJoinBgImage} />
@@ -96,7 +96,6 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
 
   <Footer
     joinDestination={joinDestination}
-    showGive={siteSettings?.showGive}
     visibility={visibility}
   />
 </BaseLayout>

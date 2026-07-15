@@ -73,10 +73,10 @@ const siteSettings = {
   announcementText: "Founding membership is open — only 500 spots.",
   announcementCtaLabel: "Join Today →",
   announcementDestination: "#join",
-  showGive: false,
   joinDestination: "#join",
   resourcesDestination: "/resources",
   foundingMemberFormSrc: "https://act.rebuild.us/founding-member/embed",
+  fundraiseUpCampaignId: "FUNKBGQPBRY",
   getInvolvedFormSrc: "https://act.rebuild.us/web/embed",
 };
 

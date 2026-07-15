@@ -30,12 +30,6 @@ export const siteSettings = defineType({
       initialValue: '#join',
     }),
     defineField({
-      name: 'showGive',
-      title: 'Show GIVE button',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
       name: 'joinDestination',
       title: 'JOIN destination (URL or hash)',
       type: 'string',
@@ -52,6 +46,12 @@ export const siteSettings = defineType({
       title: 'Founding Member form embed URL',
       type: 'string',
       initialValue: 'https://act.rebuild.us/founding-member/embed',
+    }),
+    defineField({
+      name: 'fundraiseUpCampaignId',
+      title: 'Fundraise Up campaign ID',
+      type: 'string',
+      initialValue: 'FUNKBGQPBRY',
     }),
     defineField({
       name: 'getInvolvedFormSrc',

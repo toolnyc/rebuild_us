@@ -3,13 +3,11 @@ import Button from './Button.astro';
 import Logo from './Logo.astro';
 
 interface Props {
-  showGive?: boolean;
   joinDestination?: string;
   resourcesDestination?: string;
 }
 
 const {
-  showGive = false,
   joinDestination = '#join',
   resourcesDestination = '#resources',
 } = Astro.props;
@@ -31,9 +29,6 @@ const {
 
     <!-- Desktop right -->
     <div class="hidden sm:flex flex-1 items-center justify-end gap-4">
-      {showGive && (
-        <a href="https://donate.rebuild.us" class="link-alt text-sm">GIVE</a>
-      )}
       <Button href={joinDestination} variant="small">Join</Button>
     </div>
 
@@ -86,13 +81,7 @@ const {
       class="ty-h2 text-ink hover:text-accent-orange transition-colors"
       onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')"
     >Resources</a>
-    {showGive && (
-      <a
-        href="https://donate.rebuild.us"
-        class="ty-h2 text-ink hover:text-accent-orange transition-colors"
-        onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')"
-      >Give</a>
-    )}
+
   </nav>
 
   <div class="px-6 mt-auto pb-10">

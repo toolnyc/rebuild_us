@@ -4,6 +4,7 @@ interface Props {
   headline?: string;
   subcopy?: string;
   formSrc?: string;
+  fundraiseUpCampaignId?: string;
 }
 
 const {
@@ -11,10 +12,11 @@ const {
   headline,
   subcopy,
   formSrc = 'https://act.rebuild.us/founding-member/embed',
+  fundraiseUpCampaignId,
 } = Astro.props;
 ---
 
-<section id="join" class="scroll-mt-20 bg-accent-sage">
+<section id="join" class="scroll-mt-20 bg-accent-sage" data-campaign-id={fundraiseUpCampaignId}>
   <div class="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
     <div data-animate="fade">
       {headline && <h2 class="ty-h1">{headline}</h2>}
@@ -35,3 +37,11 @@ const {
   <!-- Orange divider strip at the bottom -->
   <div class="w-full h-[30px] bg-accent-orange"></div>
 </section>
+
+<script>
+  document.addEventListener('st:embed:submitted', () => {
+    const campaignId = document.querySelector<HTMLElement>('[data-campaign-id]')?.dataset.campaignId;
+    if (!campaignId) return;
+    FundraiseUp.openCheckout(campaignId);
+  });
+</script>
