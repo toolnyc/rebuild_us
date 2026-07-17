@@ -80,12 +80,27 @@ output is derived from these files and is not a source of truth.
 
 Each locale has independent files, allowing future locales without schema changes.
 
+## Review workflow
+
+Non-technical reviewers work in a Sanity `translationReview` queue. Each review
+record is scoped to one locale and one content owner (for example, `resourcesPage`
+or `guide.<id>`), grouping all changed messages for contextual review. It stores an
+English snapshot, each message's source hash and kind, the proposed Spanish value,
+and approval metadata.
+
+`translationReview` documents are workflow records, not localized fields on source
+documents and not a build input. On approval, a webhook-triggered GitHub Action
+validates the review against the current registry and commits matching entries to
+`<locale>.overrides.json` on `main`. The committed override remains the sole
+deployed source of truth. Reviews whose source hashes are no longer current must be
+returned to pending review rather than producing an override.
+
 ## Table contract
 
 ```ts
-type Locale = 'es' | (string & {});
-type MessageKind = 'plain' | 'richText' | 'metadata';
-type MessageStatus = 'machine' | 'reviewed' | 'stale';
+type Locale = "es" | (string & {});
+type MessageKind = "plain" | "richText" | "metadata";
+type MessageStatus = "machine" | "reviewed" | "stale";
 
 interface TranslationProvenance {
   provider: string;
@@ -108,7 +123,7 @@ interface TranslationMessage {
 interface TranslationTable {
   schemaVersion: 1;
   locale: Locale;
-  sourceLocale: 'en';
+  sourceLocale: "en";
   generatedAt: string;
   messages: Record<string, TranslationMessage>;
 }
@@ -129,6 +144,9 @@ For each registry entry at build time:
    provider-neutral adapter, validate the result, and write a `machine` message.
 5. If generation fails, retain the last valid locale message as `stale`, preserve its
    original source hash, and emit a structured build error report.
+6. If no prior locale message exists, omit the affected owner or item from localized
+   output and report it. Do not show an English fallback in a Spanish page or block
+   the English deployment.
 
 An override whose hash no longer matches is retained in version history but is not
 resolved. This prevents an approved translation from silently describing changed
@@ -145,11 +163,13 @@ The generator depends on a narrow provider-neutral adapter:
 ```ts
 interface TranslationProvider {
   translate(input: {
-    sourceLocale: 'en';
+    sourceLocale: "en";
     targetLocale: Locale;
     messages: Array<{ key: string; kind: MessageKind; value: unknown }>;
     glossary?: Record<string, string>;
-  }): Promise<Array<{ key: string; value: unknown; provider: string; model?: string }>>;
+  }): Promise<
+    Array<{ key: string; value: unknown; provider: string; model?: string }>
+  >;
 }
 ```
 
@@ -160,9 +180,9 @@ provider and model provenance for auditability.
 ## Build validation
 
 The build must fail for malformed table data, duplicate keys, unknown registry keys,
-kind mismatches, invalid rich-text structure, or a locale route with no usable
-message. It must not fail the English deployment solely because a provider request
-failed when a valid prior locale message is available.
+kind mismatches, or invalid rich-text structure. It must not fail the English
+deployment solely because a provider request failed: use a valid prior locale
+message when present, otherwise omit the affected localized item and report it.
 
 Emit a machine-readable translation report containing:
 
@@ -186,9 +206,13 @@ locale.
 
 ## Operational lifecycle
 
-- English content publish triggers a deployment.
-- The build calculates changed keys and translates only content with no matching
-  message hash.
-- Reviewers add a hash-matched override and mark it `reviewed`.
-- The next build resolves that override ahead of generated text.
-- Build reports identify machine and stale messages for follow-up.
+- English content publish triggers a signed GitHub Action.
+- The action calculates changed keys, translates only content with no matching
+  message hash, writes generated tables, and commits the validated result directly
+  to `main`; the commit triggers the Vercel deployment.
+- The action creates or refreshes one `translationReview` per changed owner and
+  locale so non-technical reviewers can approve translations in Sanity.
+- An approval action commits a hash-matched override; the next deploy resolves it
+  ahead of generated text.
+- Build reports identify machine, stale, missing, and invalid messages for
+  follow-up.

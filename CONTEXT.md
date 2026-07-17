@@ -29,6 +29,7 @@ Content that helps people prepare for and respond to a disaster and navigate rec
 - **Video** — a YouTube video (link/embed). Has no section; shown in a flat "Video Library" grid on the Resources page below the Written Guides section.
 
 **Guide sections** (four locked enum values in the Sanity schema):
+
 - `disaster-tipsheets` — "Disaster Tipsheets" (accent: orange)
 - `survivors-communities` — "For Survivors & Our Communities" (accent: yellow)
 - `fema-government` — "FEMA & Government Programs" (accent: sage)
@@ -78,6 +79,15 @@ generation, **reviewed** after human approval, or **stale** when translation
 generation fails and the prior Spanish message is retained. A changed English source
 is served from a fresh machine translation while review is pending.
 
+**Translation review**:
+A Sanity-managed review task for one locale and one content owner, such as a public
+page, guide, or news article. It groups all newly machine-translated or changed
+messages for that owner with their English snapshots and source hashes. A
+non-technical reviewer may edit and approve the messages; approval is validated by
+automation and committed to the corresponding version-controlled Translation table
+override. A Translation review is a workflow record, not a localized field on the
+source content document or a deployed source of truth.
+
 ## Relationships
 
 - The **Association** has many **Founding members**.
@@ -90,6 +100,8 @@ is served from a fresh machine translation while review is pending.
 - A **Translation message** corresponds to one English-source hash and has one
   quality status. A stale message retains an older source hash until generation
   recovers.
+- A **Translation review** groups pending review messages for one content owner and
+  locale; an approved review may produce hash-matched Translation table overrides.
 
 ## Flagged ambiguities
 
