@@ -64,6 +64,20 @@ The launch-ready static splash page at rebuild.us. Single long-scroll page, cent
 **Phase 2 / full site**:
 The full rebuild.us product with user auth (Clerk), relational database (Neon), hybrid SSR (Astro + Vercel adapter), ClaimReady integration, and CMS-driven content pages.
 
+**Translation table**:
+An immutable, version-controlled build artifact that maps canonical English content
+keys to a target locale's translated messages. Keys are semantic and scoped by their
+content owner, not derived from source text or a page payload. It is generated from
+English source content and may be superseded by a separate human-reviewed override.
+It is not an editor-managed CMS localization field or a runtime cache.
+
+**Translation message**:
+One locale-specific value in a Translation table. Each message records the hash of
+the English source it represents and its quality status: **machine** after automated
+generation, **reviewed** after human approval, or **stale** when translation
+generation fails and the prior Spanish message is retained. A changed English source
+is served from a fresh machine translation while review is pending.
+
 ## Relationships
 
 - The **Association** has many **Founding members**.
@@ -71,6 +85,11 @@ The full rebuild.us product with user auth (Clerk), relational database (Neon), 
 - A **Guide** belongs to one **section** (one of four locked values); a **Video** has no section.
 - The splash features a curated, ordered subset of **Guides** (referenced from the splash page).
 - **Testimonials** and **Impact stories** are reused across multiple pages.
+- A **Translation table** maps canonical English content keys to one target locale;
+  a human-reviewed override takes precedence over its generated message.
+- A **Translation message** corresponds to one English-source hash and has one
+  quality status. A stale message retains an older source hash until generation
+  recovers.
 
 ## Flagged ambiguities
 
