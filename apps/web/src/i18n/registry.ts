@@ -55,6 +55,9 @@ export function translationRegistry({
       plain("site", "site.guides.survivors", "For Survivors & Our Communities", ["guidesSurvivors"]),
       plain("site", "site.guides.fema", "FEMA & Government Programs", ["guidesFema"]),
       plain("site", "site.guides.insurance", "Insurance", ["guidesInsurance"]),
+      plain("site", "site.stats.founding", "Founding member spots", ["statsFounding"]),
+      plain("site", "site.stats.network", "Survivor-built network", ["statsNetwork"]),
+      plain("site", "site.stats.survivors", "Disaster survivors", ["statsSurvivors"]),
       plain("site", "site.announcement.text", siteSettings.announcementText, ["announcementText"]),
       plain("site", "site.announcement.cta", siteSettings.announcementCtaLabel, ["announcementCtaLabel"]),
     ]),
@@ -65,7 +68,7 @@ export function translationRegistry({
     route: "/",
     // Exclusions: heroImage, whyJoinBgImage, their alt text, featured resource URLs.
     messages: compact([
-      ...["heroHeadline", "heroHeadlineAccent", "heroSubcopy", "heroImageCaption", "aboutLabel", "aboutSupport", "foundingLabel", "foundingCtaHeadline", "foundingCtaSubcopy", "benefitsLabel", "resourcesLabel", "resourcesLeftCopy", "getInvolvedCopy", "getInvolvedFinePrint"].map((field) =>
+      ...["heroHeadline", "heroHeadlineAccent", "heroSubcopy", "heroImageCaption", "aboutLabel", "aboutSupport", "foundingLabel", "foundingCtaHeadline", "foundingCtaSubcopy", "benefitsLabel", "resourcesLabel", "resourcesHeadline", "resourcesLeftCopy", "getInvolvedCopy", "getInvolvedFinePrint"].map((field) =>
         plain("splash", `splash.${field}`, splash[field], [field]),
       ),
       richText("splash", "splash.about.statement", splash.aboutStatement, ["aboutStatement"]),

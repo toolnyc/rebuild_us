@@ -2,7 +2,12 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Nav from "../../components/Nav.astro";
 import Hero from "../../components/sections/Hero.astro";
+import Stats from "../../components/sections/Stats.astro";
 import About from "../../components/sections/About.astro";
+import FoundingCta from "../../components/sections/FoundingCta.astro";
+import WhyJoin from "../../components/sections/WhyJoin.astro";
+import Resources from "../../components/sections/Resources.astro";
+import GetInvolved from "../../components/sections/GetInvolved.astro";
 import Footer from "../../components/sections/Footer.astro";
 import { sanityClient } from "../../lib/sanity";
 import generatedJson from "../../i18n/tables/es.generated.json";
@@ -12,8 +17,9 @@ import { localizedContent } from "../../i18n/view";
 
 const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
 const splash = await sanityClient.fetch(`*[_type == "splashPage"][0]`);
+const featuredResources = await sanityClient.fetch(`*[_type == "splashPage"][0].featuredResources[]->{ _id, title, section, "fileUrl": file.asset->url }`);
 const visibility = await sanityClient.fetch(`{ "privacyPage": *[_type == "privacyPage"][0].visible }`);
-const localized = localizedContent({ siteSettings, splash }, validateTable(generatedJson), validateTable(overridesJson));
+const localized = localizedContent({ siteSettings, splash, guides: featuredResources }, validateTable(generatedJson), validateTable(overridesJson));
 const site = localized.siteSettings;
 const page = localized.splash;
 const hasSite = localized.included.has("site");
@@ -30,8 +36,13 @@ const hasSplash = localized.included.has("splash");
   {hasSite && <div class="sticky top-0 z-50"><Nav locale="es" route="/" joinDestination={site.joinDestination as string} labels={{ resources: site.navResources as string, join: site.navJoin as string }} /></div>}
   {hasSplash && (
     <main>
-      <Hero headline={page.heroHeadline as string} headlineAccent={page.heroHeadlineAccent as string} subcopy={page.heroSubcopy as string} image={splash?.heroImage} imageAlt={splash?.heroImage?.alt} joinDestination={site.joinDestination as string} />
+      <Hero headline={page.heroHeadline as string} headlineAccent={page.heroHeadlineAccent as string} subcopy={page.heroSubcopy as string} image={splash?.heroImage} imageAlt={splash?.heroImage?.alt} joinDestination={site.joinDestination as string} joinLabel={site.navJoin as string} />
+      <Stats labels={[site.statsFounding as string, site.statsNetwork as string, site.statsSurvivors as string]} />
       <About label={page.aboutLabel as string} statement={page.aboutStatement as never} support={page.aboutSupport as string} />
+      <FoundingCta label={page.foundingLabel as string} headline={page.foundingCtaHeadline as string} subcopy={page.foundingCtaSubcopy as string} formSrc={site.foundingMemberFormSrc as string} fundraiseUpCampaignId={site.fundraiseUpCampaignId as string} />
+      <WhyJoin label={page.benefitsLabel as string} columns={page.whyJoinColumns as never} bgImage={splash?.whyJoinBgImage} />
+      <Resources label={page.resourcesLabel as string} headline={page.resourcesHeadline as string} subcopy={page.resourcesSubcopy as never} leftCopy={page.resourcesLeftCopy as string} items={localized.guides.filter((guide) => localized.included.has(`guide.${guide._id}`))} resourcesPageVisible={true} />
+      <GetInvolved copy={page.getInvolvedCopy as string} finePrint={page.getInvolvedFinePrint as string} formSrc={site.getInvolvedFormSrc as string} instagramUrl={site.instagramUrl as string} facebookUrl={site.facebookUrl as string} youtubeUrl={site.youtubeUrl as string} />
     </main>
   )}
   {hasSite && <Footer locale="es" route="/" visibility={visibility} labels={{ privacy: site.footerPrivacy as string, copyright: site.footerCopyright as string }} />}

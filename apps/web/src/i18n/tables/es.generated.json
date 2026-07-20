@@ -1,4 +1,2417 @@
 {
   "locale": "es",
-  "messages": []
+  "messages": [
+    {
+      "key": "site.nav.resources",
+      "kind": "plain",
+      "sourceHash": "19d255b5e542ee342519c6dea42c73ad0780f2cc00a6f8093700ce86b48ea613",
+      "value": "Recursos"
+    },
+    {
+      "key": "site.nav.join",
+      "kind": "plain",
+      "sourceHash": "0cffe3fc112af506b2f07d6471d366e001a413f26e59617ad7f5a4eb0109b5c2",
+      "value": "Únete a Rebuild"
+    },
+    {
+      "key": "site.footer.privacy",
+      "kind": "plain",
+      "sourceHash": "9a6a8a9a65b9f46a2ea49bca7553dae1ad97ce548a14e2a95ab5da6b0853c8c0",
+      "value": "Política de privacidad"
+    },
+    {
+      "key": "site.footer.copyright",
+      "kind": "plain",
+      "sourceHash": "bba202384568662b054aba46206b4a275343d4ffbe8f0bc6b745bd4ef809e790",
+      "value": "© 2026 Rebuild — Asociación Nacional de Supervivientes de Desastres"
+    },
+    {
+      "key": "site.backHome",
+      "kind": "plain",
+      "sourceHash": "f22a247b3a86a0c54d6899afdf8e142f50c52fad10e7166cfb5fe922fed6b134",
+      "value": "← Volver a la página de inicio"
+    },
+    {
+      "key": "site.video.play",
+      "kind": "plain",
+      "sourceHash": "98ed790a45509cd6c465bfdd72a5c5d048cf8221fb070174a2504927e448d9a8",
+      "value": "Reproducir vídeo:"
+    },
+    {
+      "key": "site.guides.empty",
+      "kind": "plain",
+      "sourceHash": "3a2be16c7f90551f79ea5183ebaf66105e06fcfc41182e2e6af571f35e92be16",
+      "value": "Aún no hay guías."
+    },
+    {
+      "key": "site.guides.disasterTipsheets",
+      "kind": "plain",
+      "sourceHash": "49ff970b2392ae7b4d9020528e7a207544ea1ce2efaab33136d0680db6f6862c",
+      "value": "Fichas informativas sobre desastres"
+    },
+    {
+      "key": "site.guides.survivors",
+      "kind": "plain",
+      "sourceHash": "618c48eebc82ff5415710b8b234856ab33d7af9f84efcd9bbca2ee4a84f82dc1",
+      "value": "Para los supervivientes y nuestras comunidades"
+    },
+    {
+      "key": "site.guides.fema",
+      "kind": "plain",
+      "sourceHash": "2d5b7321cdc93c7fe09f85fb2bfc9340e16ba9618e84e787dc067145d3ba5b68",
+      "value": "FEMA y programas gubernamentales"
+    },
+    {
+      "key": "site.guides.insurance",
+      "kind": "plain",
+      "sourceHash": "7aa50db05fce984b9faa6468a6a1c6ab9465ac3b0480257487389960545ccd64",
+      "value": "Seguros"
+    },
+    {
+      "key": "site.stats.founding",
+      "kind": "plain",
+      "sourceHash": "6607680b7efc98426503dc16eb112713295a6df4c0e94e91eb3cafa5811addec",
+      "value": "Puestos para miembros fundadores"
+    },
+    {
+      "key": "site.stats.network",
+      "kind": "plain",
+      "sourceHash": "179a9b4e9e38d5766daaf6e519d9938631eb5a7c9add905663c0ed2351aad6c3",
+      "value": "Red creada por los supervivientes"
+    },
+    {
+      "key": "site.stats.survivors",
+      "kind": "plain",
+      "sourceHash": "95210fe4e6f5180d8111ead8b8ce7ddb043c5dc7455ef406442e08a0c49a1cea",
+      "value": "Supervivientes de catástrofes"
+    },
+    {
+      "key": "site.announcement.text",
+      "kind": "plain",
+      "sourceHash": "7b2326a889c5293fb3b64e7874eafeda9d77368bc2157ff2bc4a6bcc914e61e8",
+      "value": "Ya está abierta la inscripción para los socios fundadores: solo hay 500 plazas."
+    },
+    {
+      "key": "site.announcement.cta",
+      "kind": "plain",
+      "sourceHash": "8ca0249cb058f1adb23afb14e3117fcc55760d006638fef549a109d3ef9f80e1",
+      "value": "Únete hoy mismo →"
+    },
+    {
+      "key": "splash.heroHeadline",
+      "kind": "plain",
+      "sourceHash": "9f3ce95a6c68bdbe2d39ae1268837a33397799253271034d0d0fc5effa74a89a",
+      "value": "Cuando todo se viene abajo, ahí estamos nosotros"
+    },
+    {
+      "key": "splash.heroHeadlineAccent",
+      "kind": "plain",
+      "sourceHash": "efea99a832a1539f9d76faa6f162c36075052bbfa898dba7e43e34ae1d23ce97",
+      "value": "juntos."
+    },
+    {
+      "key": "splash.heroSubcopy",
+      "kind": "plain",
+      "sourceHash": "1a9f83f16b52608248c16b2ca0902dcec96853d19fe1ddce0d8c65dd26611276",
+      "value": "Rebuild es una asociación nacional formada por y para supervivientes de huracanes, inundaciones, incendios forestales, tornados y otros desastres."
+    },
+    {
+      "key": "splash.aboutLabel",
+      "kind": "plain",
+      "sourceHash": "a3ed4793868a99029eab29102a64294adc20d8acb7c0e2f613477360287dacae",
+      "value": "Por qué existimos"
+    },
+    {
+      "key": "splash.aboutSupport",
+      "kind": "plain",
+      "sourceHash": "b6e782f454313c18c3b1d9f1187d5c48a260041e62ec8bb6f760b2e293519a74",
+      "value": "Sabemos lo que hace falta para volver a levantarse, y estamos aquí para ayudarte. Rebuild existe para que ningún superviviente tenga que pasar por esto solo."
+    },
+    {
+      "key": "splash.foundingLabel",
+      "kind": "plain",
+      "sourceHash": "95bbfaf6f1b3d090c23d295fdda5006d45ad85513cc1695271bd675a72191b9f",
+      "value": "Miembro fundador"
+    },
+    {
+      "key": "splash.foundingCtaHeadline",
+      "kind": "plain",
+      "sourceHash": "be77658c3080aff0c27ad8e4ed42cfcd4be6ff2c6a277ab64381de45d9b74a04",
+      "value": "Únete hoy mismo para convertirte en uno de los 500 miembros fundadores de Rebuild."
+    },
+    {
+      "key": "splash.foundingCtaSubcopy",
+      "kind": "plain",
+      "sourceHash": "f4e5de628d770c7c0fa3d15f43606d4d199319ac2dbc01f2a01296d3de0c79d8",
+      "value": "Rebuild es una organización de miembros dirigida a cualquier persona que haya vivido una catástrofe climática. Tanto si has perdido tu hogar, como si has echado una mano para ayudar a tu comunidad o, simplemente, estás dispuesto a pasar a la acción junto a los supervivientes, este es tu lugar."
+    },
+    {
+      "key": "splash.benefitsLabel",
+      "kind": "plain",
+      "sourceHash": "d07dff80ac42d2e8adf99b03a36ce8b093a83efc35f2c657cfc6e5e5939c5bf4",
+      "value": "Ventajas de ser socio"
+    },
+    {
+      "key": "splash.resourcesLabel",
+      "kind": "plain",
+      "sourceHash": "19d255b5e542ee342519c6dea42c73ad0780f2cc00a6f8093700ce86b48ea613",
+      "value": "Recursos"
+    },
+    {
+      "key": "splash.resourcesHeadline",
+      "kind": "plain",
+      "sourceHash": "19d255b5e542ee342519c6dea42c73ad0780f2cc00a6f8093700ce86b48ea613",
+      "value": "Recursos"
+    },
+    {
+      "key": "splash.getInvolvedCopy",
+      "kind": "plain",
+      "sourceHash": "cd6d24a2e1257356a108d2dcf865217b68733b13f3805bab8a65376226b49802",
+      "value": "¿No estás preparado para convertirte en miembro fundador, pero quieres estar al tanto de todo?"
+    },
+    {
+      "key": "splash.getInvolvedFinePrint",
+      "kind": "plain",
+      "sourceHash": "c1949fc8f8d2dd3e8bf72e1e54bd01fe0277c437fcab905a92d2996afe914388",
+      "value": "Sin spam: solo recursos y novedades de la red."
+    },
+    {
+      "key": "splash.about.statement",
+      "kind": "richText",
+      "sourceHash": "5babd5ed8bb1cec076976a35b4e42a3f4733349dfa69fc81a2c35cff2baa5e87",
+      "value": [
+        {
+          "_key": "bgnglim",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "s0",
+              "_type": "span",
+              "marks": [],
+              "text": "Nos reunimos para compartir conocimientos, defender nuestros intereses y crear una red nacional con la "
+            },
+            {
+              "_key": "s1",
+              "_type": "span",
+              "marks": [
+                "em",
+                "highlight"
+              ],
+              "text": "la unión hace la fuerza"
+            },
+            {
+              "_key": "s2",
+              "_type": "span",
+              "marks": [],
+              "text": " con el fin de lograr la plena recuperación de todos los supervivientes."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        }
+      ]
+    },
+    {
+      "key": "splash.resources.subcopy",
+      "kind": "richText",
+      "sourceHash": "3b7daba98446c4b1afa59e921c17fbfb4b2e2621c0681792c890ba31fff35f2b",
+      "value": [
+        {
+          "_key": "8419bae6ff4c",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "155fae28fb6b",
+              "_type": "span",
+              "marks": [],
+              "text": "Sabemos por experiencia propia lo deficiente que es el sistema de recuperación y lo duro que resulta para los supervivientes."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "f71fd2a426ba",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "cbe37465d233",
+              "_type": "span",
+              "marks": [],
+              "text": "Nuestras guías de recursos son un punto de partida para facilitar el proceso. Para acceder a más recursos para supervivientes, visita rebuild.us/resources."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        }
+      ]
+    },
+    {
+      "key": "splash.whyJoin.0.title",
+      "kind": "plain",
+      "sourceHash": "e8be73c2edb32800f3888316e58983c295739a6d9ad8b4704d69774dc4b46bcf",
+      "value": "Crear una comunidad"
+    },
+    {
+      "key": "splash.whyJoin.0.body",
+      "kind": "plain",
+      "sourceHash": "6764aae50d5fb0b6f80a323e8455803c3e8a59552d63db287ef0deefbd12e2ae",
+      "value": "Una red cada vez más amplia de supervivientes, líderes y expertos en la materia de todo el país, para que estés en contacto con personas que han pasado por lo mismo y puedas tender la mano a nuevos supervivientes cada vez que se produzca una catástrofe."
+    },
+    {
+      "key": "splash.whyJoin.1.title",
+      "kind": "plain",
+      "sourceHash": "9c5e2b1250f0e9de9fc229458615d12f3bd5bd3f8cd1a87e6f40d5cf247eb0a3",
+      "value": "Solicitar asistencia"
+    },
+    {
+      "key": "splash.whyJoin.1.body",
+      "kind": "plain",
+      "sourceHash": "94eeb5f1829e8bf6948ebcafff695dd5f80da9e039923a4200c7e2bcc4dc6aad",
+      "value": "Guías que te ayudarán a hacer frente a las compañías de seguros y a las denegaciones de la FEMA, previsiones meteorológicas detalladas, novedades legislativas y mucho más; además, cada día se añaden nuevas herramientas."
+    },
+    {
+      "key": "splash.whyJoin.2.title",
+      "kind": "plain",
+      "sourceHash": "e3212e6a5568107969bc21c29a94bfe0a3e240e37d551faa3f8bf984a159e058",
+      "value": "Formación sobre Access"
+    },
+    {
+      "key": "splash.whyJoin.2.body",
+      "kind": "plain",
+      "sourceHash": "5a0849e42a5b0035f19f972e2a5d9b63a3edf2dd1e6ec855b9a242dc2f58e073",
+      "value": "Talleres gratuitos, llamadas de bienvenida y otras actividades formativas, impartidas por supervivientes y expertos que siguen ahí incluso cuando las cámaras se han ido."
+    },
+    {
+      "key": "resources.title",
+      "kind": "plain",
+      "sourceHash": "19d255b5e542ee342519c6dea42c73ad0780f2cc00a6f8093700ce86b48ea613",
+      "value": "Recursos"
+    },
+    {
+      "key": "resources.heroHeadline",
+      "kind": "plain",
+      "sourceHash": "19d255b5e542ee342519c6dea42c73ad0780f2cc00a6f8093700ce86b48ea613",
+      "value": "Recursos"
+    },
+    {
+      "key": "resources.heroSubcopy",
+      "kind": "plain",
+      "sourceHash": "adefebac6eff321d96d1138d88162a1a792c2605d0821b98d6599b18ac80ae5c",
+      "value": "Sabemos que enfrentarse a una catástrofe —o incluso prepararse para ella— puede resultar abrumador. Nuestras guías de recursos son un punto de partida para ayudarte a que el proceso resulte más sencillo."
+    },
+    {
+      "key": "resources.writtenGuidesHeading",
+      "kind": "plain",
+      "sourceHash": "38a4dcdc8cf69fb1a6455c2d1d54e068eee451ba7b28508887cebcddc675897a",
+      "value": "Guías escritas"
+    },
+    {
+      "key": "resources.writtenGuidesSubcopy",
+      "kind": "plain",
+      "sourceHash": "78b208a2900102f59ad9fe73d8a8f62f1742c08bcf65aef50363672dec5aac04",
+      "value": "Nuestras guías ofrecen información práctica y detallada, paso a paso, para ayudarte a prepararte y a actuar en caso de necesidad."
+    },
+    {
+      "key": "resources.videoLibraryHeading",
+      "kind": "plain",
+      "sourceHash": "5b915992b7bec013e91210807de683ad4fe12f51067818c331146b891d974aa6",
+      "value": "Biblioteca de vídeos"
+    },
+    {
+      "key": "resources.newsletterCopy",
+      "kind": "plain",
+      "sourceHash": "c108e99cca5f36cf48c53b52d8682ea478fb02e7f680848f93015d484dd98374",
+      "value": "En los próximos meses iremos ampliando nuestra oferta de ventajas exclusivas para socios, descuentos y recursos."
+    },
+    {
+      "key": "resources.newsletterFinePrint",
+      "kind": "plain",
+      "sourceHash": "b5f93cb5bec6cf6fee6fdc30993d19645807bcc083f2759cfccbec98eca6c0fc",
+      "value": "¡Regístrate aquí para recibir información actualizada sobre nuestra creciente lista de ventajas para socios y dinos qué necesitáis tú y tu comunidad para volver a la normalidad!"
+    },
+    {
+      "key": "privacy.title",
+      "kind": "plain",
+      "sourceHash": "9a6a8a9a65b9f46a2ea49bca7553dae1ad97ce548a14e2a95ab5da6b0853c8c0",
+      "value": "Política de privacidad"
+    },
+    {
+      "key": "privacy.body",
+      "kind": "richText",
+      "sourceHash": "8f48d48d096c206e7ccaca9b5b54aeb28ba64a17470a129f944ab9bdc104f4f8",
+      "value": [
+        {
+          "_key": "649325892d4a",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "66798b11fefc",
+              "_type": "span",
+              "marks": [],
+              "text": "Política de privacidad de Rebuild: Asociación Nacional de Supervivientes de Catástrofes"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "972d1cb7ff76",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "d4ea88947371",
+              "_type": "span",
+              "marks": [],
+              "text": "Fecha de entrada en vigor: 1 de enero de 2026"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "818b8f236c2f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "b5c56ef03939",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "8a2843d808cf",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "b5d7c56aa014",
+              "_type": "span",
+              "marks": [],
+              "text": "Rebuild: La Asociación Nacional de Supervivientes de Desastres es un proyecto de la United Disaster Action Corporation. Valoramos tu privacidad y nos esforzamos por ofrecerte una experiencia de usuario segura y protegida."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "fd3d677d3784",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "72e93f35ea3e",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "5aeca3a5a0dd",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "cc8276ea01f1",
+              "_type": "span",
+              "marks": [],
+              "text": "La presente Política de privacidad describe la información que recopilamos sobre usted a través de la red y los sitios web de Rebuild, así como la forma en que utilizamos, divulgamos y protegemos dicha información. Esta Política de privacidad se aplica a nuestro sitio web, Rebuild.org, y a cualquier otro sitio web, aplicación y servicio en línea que incluya un enlace a esta política de privacidad (los «sitios web»), independientemente de cómo acceda a ellos o los utilice, incluso a través de dispositivos móviles. Esta Política de privacidad también se aplica a la información que recopilamos de los voluntarios de la red Rebuild, lo que puede incluir información recopilada a través de los sitios web, o en persona por parte de los líderes de grupo dentro de la red Rebuild, de posibles voluntarios y simpatizantes durante campañas de captación o al asistir a eventos comunitarios."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "e3626fd31564",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "94043713b466",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "e2b9473ceaed",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "b9d65f0dec24",
+              "_type": "span",
+              "marks": [],
+              "text": "Al utilizar nuestros sitios web, aceptas los términos de la presente Política de privacidad y nuestras condiciones de uso, y das tu consentimiento a nuestras prácticas de recogida, uso y divulgación de información, tal y como se describen en la presente Política de privacidad. Al facilitarnos a nosotros o a los voluntarios de Rebuild su información de contacto, también está aceptando los términos de esta Política de privacidad. Si no está de acuerdo con los términos de esta Política de privacidad, le rogamos que no utilice nuestros sitios web ni facilite su información a la red de Rebuild. En cualquier momento, puede ponerse en contacto con nosotros para que eliminemos su información de nuestro sistema."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "d2b8ad9dbe18",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "2f79cfe01f0c",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "210b905cee90",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4cde08c2f622",
+              "_type": "span",
+              "marks": [],
+              "text": "Es posible que realicemos cambios en esta Política de privacidad de vez en cuando. Publicaremos cualquier cambio en nuestros sitios web. El uso continuado de nuestros sitios web y de los servicios de la red Rebuild tras la publicación de cualquier cambio implicará que aceptas dichos cambios."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "5a8b9b842a7a",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "171a7822ab8e",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "f5c523e3e3e2",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "f57027dd3bcd",
+              "_type": "span",
+              "marks": [],
+              "text": "Esta Política de privacidad se aplica a cualquier sitio web que incluya un enlace directo a la misma, así como a la información que recopilamos cuando interactúas con nosotros a través de las redes sociales y servicios en línea similares. Esta política no se aplica a la información que nos puedas facilitar fuera de línea ni a los sitios web y aplicaciones móviles de terceros que puedan incluir enlaces a los Sitios web o a los que se pueda acceder desde los Sitios web. No nos hacemos responsables de las acciones ni de las prácticas de privacidad de los sitios web y aplicaciones de terceros; le recomendamos que consulte directamente dichos sitios web y aplicaciones para conocer sus prácticas de privacidad. ​"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "1ffdfef507b3",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "1932f993f3d4",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "a308fc4af2c7",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "d264609ee6d5",
+              "_type": "span",
+              "marks": [
+                "underline"
+              ],
+              "text": "Información que recopilamos"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "57d55dd528e7",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "bde2d0f3f001",
+              "_type": "span",
+              "marks": [],
+              "text": "Recopilamos, tratamos y conservamos la información que nos facilitas, así como la procedente de cualquier dispositivo que utilices cuando accedes a nuestros sitios web o interactúas con ellos, y de otras formas que se describen a continuación."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "da507571337b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "bb221bffe258",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "49432345b5c1",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "f3e6e9e1547e",
+              "_type": "span",
+              "marks": [],
+              "text": "Información que nos facilitas: Recibimos y almacenamos la información que introduces en nuestros sitios web o que nos facilitas a nosotros o a los voluntarios de la red Rebuild por cualquier otro medio. Por ejemplo, cuando te registras para recibir novedades, te inscribes como voluntario, realizas donaciones o rellenas un formulario o una encuesta, es posible que te pidamos que nos facilites información como tu nombre, dirección de correo electrónico, dirección postal o código postal, número de teléfono o datos de pago. También recopilamos información cuando los voluntarios de la red Rebuild registran grupos en los sitios web, o cuando respondes a las preguntas de una encuesta mediante llamadas de voz, mensajes de texto o a través de cualquiera de nuestros servicios web."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "8d5a6000cee2",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4b4b14a5afd0",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4fcde19d92d5",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "a4ae2056cd98",
+              "_type": "span",
+              "marks": [],
+              "text": "Información que recopilamos automáticamente: Recopilamos información sobre el uso que haces de nuestros sitios web, como las donaciones que realizas, las páginas que visitas y otras interacciones que llevas a cabo. Recibimos y almacenamos determinados tipos de información cada vez que interactúas con nuestros sitios web. Nuestros sitios web utilizan «cookies», etiquetas y otras tecnologías de seguimiento que nos permiten mejorar o personalizar tu experiencia de navegación en línea. Esta información incluye datos sobre el ordenador y la conexión, como estadísticas sobre las páginas que visita, el tráfico hacia y desde nuestros sitios web, la URL de referencia, datos publicitarios, su dirección IP e identificadores del dispositivo. Esta información también puede incluir su historial de navegación, su historial de transacciones y la información de su registro web."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "53765eb3d008",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "d9022d92447a",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "031770552bf7",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "700a4561ae9f",
+              "_type": "span",
+              "marks": [],
+              "text": "Información de las redes sociales: Cuando interactúas con nosotros o con nuestros sitios web en una plataforma de redes sociales, podemos recopilar la información personal que nos facilitas en esa página, incluyendo tu ID de cuenta o nombre de usuario y otra información incluida en tus publicaciones. Si decides iniciar sesión en tu cuenta con o a través de un servicio de redes sociales, tanto nosotros como dicho servicio podremos compartir cierta información sobre ti y tus actividades."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "478be42aa146",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "3724fcb4d35c",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "b8a22ec5b114",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "88b98cf8095f",
+              "_type": "span",
+              "marks": [],
+              "text": "Información procedente de otras fuentes: Podemos complementar la información personal que recopilamos con información de terceros e incorporarla a los datos de tu cuenta. También podemos utilizar o combinar la información que recopilamos fuera de línea o que recopilamos o recibimos de los voluntarios de la red Rebuild y de fuentes de terceros por diversos motivos, entre ellos mejorar, ampliar y verificar la exactitud de nuestros registros. Esta información puede incluir, entre otros datos, información demográfica de dominio público, datos de contacto adicionales, afiliaciones a grupos, información profesional y formación académica."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "bf9d35bad826",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "1cc5231c78bd",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "32e06f964eef",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "5fea5e26b6eb",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "d406f18ddd37",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "490c892dc9f7",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "dc6c5d9cfbb0",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "f62fa919bd17",
+              "_type": "span",
+              "marks": [
+                "underline"
+              ],
+              "text": "Cómo utilizamos la información"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "17d53d28b266",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "bd6dcffa1211",
+              "_type": "span",
+              "marks": [],
+              "text": "Utilizamos tu información para personalizar y mejorar continuamente tu experiencia en los sitios web, lo que incluye atender tus solicitudes de información y comunicarnos contigo, así como ponerte en contacto con otros usuarios cuando, por ejemplo, organizas reuniones o creas eventos."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "6a88c74cefc6",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "53277a263f0f",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "36ba7dc7cb31",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "b0f856e290b0",
+              "_type": "span",
+              "marks": [],
+              "text": "También podemos utilizar tu información para proporcionar, mantener y mejorar los sitios web, así como para fines internos o de otro tipo; optimizar o mejorar nuestros sitios web, productos, servicios y operaciones; realizar un seguimiento y evaluar el uso de los sitios web, lo que incluye la realización de análisis estadísticos, demográficos y de marketing; enviarle información sobre funciones y mejoras en nuestros sitios web; y detectar, investigar y prevenir actividades que puedan infringir nuestras políticas o que sean fraudulentas o ilegales."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "8ab5e05cc656",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "69c4b66f5ed9",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "de66929010bc",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "03fc3fa69465",
+              "_type": "span",
+              "marks": [],
+              "text": "Si decides facilitarnos información adicional a través de nuestras encuestas (realizadas por teléfono, mensaje de texto o a través de la web), podremos utilizar dicha información a nivel interno para orientar mejor nuestras comunicaciones, ampliar nuestras bases de datos e integrar nuestras herramientas. Podemos utilizar la información que nos facilites a nivel interno, así como compartir tus respuestas con los grupos de la red Rebuild, sus responsables y terceros estrechamente vinculados a nuestra organización, con el fin de ayudarnos a mejorar nuestro alcance y nuestro apoyo."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2d4f21ffa970",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "8ecbb555a02c",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "3f1d1253f632",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "0adab7e8f4bd",
+              "_type": "span",
+              "marks": [],
+              "text": "Podemos utilizar la información de una sección de los sitios web en otras secciones de los mismos, y podemos combinar la información recopilada de varias secciones de los sitios web en un único registro. También podemos utilizar o combinar información que recopilemos fuera de línea o que recopilemos o recibamos de grupos de red locales Rebuild y de fuentes de terceros por diversos motivos, entre ellos mejorar, ampliar y verificar la exactitud de nuestros registros. Además, la información recopilada de un navegador o dispositivo concreto puede utilizarse con otro ordenador o dispositivo vinculado al navegador o dispositivo en el que se recopiló dicha información."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "7ca21c49bb0f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4544fe4856dc",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "432f9b690c95",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4a54816b8059",
+              "_type": "span",
+              "marks": [],
+              "text": "Para obtener información sobre cómo gestionar tus datos y las opciones de que dispones, consulta la sección «Tus opciones» que figura a continuación."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "c90647d9a035",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "5f7970699291",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "132d33b3bfd8",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "8d8b9ce86fa8",
+              "_type": "span",
+              "marks": [
+                "underline"
+              ],
+              "text": "Cómo compartimos información con terceros"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "b1f5a474d496",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "462ccb662a40",
+              "_type": "span",
+              "marks": [],
+              "text": "Cuando facilitas información que te identifica personalmente al equipo de voluntarios, personal y contratistas que gestionan el proyecto Rebuild, somos conscientes de la sensibilidad que ello puede conllevar. No compartiremos tu información de carácter personal con nadie más sin tu consentimiento, salvo en circunstancias limitadas, tal y como se describe a continuación. No obstante, es posible que compartamos con terceros información que no le identifique de forma específica y personal, como datos agregados, identificadores de dispositivos u otros identificadores únicos. Para obtener información sobre cómo gestionar sus datos y las opciones de las que dispone, consulte la sección «Sus opciones» más abajo."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "83297ea501e5",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "aaa79f96e65a",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "7dd27d45637b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "fbb6cbb94b0f",
+              "_type": "span",
+              "marks": [],
+              "text": "Ten en cuenta que parte de la información que facilites, por ejemplo, al inscribir grupos o crear eventos, es pública y estará a disposición de otras personas que visiten o utilicen los sitios web."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "8f9a90a5ecb0",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "907955ba3853",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "27021c92ed45",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "f14f05fe6be5",
+              "_type": "span",
+              "marks": [],
+              "text": "Proveedores de servicios externos: Recurrimos a proveedores de servicios externos para que realicen funciones en nuestro nombre, tales como: alojamiento web, gestión de contenidos, análisis de datos y protección contra el fraude. Estos terceros pueden tener acceso a tu información personal cuando sea necesario para desempeñar sus funciones. Si compartimos con estos terceros información que te identifique personalmente, como tu nombre, dirección o número de teléfono, exigiremos a dichos terceros que mantengan la confidencialidad y la seguridad de su información personal, y se les prohibirá utilizar, vender o distribuir dicha información de identificación personal de cualquier otra forma que no sea la de prestar los servicios solicitados a los sitios web o según lo exija o permita expresamente la ley."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "485290dabe6a",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "f2c902caf12c",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "96a1df4e6a43",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ef94d9ac30dc",
+              "_type": "span",
+              "marks": [],
+              "text": "Grupos y acciones locales de Rebuild: A nivel nacional, Rebuild cuenta con el apoyo de una única organización sin ánimo de lucro 501(c)(4); cuando los voluntarios y simpatizantes de Rebuild se inscriben para asistir a eventos, participar a nivel local o recibir información de Rebuild, la información de contacto facilitada a las organizaciones nacionales de Rebuild podrá compartirse con los grupos de Rebuild de la localidad correspondiente. Por ejemplo, si te inscribes para asistir a un evento en tu comunidad, compartiremos tu información de inscripción con el grupo local de Rebuild que organiza el evento. Compartir su información de contacto con los grupos locales de Rebuild puede ser necesario por motivos administrativos o para proporcionarle información adicional sobre eventos locales y datos relacionados. Si prefiere que no compartamos su nombre e información de contacto con los grupos de la red Rebuild, háganoslo saber siguiendo las instrucciones de los procedimientos de exclusión voluntaria que figuran a continuación. Si tiene alguna pregunta sobre este tipo de intercambio de datos, póngase en contacto con nosotros en hello@rebuild.us"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "bd4ef5a9708f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ff3c9ee9148c",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "e9459f79d38d",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "9713af415cf5",
+              "_type": "span",
+              "marks": [],
+              "text": "Colaboradores: En ocasiones, intercambiamos o compartimos nuestras listas de colaboradores con organizaciones cuidadosamente seleccionadas cuya información consideramos que puede ser de interés para nuestros colaboradores. Compartir tu nombre con otras organizaciones o empresas similares nos ayudará a ampliar nuestra base de colaboradores y a expandir nuestros programas de forma rentable. Si prefiere que no intercambiemos ni compartamos su nombre y datos de contacto, háganoslo saber siguiendo las instrucciones de los procedimientos de exclusión voluntaria que figuran a continuación."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "8392d81f28c2",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "a789bb04ed74",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "6ea44b0d18fa",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "da7e7dfc4548",
+              "_type": "span",
+              "marks": [],
+              "text": "Fusiones y cesiones: Es posible que cambiemos el control de nuestra organización, cedamos activos o nos fusionemos con otra entidad mientras prestamos los Servicios de los Sitios web. Podemos transferir la información que recopilamos y conservamos a otra entidad, a sus filiales o a sus proveedores de servicios en relación con dicho cambio, transferencia o fusión, o durante las negociaciones de los mismos. En tales circunstancias, exigiremos a la parte adquirente que respete las prácticas descritas en la presente Declaración de privacidad con respecto a la información recopilada anteriormente."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "8a3e2b5febea",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "d117ea3e702c",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2dd2844e2aa7",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "6baa40ed3033",
+              "_type": "span",
+              "marks": [],
+              "text": "Cumplimiento de la ley, procedimientos judiciales y situaciones de emergencia: También podremos utilizar o divulgar su información personal si así lo exige la ley o si creemos de buena fe que dicha acción es necesaria para (a) cumplir con la legislación aplicable o con cualquier procedimiento judicial que se nos haya notificado a nosotros o a nuestros sitios web; (b) proteger y defender nuestros derechos o nuestra propiedad, los sitios web o a nuestros usuarios, o (c) actuar para proteger nuestra seguridad personal, la de los usuarios de los sitios web o la del público."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "6a88ab23609f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "5399dd812255",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "7771b1d785b3",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "6c8f66d9ea00",
+              "_type": "span",
+              "marks": [],
+              "text": "Por ejemplo, si publicas información en los sitios web, podríamos facilitar tus datos a un tercero que alegue que has infringido sus derechos de propiedad intelectual. Del mismo modo, si alegas que otro usuario de los sitios web está infringiendo tus derechos de propiedad intelectual, podríamos facilitar tus datos al presunto infractor."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "b8ee641633ce",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "fadb53d957ec",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "b3adffaa00d4",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "3fbfe02674c3",
+              "_type": "span",
+              "marks": [],
+              "text": "Datos de consentimiento expreso del remitente de mensajes de texto: Todo lo expuesto anteriormente en esta sección («Cómo compartimos la información con terceros») no se aplica a los datos de consentimiento expreso del remitente de mensajes de texto, que no se compartirán con terceros, salvo en los siguientes casos: (1) el intercambio con proveedores, consultores y otros prestadores de servicios que necesiten acceder a dicha información para realizar trabajos en nuestro nombre (y que no utilizarán dicha información para sus propios fines); (2) si consideramos que la divulgación es exigida por cualquier ley, norma o reglamento aplicable, o es necesaria para cumplir con las fuerzas del orden u otros procedimientos legales; (3) si el usuario da su consentimiento para que compartamos dicha información; o (4) cuando la divulgación esté permitida por la ley y se ajuste a los términos y condiciones del operador."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "0ffafb97505f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "75d872a93fa3",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "275c3a6c4c01",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "974b23e5903b",
+              "_type": "span",
+              "marks": [
+                "underline"
+              ],
+              "text": "Cómo utilizamos las cookies y otras tecnologías de seguimiento"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "9349b832e806",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "a9e94a0aa253",
+              "_type": "span",
+              "marks": [],
+              "text": "Al igual que muchos sitios web, utilizamos tecnologías de seguimiento, como cookies, balizas web y tecnologías similares, para registrar tus preferencias y realizar un seguimiento del uso de nuestros sitios web. También podemos utilizar estas tecnologías para supervisar el tráfico y mejorar los sitios web. La mayoría de los navegadores web aceptan automáticamente las cookies, pero, si lo prefiere, normalmente puede modificar la configuración de su navegador para desactivarlas o rechazarlas. Si borra sus cookies o configura su navegador para que las rechace, es posible que algunas funciones de los sitios web no funcionen o no lo hagan tal y como están diseñadas."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "fce34c160d26",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "033ddc5357be",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "7f445f3ad495",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "1a123be8798b",
+              "_type": "span",
+              "marks": [],
+              "text": "Colaboramos con empresas de publicidad externas que también utilizan estas herramientas de seguimiento para mostrar anuncios en nuestros sitios web o en otros sitios web. Estos terceros pueden utilizar estas tecnologías para recopilar información sobre usted cuando utiliza los sitios web. Pueden recopilar información sobre sus actividades en línea a lo largo del tiempo y en diferentes sitios web y otros servicios en línea. También pueden utilizar identificadores persistentes para realizar un seguimiento de su uso de Internet en otros sitios web de sus redes, más allá de los Sitios web. Pueden utilizar esta información para ofrecerle publicidad basada en sus intereses u otro contenido personalizado. Aunque no facilitamos a estas entidades, a sabiendas, información que te identifique personalmente, dichos terceros podrían, con datos suficientes procedentes de otras fuentes, identificarte personalmente sin que nosotros lo sepamos."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "d9d4ca837738",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "7c4256a43dc8",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2be78e7c9d59",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "482a8070abe0",
+              "_type": "span",
+              "marks": [],
+              "text": "Es posible que tu navegador o dispositivo incluya la función «No rastrear». Nuestras prácticas de recogida y divulgación de información, así como las opciones que ofrecemos a los visitantes, seguirán funcionando tal y como se describe en la presente Declaración de privacidad, independientemente de que se reciba o no una señal de «No rastrear»."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "e4f6e23fde42",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "143b10361220",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2a6ebefd3e9c",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "3417547766ec",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2a14df17c568",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "bd9670a1354d",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "bf171aee96f5",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "d4756eaf8f51",
+              "_type": "span",
+              "marks": [
+                "underline"
+              ],
+              "text": "Tus opciones"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "f0a3bb5f9353",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ddfd80eec932",
+              "_type": "span",
+              "marks": [],
+              "text": "Cuando te suscribes a nuestras comunicaciones, registras un grupo o registras una acción, aceptas que podamos utilizar tu dirección de correo electrónico para comunicarnos contigo en relación con nuestras actividades y responder a tus consultas, así como para llevar a cabo cualquier otra acción relacionada con tus solicitudes. Puedes darte de baja de las comunicaciones utilizando el mecanismo de baja que se proporciona en dichas comunicaciones. Ten en cuenta que es posible que sigamos necesitando conservar la información facilitada anteriormente para cumplir con nuestras obligaciones legales."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "c6adfe11217d",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "57cdbc08aff9",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "ef7e36dcd1c0",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "fb0d993f661c",
+              "_type": "span",
+              "marks": [],
+              "text": "Opciones de seguimiento en línea: También dispone de opciones para limitar algunos mecanismos de seguimiento que recopilan información cuando utiliza los sitios web. Muchos navegadores web aceptan automáticamente las cookies, pero normalmente puede modificar la configuración de su navegador para rechazarlas si lo prefiere. Si decide rechazar las cookies, es posible que determinadas funciones de nuestros sitios web, incluidos los propios sitios web, no funcionen correctamente o dejen de estar accesibles para usted. Además, también puede inutilizar algunas balizas web rechazando o eliminando las cookies asociadas a ellas."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "9fc6f39f46e4",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "9cf25662a05a",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "b6fa0ece9294",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "0cca8050a2fc",
+              "_type": "span",
+              "marks": [],
+              "text": "Muchos de los anunciantes externos que instalan herramientas de seguimiento en nuestros sitios web forman parte de programas que te ofrecen opciones adicionales en relación con la recopilación y el uso de tu información. Puedes darte de baja de Action Network aquí o hacer clic en el enlace de suscripción que aparece al final de cualquier correo electrónico que recibas de nosotros. También puedes obtener más información sobre la herramienta de preferencias publicitarias de Facebook y gestionar tus preferencias."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "3f3c524e1505",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "a93f659cf0a3",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "c09fcb0efc8f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "a44102dd0ef7",
+              "_type": "span",
+              "marks": [],
+              "text": "Ten en cuenta que la exclusión voluntaria de los servicios de las redes publicitarias no implica que no vayas a recibir publicidad mientras utilizas nuestros sitios web o en otros sitios web, ni impedirá que recibas publicidad basada en tus intereses de terceros que no participen en estos programas. No obstante, sí le excluirá de la publicidad basada en sus intereses que se realice a través de las redes participantes, tal y como establecen sus políticas y mecanismos de elección."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "0850a1cbd1be",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "258a5ed898d6",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "bd2023025b6f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "1c0a3f364e49",
+              "_type": "span",
+              "marks": [],
+              "text": "Comunicaciones: Enviamos a los suscriptores información sobre los próximos eventos en su zona, así como novedades y recursos informativos a medida que estén disponibles. Si no deseas recibir correos electrónicos sobre dichos eventos, recursos u otras ofertas de servicios, puedes darte de baja haciendo clic en el botón de baja que aparece al final del correo electrónico. Es posible que, de vez en cuando, te enviemos comunicaciones a través de mensajes de texto. Puedes darte de alta para recibir dichos mensajes de texto a través de nuestro programa para teléfonos móviles. Si crees que has recibido un correo electrónico o un mensaje de texto por error, envíanos un correo electrónico a hello@rebuild.us."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4fff3e283f96",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "2f0c96d951d1",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "9438a2968c7b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "0bf38c3c520a",
+              "_type": "span",
+              "marks": [],
+              "text": "Periódicamente, también puedes recibir correos electrónicos relacionados con tu cuenta que incluyan confirmaciones de tu inscripción en un evento o grupo, correos electrónicos transaccionales relacionados con donaciones u otras notificaciones importantes relacionadas con nuestro servicio o con tu participación en actividades. Ten en cuenta que puedes comunicarte con nosotros por correo electrónico, pero debes ser consciente de que la información revelada en los correos electrónicos puede no estar protegida ni cifrada y, por lo tanto, podría ser accesible para terceros. Te recomendamos que actúes con precaución a la hora de decidir revelar información confidencial o sensible a través del correo electrónico. Si te pones en contacto con nosotros por correo electrónico, utilizaremos tu dirección de correo electrónico para responder directamente a tus preguntas o comentarios."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2a43628513e8",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "8be643e6368e",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "9ca4449c63c4",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "c250cd3c94fb",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "5ed1f4f7b310",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "571eb2dce173",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "1a7fad981acd",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4dea3547d4db",
+              "_type": "span",
+              "marks": [],
+              "text": "Cómo protegemos tu información"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "ae302ac6688f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "9cafb1c9a5ba",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "e62b96727b65",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4ce0766f9c02",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "744a9f95b77a",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "0382861fb37d",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "0f20c12e7850",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ac882b2b7a78",
+              "_type": "span",
+              "marks": [],
+              "text": "Hacemos todo lo posible para ofrecerte una experiencia segura cuando utilizas nuestra página web. Nuestras páginas web incorporan medidas físicas, técnicas y administrativas para salvaguardar la confidencialidad de tus datos personales, incluyendo el uso de cifrado, cortafuegos, acceso restringido y otros controles cuando sea necesario. No obstante, le rogamos que comprenda que, aunque hacemos todo lo posible por proteger su información personal una vez que la recibimos, no se puede garantizar que la transmisión de datos a través de Internet o de cualquier otra red pública sea 100 % segura."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "1c379904eef1",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "dfda07c9b520",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "8116b991e52f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "133aa100c149",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "a178dcef2d63",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "b52597109795",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "5da0f2c0bf07",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "e380325ba9c0",
+              "_type": "span",
+              "marks": [],
+              "text": "Puedes ayudar a proteger la privacidad de tus datos utilizando el cifrado y otras técnicas para evitar la interceptación no autorizada de tu información personal. Eres responsable de la seguridad de la información que nos envías o que consultas, descargas o a la que accedes de cualquier otra forma cuando utilizas redes sin cifrar, públicas o que no sean seguras."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4ebe09a23f4b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "8b4de5fd0902",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4d592c9a0a1b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "e751336aadb6",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "b01cdb122255",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "1e8d15599640",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2aac42c4d0ba",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ba32134588bd",
+              "_type": "span",
+              "marks": [],
+              "text": "Otra información importante"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "173336b81501",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "2a2d6c1331a9",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "e79680d8384e",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "8110c7dc4f29",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "7832075f97f8",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "e382d22f3ed1",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "d9a77003e8d3",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4d90e30821ed",
+              "_type": "span",
+              "marks": [],
+              "text": "Usuarios menores de trece años: Nuestros sitios web están destinados exclusivamente a usuarios mayores de 13 años. Por consiguiente, no recopilaremos ni utilizaremos a sabiendas ningún dato personal de menores de los que sepamos que son menores de 13 años. Si tenemos conocimiento de que un menor de 13 años nos ha facilitado datos personales, los eliminaremos de conformidad con la legislación aplicable."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "a1a6939c3b2f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "c26c02701370",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "7d8690392d1b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4049dbf0202d",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "7cac5468432d",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "9b63a478194a",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "0a86a926038f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "0f98bc81ce80",
+              "_type": "span",
+              "marks": [],
+              "text": "Usuarios fuera de Estados Unidos: Si utilizas nuestros sitios web desde fuera de Estados Unidos, aceptas y das tu consentimiento para la transferencia de tus datos personales a Estados Unidos y a otros lugares, así como para la recogida, el tratamiento y el almacenamiento de dichos datos en dichos lugares. La legislación de EE. UU. y de estos países en materia de datos personales puede diferir de la legislación de su estado o país."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "dce4996203ed",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "f3abdfcef2f8",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "5472bea772af",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "78af52bcb582",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "a25e1107eb3d",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ef947ab70f61",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "503a5342bc2a",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "8879240ba248",
+              "_type": "span",
+              "marks": [],
+              "text": "Tus derechos de privacidad en California: No facilitamos tu información personal a terceros con fines de marketing directo de dichos terceros, a menos que des tu consentimiento para ello."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "07cc2b3e37c8",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "472cc0d5a32f",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "45e13891277b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "59e7f8e0d658",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "fbf14477ba22",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "6399077eda69",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "684157f7e2e6",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "952d1de54ac0",
+              "_type": "span",
+              "marks": [],
+              "text": "Rebuild Términos y condiciones para dispositivos móviles"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "82d316d6e24b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "bf0f490a6612",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "32d49327b9ac",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "fe7d2bd6c417",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "27bfe8bc425a",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "e4c2d5163ebb",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4f3fbcff517b",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "e2b9d7a58383",
+              "_type": "span",
+              "marks": [],
+              "text": "A efectos de los presentes términos y condiciones, el término «mensaje(s) de texto» incluye, entre otros, las comunicaciones enviadas a través de SMS (Servicio de Mensajes Cortos), MMS (Servicio de Mensajes Multimedia) y RCS (Servicios de Comunicación Enriquecida)."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "25ad141a69dd",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "acc2d1e357b7",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "1b0a4de0ad33",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "e1eb7550fdba",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4d21192c5c50",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "df6845f26fb6",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "3dd373df6fc8",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "1ef68f163bf6",
+              "_type": "span",
+              "marks": [],
+              "text": "Rebuild ofrece un servicio opcional de mensajes de texto para que los suscriptores reciban actualizaciones importantes, formas de participar e información sobre eventos en su zona a través de la red de Rebuild. Lee estos Términos y condiciones del servicio móvil antes de registrarte para recibir mensajes de texto de Rebuild."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "a515b2603628",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4d376af20607",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "d87fdfc575cf",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4e57bf2ebe26",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "0b5bd4514581",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ddca163d2f7a",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "afc50217d8a1",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "65a42ea42152",
+              "_type": "span",
+              "marks": [],
+              "text": "No se aplica ningún cargo por recibir mensajes de texto desde Rebuild. Pueden aplicarse tarifas por mensajes y datos; puede consultarlo con su operador de telefonía móvil. Los cargos se facturan y deben abonarse a su operador de telefonía móvil o se deducen de su cuenta de prepago. El consentimiento no es un requisito para la compra."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4429183143e5",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "46099fa28550",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2f9b78e13843",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "e900ea3c96a9",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "830370197230",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ea3815cc28c4",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4db06ffc60c5",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ba0fb2c877ff",
+              "_type": "span",
+              "marks": [],
+              "text": "Los datos que obtengamos de ti en relación con este servicio de mensajes de texto pueden incluir tu número de teléfono móvil, el nombre de tu operador, así como la fecha, la hora y el contenido de tus mensajes. Podemos utilizar esta información para ponernos en contacto contigo y prestarte los servicios que nos solicites."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "a515dcfedc71",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "fd291631b7b1",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "f1f076db280d",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "b9ed6db86d19",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "7145d6e36913",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "7324683aa17e",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "40b90c65c8d5",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "7637c4c5f670",
+              "_type": "span",
+              "marks": [],
+              "text": "Es posible que las alertas enviadas por mensaje de texto no se entreguen si el teléfono móvil no se encuentra dentro del alcance de una estación transmisora o si no hay suficiente capacidad de red disponible en un momento determinado. Incluso dentro de una zona de cobertura, pueden interferir en la entrega de los mensajes factores ajenos al control del operador de telefonía móvil, como el equipo del cliente, el terreno, la proximidad a edificios, la vegetación y las condiciones meteorológicas. Los operadores de telefonía móvil no garantizan la entrega de los mensajes y no se harán responsables de los mensajes retrasados o no entregados. No nos hacemos responsables de ningún retraso en la recepción de ningún mensaje de texto, ya que la entrega depende de la transmisión efectiva por parte de tu operador de red."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "3d9f41809d52",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "725c924782bf",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "2db218ed5a29",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "23d5f0e805d3",
+              "_type": "span",
+              "marks": [],
+              "text": "Al suscribirse a las alertas móviles de Rebuild, el usuario da su consentimiento para recibir mensajes de texto automáticos de la red de Rebuild sobre nuestro trabajo para construir un movimiento progresista. Mensajes recurrentes. Pueden aplicarse tarifas por mensajes y datos. Si tienes alguna pregunta, envía un SMS con la palabra «HELP» al número desde el que has recibido el mensaje o ponte en contacto con nosotros en hello@rebuild.us."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "b8b38d5d9f50",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "8d475c176376",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "0a29ddd389f9",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "94fee3811a83",
+              "_type": "span",
+              "marks": [],
+              "text": "Para dejar de recibir mensajes, responde «STOP» al número desde el que has recibido los mensajes de texto."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "a217209526fd",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "1fb06fd7fd6e",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "0cb62bce97fa",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "c0178f519f62",
+              "_type": "span",
+              "marks": [
+                "underline"
+              ],
+              "text": "Preguntas o notificar un problema"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "4347157e2307",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "902f8773f618",
+              "_type": "span",
+              "marks": [],
+              "text": "Si tienes alguna pregunta sobre nuestra Política de privacidad, deseas gestionar tus preferencias respecto a la recepción de comunicaciones promocionales, actualizar tus datos personales o realizar un pedido, puedes ponerte en contacto con nosotros por correo electrónico en la dirección hello@rebuild.us"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "f505b68551e5",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "d87697850162",
+              "_type": "span",
+              "marks": [],
+              "text": ""
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "582cc48f0ae8",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "9aead8b2e3f0",
+              "_type": "span",
+              "marks": [
+                "underline"
+              ],
+              "text": "Rebuild Política de cookies"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "3b77718d84ed",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "36eb27991f2d",
+              "_type": "span",
+              "marks": [],
+              "text": "Nuestros sitios web recurren a socios para ofrecer muchas de las funciones de nuestros sitios y servicios utilizando datos sobre el uso que usted hace de ellos. A continuación se incluye una lista de dichos socios con enlaces a información adicional sobre el uso que hacen de sus datos y sobre cómo ejercer su derecho a darse de baja."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "5b388f635bd0",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "4341e51e87cd",
+              "_type": "span",
+              "marks": [],
+              "text": "\n\n"
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        }
+      ]
+    },
+    {
+      "key": "guide.196f9ddc-b476-464d-8df4-cbc573e73298.title",
+      "kind": "plain",
+      "sourceHash": "e3b4a34e57fb901a4149202ae62f3d4c6f2072b59ce79f562fb733097dbf26be",
+      "value": "Resumen del sistema de gestión de catástrofes"
+    },
+    {
+      "key": "guide.1f5dff5a-ac5a-4c83-ae95-4132a2cdafb5.title",
+      "kind": "plain",
+      "sourceHash": "0843fb69d074572b8bb404575981505755edae1cc7c3835f0cc277e189f3d482",
+      "value": "Guía para los supervivientes sobre cómo solicitar ayuda a la FEMA"
+    },
+    {
+      "key": "guide.625c0316-1c61-401d-80ea-b21abf1678c9.title",
+      "kind": "plain",
+      "sourceHash": "e1e1f6bf2d49ecdfc761cd7b0329e08b72cbe90879a6281873c51c115476021f",
+      "value": "Guía de seguridad sobre generadores y combustible"
+    },
+    {
+      "key": "guide.76f6813a-66b8-4ca4-82aa-347ab741fab6.title",
+      "kind": "plain",
+      "sourceHash": "705639acff9b7564c131767a76907acdf5fcd4940c33ce1009b6f71ec9c48669",
+      "value": "Consejos para la evacuación"
+    },
+    {
+      "key": "guide.80193552-526a-4353-9a80-3c4d013a523c.title",
+      "kind": "plain",
+      "sourceHash": "031b5fb7dd57be4d8fde7046d90e29b9fdb3de4917d99ebb570a6c6501e18f16",
+      "value": "Incendios forestales"
+    },
+    {
+      "key": "guide.b728e94d-1fc9-4b6c-9ec8-5f5ccd0b9df1.title",
+      "kind": "plain",
+      "sourceHash": "ad8a53abb967f9a28a0409590b18f6cd4e32ab0562e285b55bab73aa7eaa0881",
+      "value": "Cómo defender tus propios intereses en un litigio con una aseguradora"
+    },
+    {
+      "key": "guide.b743781d-4510-4ca1-9c15-0c5a0de18acb.title",
+      "kind": "plain",
+      "sourceHash": "5ba8e72ac0dc5e86e9fbab6dada6e61fec155d81e3d03204b259f3237911ad9e",
+      "value": "Huracanes"
+    },
+    {
+      "key": "guide.guide-ale.title",
+      "kind": "plain",
+      "sourceHash": "207b2dbadb62ec07236d6cf4176197d65fb2d04bc7700b3029f9085e3cb92ee5",
+      "value": "Guía sobre la cobertura de gastos de manutención adicionales (ALE)"
+    },
+    {
+      "key": "guide.guide-fema-eligibility.title",
+      "kind": "plain",
+      "sourceHash": "97b6839f14a43756cbd7f9604b0f5b9f89181a785b26475d332c8004f7b96a8d",
+      "value": "Ayuda de la FEMA y situación migratoria"
+    },
+    {
+      "key": "guide.guide-flood.title",
+      "kind": "plain",
+      "sourceHash": "56b7e3cdf5a6ca2a1712b646b213c66cb3779e2605f4d56a5cfae3f7c3c5a809",
+      "value": "Inundaciones"
+    },
+    {
+      "key": "guide.guide-key-documents.title",
+      "kind": "plain",
+      "sourceHash": "01c0e7c987b517299c839ad75da820bd860e898adba7671de3b4e0343611be62",
+      "value": "Protección de documentos importantes"
+    },
+    {
+      "key": "guide.guide-mental-health.title",
+      "kind": "plain",
+      "sourceHash": "bdcbd0ab28071d9abbf71881612e8b7d73c49884a6c06adbb5dcdb3e8b6925d5",
+      "value": "Salud mental ante situaciones de catástrofe "
+    },
+    {
+      "key": "guide.guide-sba.title",
+      "kind": "plain",
+      "sourceHash": "67ecd386c36c859337132e4df5ba5be1d19fbe89dc3087a310508bc84c259772",
+      "value": "Información sobre los préstamos para catástrofes de la Agencia Federal para la Pequeña Empresa (SBA)"
+    },
+    {
+      "key": "video.video-document-damage.title",
+      "kind": "plain",
+      "sourceHash": "fa9e1ca789142e3069b061ee557401b112f48148e6a8fd609884175564e77ca1",
+      "value": "Cómo documentar los daños para presentar una reclamación"
+    },
+    {
+      "key": "video.video-fema-appeal.title",
+      "kind": "plain",
+      "sourceHash": "d89c6174ddbffa9324a2f7076f019393e75380baafe92fe7bf0e63799a2d5a35",
+      "value": "Cómo recurrir una denegación de la FEMA"
+    },
+    {
+      "key": "video.video-insurance-dispute.title",
+      "kind": "plain",
+      "sourceHash": "c560bdb66915d635ff0751ac5b25558bb15510fd737e8bd809566f83d70fe87f",
+      "value": "Cómo defender tus propios intereses durante un litigio con la aseguradora"
+    }
+  ]
 }

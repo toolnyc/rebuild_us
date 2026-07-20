@@ -4,6 +4,7 @@ import Nav from "../../components/Nav.astro";
 import TornEdge from "../../components/TornEdge.astro";
 import WrittenGuides from "../../components/sections/WrittenGuides.astro";
 import VideoLibrary from "../../components/sections/VideoLibrary.astro";
+import GetInvolved from "../../components/sections/GetInvolved.astro";
 import Footer from "../../components/sections/Footer.astro";
 import { sanityClient } from "../../lib/sanity";
 import generatedJson from "../../i18n/tables/es.generated.json";
@@ -32,6 +33,14 @@ const localizedVideos = localized.videos.filter((video) => localized.included.ha
     <TornEdge position="bottom" color="var(--color-accent-yellow)" />
     <WrittenGuides guides={localizedGuides} />
     <VideoLibrary heading={page.videoLibraryHeading as string} videos={localizedVideos} />
+    <GetInvolved
+      copy={page.newsletterCopy as string}
+      finePrint={page.newsletterFinePrint as string}
+      formSrc={site.getInvolvedFormSrc as string}
+      instagramUrl={site.instagramUrl as string}
+      facebookUrl={site.facebookUrl as string}
+      youtubeUrl={site.youtubeUrl as string}
+    />
   </main>}
   {localized.included.has("site") && <Footer locale="es" route="/resources" visibility={visibility} labels={{ privacy: site.footerPrivacy as string, copyright: site.footerCopyright as string }} />}
 </BaseLayout>
