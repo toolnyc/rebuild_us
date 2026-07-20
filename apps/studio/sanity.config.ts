@@ -22,6 +22,14 @@ export default defineConfig({
               ),
             S.divider(),
             S.listItem()
+              .title("Spanish Translation Reviews")
+              .child(
+                S.documentTypeList("translationReview")
+                  .title("Pending Spanish Reviews")
+                  .filter('_type == "translationReview" && locale == "es" && status == "pending"'),
+              ),
+            S.divider(),
+            S.listItem()
               .title("Pages")
               .child(
                 S.list()

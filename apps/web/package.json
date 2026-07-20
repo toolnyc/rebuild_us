@@ -4,7 +4,10 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "translations:validate": "node scripts/translations.mjs validate",
+    "translations:generate": "node scripts/translations.mjs generate",
+    "translations:report": "node scripts/translations.mjs report"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.0.0",

@@ -1,12 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RichText from '../components/RichText.astro';
+import Nav from "../components/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
 import { sanityClient } from '../lib/sanity';
 
 const page = await sanityClient.fetch(`*[_type == "privacyPage"][0]`);
+const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+const visibility = await sanityClient.fetch(`{
+  "privacyPage": *[_type == "privacyPage"][0].visible,
+  "contactPage": *[_type == "contactPage"][0].visible
+}`);
 ---
 
-<BaseLayout title={`${page?.title ?? 'Privacy Policy'} — Rebuild`}>
+<BaseLayout title={`${page?.title ?? 'Privacy Policy'} — Rebuild`} canonicalUrl="https://rebuild.us/privacy" alternateUrl="https://rebuild.us/es/privacy">
+  <div class="w-full h-[28px] bg-accent-sage"></div>
+  <div class="sticky top-0 z-50">
+    <Nav joinDestination={siteSettings?.joinDestination} resourcesDestination={siteSettings?.resourcesDestination} route="/privacy" />
+  </div>
   <main class="mx-auto max-w-3xl px-6 py-20">
     <h1 class="ty-h1">{page?.title ?? 'Privacy Policy'}</h1>
     <div class="prose mt-8 text-ink [&_p]:mt-4">
@@ -14,4 +25,5 @@ const page = await sanityClient.fetch(`*[_type == "privacyPage"][0]`);
     </div>
     <a href="/" class="mt-10 inline-block ty-body font-semibold hover:text-accent-orange">← Back home</a>
   </main>
+  <Footer joinDestination={siteSettings?.joinDestination} visibility={visibility} route="/privacy" />
 </BaseLayout>

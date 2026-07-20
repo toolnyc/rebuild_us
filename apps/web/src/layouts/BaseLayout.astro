@@ -3,17 +3,28 @@ import '../styles/global.css';
 
 interface Props {
   title?: string;
+  locale?: "en" | "es";
+  canonicalUrl?: string;
+  alternateUrl?: string;
 }
 
-const { title = 'Rebuild — The National Disaster Survivors Association' } = Astro.props;
+const {
+  title = "Rebuild — The National Disaster Survivors Association",
+  locale = "en",
+  canonicalUrl = Astro.url.href,
+  alternateUrl,
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
+    {alternateUrl && <link rel="alternate" hreflang={locale === "en" ? "es" : "en"} href={alternateUrl} />}
+    {alternateUrl && <link rel="alternate" hreflang={locale} href={canonicalUrl} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script src="https://act.rebuild.us/embed/v1.js" async></script>
     <!-- Fundraise Up -->

@@ -30,7 +30,7 @@ const visibility = await sanityClient.fetch(`{
 const joinDestination = siteSettings?.joinDestination ?? "#join";
 ---
 
-<BaseLayout>
+<BaseLayout canonicalUrl="https://rebuild.us/" alternateUrl="https://rebuild.us/es/">
   <!-- Sage top strip, full-width, above everything -->
   <div class="w-full h-[28px] bg-accent-sage"></div>
 
@@ -97,6 +97,7 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
   <Footer
     joinDestination={joinDestination}
     visibility={visibility}
+    route="/"
   />
 </BaseLayout>
 

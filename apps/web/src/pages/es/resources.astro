@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import TornEdge from "../../components/TornEdge.astro";
+import WrittenGuides from "../../components/sections/WrittenGuides.astro";
+import VideoLibrary from "../../components/sections/VideoLibrary.astro";
+import Footer from "../../components/sections/Footer.astro";
+import { sanityClient } from "../../lib/sanity";
+import generatedJson from "../../i18n/tables/es.generated.json";
+import overridesJson from "../../i18n/tables/es.overrides.json";
+import { validateTable } from "../../i18n/contract";
+import { localizedContent } from "../../i18n/view";
+
+const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+const resourcesPage = await sanityClient.fetch(`*[_type == "resourcesPage"][0]`);
+const guides = await sanityClient.fetch(`*[_type == "resourceGuide"]{ _id, title, section, "fileUrl": file.asset->url, order } | order(order asc)`);
+const videos = await sanityClient.fetch(`*[_type == "resourceVideo"]{ _id, title, youtubeUrl, order } | order(order asc)`);
+const visibility = await sanityClient.fetch(`{ "privacyPage": *[_type == "privacyPage"][0].visible }`);
+const localized = localizedContent({ siteSettings, resourcesPage, guides, videos }, validateTable(generatedJson), validateTable(overridesJson));
+const site = localized.siteSettings;
+const page = localized.resourcesPage;
+const hasPage = localized.included.has("resourcesPage");
+const localizedGuides = localized.guides.filter((guide) => localized.included.has(`guide.${guide._id}`));
+const localizedVideos = localized.videos.filter((video) => localized.included.has(`video.${video._id}`));
+---
+
+<BaseLayout locale="es" title={hasPage ? `${page.title} — Rebuild` : "Rebuild"} canonicalUrl="https://rebuild.us/es/resources" alternateUrl="https://rebuild.us/resources">
+  <div class="w-full h-[28px] bg-accent-sage"></div>
+  {localized.included.has("site") && <div class="sticky top-0 z-50"><Nav locale="es" route="/resources" joinDestination={site.joinDestination as string} labels={{ resources: site.navResources as string, join: site.navJoin as string }} /></div>}
+  {hasPage && <main>
+    <section class="bg-accent-yellow px-6 pt-20 pb-0 lg:pt-28"><div class="mx-auto max-w-7xl"><h1 class="ty-display">{page.heroHeadline as string}</h1>{page.heroSubcopy && <p class="mt-6 max-w-2xl ty-lead">{page.heroSubcopy as string}</p>}</div></section>
+    <TornEdge position="bottom" color="var(--color-accent-yellow)" />
+    <WrittenGuides guides={localizedGuides} />
+    <VideoLibrary heading={page.videoLibraryHeading as string} videos={localizedVideos} />
+  </main>}
+  {localized.included.has("site") && <Footer locale="es" route="/resources" visibility={visibility} labels={{ privacy: site.footerPrivacy as string, copyright: site.footerCopyright as string }} />}
+</BaseLayout>

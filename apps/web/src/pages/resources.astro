@@ -13,11 +13,11 @@ const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
 const page = await sanityClient.fetch(`*[_type == "resourcesPage"][0]`);
 
 const guides = await sanityClient.fetch(
-  `*[_type == "resourceGuide"]{ title, section, "fileUrl": file.asset->url, order } | order(order asc)`,
+  `*[_type == "resourceGuide"]{ _id, title, section, "fileUrl": file.asset->url, order } | order(order asc)`,
 );
 
 const videos = await sanityClient.fetch(
-  `*[_type == "resourceVideo"]{ title, youtubeUrl, order } | order(order asc)`,
+  `*[_type == "resourceVideo"]{ _id, title, youtubeUrl, order } | order(order asc)`,
 );
 
 const visibility = await sanityClient.fetch(`{
@@ -32,7 +32,7 @@ const visibility = await sanityClient.fetch(`{
 const joinDestination = siteSettings?.joinDestination ?? "#join";
 ---
 
-<BaseLayout title={`${page?.title ?? "Resources"} — Rebuild`}>
+<BaseLayout title={`${page?.title ?? "Resources"} — Rebuild`} canonicalUrl="https://rebuild.us/resources" alternateUrl="https://rebuild.us/es/resources">
   <!-- Sage top strip -->
   <div class="w-full h-[28px] bg-accent-sage"></div>
 
@@ -90,6 +90,7 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
     joinDestination={joinDestination}
     showGive={siteSettings?.showGive}
     visibility={visibility}
+    route="/resources"
   />
 </BaseLayout>
 

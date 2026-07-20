@@ -1,0 +1,61 @@
+name: Translation tables
+
+on:
+  repository_dispatch:
+    types: [sanity-content-published, sanity-translation-approved]
+
+concurrency:
+  group: translations-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: github.event.action == 'sanity-content-published'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.TRANSLATIONS_GITHUB_TOKEN }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter web translations:generate --locale es
+        env:
+          SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+          SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
+          SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+      - run: pnpm --filter web translations:validate
+      - run: pnpm build
+      - run: |
+          git config user.name "rebuild translations"
+          git config user.email "translations@users.noreply.github.com"
+          git add apps/web/src/i18n/tables/es.generated.json
+          git diff --cached --quiet || git commit -m "Update Spanish translation table"
+          git push
+
+  apply-review:
+    if: github.event.action == 'sanity-translation-approved'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.TRANSLATIONS_GITHUB_TOKEN }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter web translations:validate
+      - run: pnpm build
