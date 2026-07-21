@@ -8,6 +8,7 @@
     "test": "node --test test/*.test.mjs",
     "translations:validate": "node scripts/translations.mjs validate",
     "translations:generate": "node scripts/translations.mjs generate",
+    "translations:apply-review": "node scripts/translations.mjs apply-review",
     "translations:report": "node scripts/translations.mjs report"
   },
   "dependencies": {

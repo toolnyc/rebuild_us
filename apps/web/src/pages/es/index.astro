@@ -34,7 +34,7 @@ const hasSplash = localized.included.has("splash");
 >
   <div class="w-full h-[28px] bg-accent-sage"></div>
   {hasSite && <div class="sticky top-0 z-50"><Nav locale="es" route="/" joinDestination={site.joinDestination as string} labels={{ resources: site.navResources as string, join: site.navJoin as string }} /></div>}
-  {hasSplash && (
+  {hasSite && hasSplash && (
     <main>
       <Hero headline={page.heroHeadline as string} headlineAccent={page.heroHeadlineAccent as string} subcopy={page.heroSubcopy as string} image={splash?.heroImage} imageAlt={splash?.heroImage?.alt} joinDestination={site.joinDestination as string} joinLabel={site.navJoin as string} />
       <Stats labels={[site.statsFounding as string, site.statsNetwork as string, site.statsSurvivors as string]} />

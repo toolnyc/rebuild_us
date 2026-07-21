@@ -9,9 +9,10 @@ interface Guide {
 
 interface Props {
   guides?: Guide[];
+  labels?: Partial<Record<SectionKey | 'empty', string>>;
 }
 
-const { guides = [] } = Astro.props;
+const { guides = [], labels = {} } = Astro.props;
 
 type SectionKey = 'disaster-tipsheets' | 'survivors-communities' | 'fema-government' | 'insurance';
 
@@ -41,10 +42,10 @@ const grouped = SECTION_ORDER.map((key) => ({
     {
       grouped.map((section) => (
         <div data-animate="fade">
-          <h2 class="ty-h2 mb-8">{section.label}</h2>
+          <h2 class="ty-h2 mb-8">{labels[section.key] ?? section.label}</h2>
           <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {section.items.length === 0 && (
-              <p class="ty-body text-muted col-span-full">No guides yet.</p>
+              <p class="ty-body text-muted col-span-full">{labels.empty ?? "No guides yet."}</p>
             )}
             {section.items.map((guide) => (
               <a

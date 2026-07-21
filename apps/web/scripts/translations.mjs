@@ -1,6 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { createClient } from "@sanity/client";
 import { translationEntries } from "../src/i18n/registry.mjs";
+import { applyApprovedReview } from "../src/i18n/review-application.mjs";
 import {
   protectedTerms,
   refreshGeneratedMessages,
@@ -9,13 +12,16 @@ import {
 } from "../src/i18n/translation-generation.mjs";
 
 const mode = process.argv[2];
+const reviewId = process.argv[3];
 const localeFlag = process.argv.indexOf("--locale");
 const locale = localeFlag === -1 ? "es" : process.argv[localeFlag + 1];
 if (locale !== "es") throw new Error("Only the es locale is configured.");
 
 const root = new URL("../src/i18n/tables/", import.meta.url);
+const projectRoot = new URL("../../..", import.meta.url);
 const generated = await readTable("es.generated.json");
 const overrides = await readTable("es.overrides.json");
+const run = promisify(execFile);
 
 async function readTable(name) {
   return JSON.parse(await readFile(new URL(name, root), "utf8"));
@@ -37,21 +43,8 @@ async function generate() {
   if (!process.env.SANITY_PROJECT_ID || !process.env.SANITY_API_TOKEN || !process.env.DEEPL_API_KEY) {
     throw new Error("SANITY_PROJECT_ID, SANITY_API_TOKEN, and DEEPL_API_KEY are required to generate translations.");
   }
-  const client = createClient({
-    projectId: process.env.SANITY_PROJECT_ID,
-    dataset: process.env.SANITY_DATASET ?? "production",
-    apiVersion: "2024-01-01",
-    useCdn: false,
-    token: process.env.SANITY_API_TOKEN,
-  });
-  const snapshot = await client.fetch(`{
-    "siteSettings": *[_type == "siteSettings"][0]{announcementText,announcementCtaLabel},
-    "splash": *[_type == "splashPage"][0]{heroHeadline,heroHeadlineAccent,heroSubcopy,heroImageCaption,aboutLabel,aboutStatement,aboutSupport,foundingLabel,foundingCtaHeadline,foundingCtaSubcopy,benefitsLabel,whyJoinColumns[]{title,body},resourcesLabel,resourcesHeadline,resourcesSubcopy,resourcesLeftCopy,getInvolvedCopy,getInvolvedFinePrint},
-    "resourcesPage": *[_type == "resourcesPage"][0]{title,heroHeadline,heroSubcopy,writtenGuidesHeading,writtenGuidesSubcopy,videoLibraryHeading,newsletterCopy,newsletterFinePrint},
-    "privacyPage": *[_type == "privacyPage"][0]{title,body},
-    "guides": *[_type == "resourceGuide"]{_id,title},
-    "videos": *[_type == "resourceVideo"]{_id,title}
-  }`);
+  const client = createSanityClient();
+  const snapshot = await fetchTranslationSource(client);
   const messages = translationEntries(snapshot);
   const { messages: output, changed } = await refreshGeneratedMessages({
     messages,
@@ -69,6 +62,97 @@ async function generate() {
     changedOwners: reviews.map((review) => review.owner.id),
     reviewsUpserted: reviews.length,
   }));
+}
+
+async function applyReview() {
+  if (!reviewId) throw new Error("A translation review ID is required.");
+  if (!process.env.SANITY_PROJECT_ID || !process.env.SANITY_API_TOKEN) {
+    throw new Error("SANITY_PROJECT_ID and SANITY_API_TOKEN are required to apply a translation review.");
+  }
+  await ensureGitIndexIsClean();
+  const client = createSanityClient();
+  const [review, snapshot] = await Promise.all([
+    client.fetch(
+      `*[_id == $reviewId && _type == "translationReview"][0]{
+        _id, locale, status, messages[]{key, kind, sourceHash, reviewedSpanish}
+      }`,
+      { reviewId },
+    ),
+    fetchTranslationSource(client),
+  ]);
+  if (!review) throw new Error(`Translation review "${reviewId}" was not found.`);
+
+  const result = applyApprovedReview({
+    review,
+    messages: translationEntries(snapshot),
+    overrides,
+  });
+  if (result.status === "stale") {
+    await client.patch(review._id).set({ status: "stale" }).commit();
+    console.log(JSON.stringify({ reviewId, status: "stale", staleKeys: result.staleKeys }));
+    return;
+  }
+
+  validate(result.overrides, "overrides");
+  await writeFile(new URL("es.overrides.json", root), `${JSON.stringify(result.overrides, null, 2)}\n`);
+  try {
+    await run("pnpm", ["--filter", "web", "build"], { cwd: projectRoot.pathname });
+    const changed = await run("git", ["diff", "--quiet", "--", "apps/web/src/i18n/tables/es.overrides.json"], {
+      cwd: projectRoot.pathname,
+    }).then(
+      () => false,
+      () => true,
+    );
+    if (!changed) {
+      const { stdout: commitSha } = await run("git", ["rev-parse", "HEAD"], { cwd: projectRoot.pathname });
+      await client.patch(review._id).set({ status: "applied", appliedCommit: commitSha.trim() }).commit();
+      console.log(JSON.stringify({ reviewId, status: "applied", appliedKeys: result.appliedKeys, commitSha: commitSha.trim() }));
+      return;
+    }
+    await run("git", ["add", "apps/web/src/i18n/tables/es.overrides.json"], { cwd: projectRoot.pathname });
+    await run("git", ["commit", "-m", "Apply reviewed Spanish translations"], { cwd: projectRoot.pathname });
+    const { stdout: commitSha } = await run("git", ["rev-parse", "HEAD"], { cwd: projectRoot.pathname });
+    await client.patch(review._id).set({ status: "applied", appliedCommit: commitSha.trim() }).commit();
+    console.log(JSON.stringify({ reviewId, status: "applied", appliedKeys: result.appliedKeys, commitSha: commitSha.trim() }));
+  } catch (error) {
+    await writeFile(new URL("es.overrides.json", root), `${JSON.stringify(overrides, null, 2)}\n`);
+    throw error;
+  }
+}
+
+function createSanityClient() {
+  return createClient({
+    projectId: process.env.SANITY_PROJECT_ID,
+    dataset: process.env.SANITY_DATASET ?? "production",
+    apiVersion: "2024-01-01",
+    useCdn: false,
+    token: process.env.SANITY_API_TOKEN,
+  });
+}
+
+async function fetchTranslationSource(client) {
+  return client.fetch(`{
+    "siteSettings": *[_type == "siteSettings"][0]{announcementText,announcementCtaLabel},
+    "splash": *[_type == "splashPage"][0]{heroHeadline,heroHeadlineAccent,heroSubcopy,heroImageCaption,aboutLabel,aboutStatement,aboutSupport,foundingLabel,foundingCtaHeadline,foundingCtaSubcopy,benefitsLabel,whyJoinColumns[]{title,body},resourcesLabel,resourcesHeadline,resourcesSubcopy,resourcesLeftCopy,getInvolvedCopy,getInvolvedFinePrint},
+    "resourcesPage": *[_type == "resourcesPage"][0]{title,heroHeadline,heroSubcopy,writtenGuidesHeading,writtenGuidesSubcopy,videoLibraryHeading,newsletterCopy,newsletterFinePrint},
+    "privacyPage": *[_type == "privacyPage"][0]{title,body},
+    "guides": *[_type == "resourceGuide"]{_id,title},
+    "videos": *[_type == "resourceVideo"]{_id,title}
+  }`);
+}
+
+async function ensureGitIndexIsClean() {
+  const path = "apps/web/src/i18n/tables/es.overrides.json";
+  const options = { cwd: projectRoot.pathname };
+  const unstaged = await run("git", ["diff", "--quiet", "--", path], options).then(
+    () => false,
+    () => true,
+  );
+  const staged = await run("git", ["diff", "--cached", "--quiet"], options).then(
+    () => false,
+    () => true,
+  );
+  if (unstaged || staged) throw new Error(`${path} and the Git index must be clean before applying a review.`);
 }
 
 async function translate(message) {
@@ -102,6 +186,8 @@ const portableSpans = (blocks) => blocks.flatMap((block, blockIndex) => Array.is
 
 if (mode === "generate") {
   await generate();
+} else if (mode === "apply-review") {
+  await applyReview();
 } else if (mode === "validate") {
   validate(generated, "generated");
   validate(overrides, "overrides");

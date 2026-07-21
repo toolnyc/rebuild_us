@@ -28,11 +28,20 @@ const localizedVideos = localized.videos.filter((video) => localized.included.ha
 <BaseLayout locale="es" title={hasPage ? `${page.title} — Rebuild` : "Rebuild"} canonicalUrl="https://rebuild.us/es/resources" alternateUrl="https://rebuild.us/resources">
   <div class="w-full h-[28px] bg-accent-sage"></div>
   {localized.included.has("site") && <div class="sticky top-0 z-50"><Nav locale="es" route="/resources" joinDestination={site.joinDestination as string} labels={{ resources: site.navResources as string, join: site.navJoin as string }} /></div>}
-  {hasPage && <main>
+  {hasPage && localized.included.has("site") && <main>
     <section class="bg-accent-yellow px-6 pt-20 pb-0 lg:pt-28"><div class="mx-auto max-w-7xl"><h1 class="ty-display">{page.heroHeadline as string}</h1>{page.heroSubcopy && <p class="mt-6 max-w-2xl ty-lead">{page.heroSubcopy as string}</p>}</div></section>
     <TornEdge position="bottom" color="var(--color-accent-yellow)" />
-    <WrittenGuides guides={localizedGuides} />
-    <VideoLibrary heading={page.videoLibraryHeading as string} videos={localizedVideos} />
+    <WrittenGuides
+      guides={localizedGuides}
+      labels={{
+        "disaster-tipsheets": site.guidesDisasterTipsheets as string,
+        "survivors-communities": site.guidesSurvivors as string,
+        "fema-government": site.guidesFema as string,
+        insurance: site.guidesInsurance as string,
+        empty: site.guidesEmpty as string,
+      }}
+    />
+    <VideoLibrary heading={page.videoLibraryHeading as string} videos={localizedVideos} playLabel={site.videoPlay as string} />
     <GetInvolved
       copy={page.newsletterCopy as string}
       finePrint={page.newsletterFinePrint as string}
