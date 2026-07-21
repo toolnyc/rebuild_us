@@ -55,7 +55,7 @@ export function applyPortableTextTranslations(
   const clone = structuredClone(value);
   spans.forEach((span, index) => {
     const [blockIndex, childIndex] = span.position;
-    ((clone[blockIndex].children as Record<string, unknown[]>)[childIndex] as Record<string, unknown>).text =
+    ((clone[blockIndex].children as unknown as Record<string, unknown[]>)[childIndex] as unknown as Record<string, unknown>).text =
       translations[index];
   });
   return clone;

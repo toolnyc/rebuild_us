@@ -1,13 +1,14 @@
 import type { TranslationTable } from "./contract";
 import { resolveMessage } from "./resolve";
-import { translationRegistry, type ContentOwner } from "./registry";
+import { translationRegistry } from "./registry.mjs";
+import type { ContentOwner } from "./registry";
 
 type Content = Record<string, unknown>;
 
 function setAtPath(target: Content, path: string[], value: unknown) {
   let cursor: Content | unknown[] = target;
   for (const segment of path.slice(0, -1)) {
-    const key = Array.isArray(cursor) ? Number(segment) : segment;
+    const key: string | number = Array.isArray(cursor) ? Number(segment) : segment;
     cursor = (cursor as Record<string | number, Content | unknown[]>)[key];
   }
   const last = path.at(-1)!;

@@ -43,7 +43,7 @@ export function validateTable(value: unknown, tableName = "table"): TranslationT
     if (message.kind === "richText" !== Array.isArray(message.value)) {
       throw new Error(`${tableName}.messages[${index}] kind does not match its value.`);
     }
-    return message as TranslationMessage;
+    return message as unknown as TranslationMessage;
   });
 
   return { locale: "es", messages };

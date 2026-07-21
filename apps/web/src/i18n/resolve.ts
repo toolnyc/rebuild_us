@@ -1,5 +1,5 @@
 import type { TranslationMessage, TranslationTable } from "./contract";
-import { sourceHash } from "./hash";
+import { sourceHash } from "./hash.ts";
 import type { TranslatableMessage } from "./registry";
 
 export type ResolutionStatus = "reviewed" | "generated" | "stale" | "missing";

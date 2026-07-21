@@ -5,6 +5,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "node --test test/*.test.mjs",
     "translations:validate": "node scripts/translations.mjs validate",
     "translations:generate": "node scripts/translations.mjs generate",
     "translations:report": "node scripts/translations.mjs report"

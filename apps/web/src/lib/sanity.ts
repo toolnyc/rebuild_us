@@ -1,6 +1,6 @@
 import { createClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
-import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import type { SanityImageSource } from '@sanity/image-url';
 
 const isDev = import.meta.env.DEV;
 const token = import.meta.env.SANITY_API_TOKEN;
