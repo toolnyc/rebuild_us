@@ -4,7 +4,7 @@ export const protectedTerms = ["Rebuild", "Claims Ready", "ClaimReady"];
 
 export function validateProtectedTerms(source, translation, key) {
   for (const term of protectedTerms) {
-    if (source.includes(term) && !translation.includes(term)) {
+    if (countOccurrences(source, term) !== countOccurrences(translation, term)) {
       throw new Error(`DeepL changed a protected term in ${key}.`);
     }
   }
@@ -80,4 +80,8 @@ function reviewDocumentId(owner) {
 
 function messageKey(value) {
   return createHash("sha256").update(value).digest("hex").slice(0, 24);
+}
+
+function countOccurrences(text, term) {
+  return text.split(term).length - 1;
 }

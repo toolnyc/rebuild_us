@@ -49,6 +49,10 @@ test("protected terms must remain in generated Spanish", () => {
     () => validateProtectedTerms("Join Rebuild", "Únete a Reconstruir", "splash.heroHeadline"),
     /DeepL changed a protected term in splash\.heroHeadline/,
   );
+  assert.throws(
+    () => validateProtectedTerms("Rebuild Rebuild", "Rebuild", "splash.heroHeadline"),
+    /DeepL changed a protected term in splash\.heroHeadline/,
+  );
 });
 
 test("pending reviews are created or refreshed once per changed owner", async () => {
