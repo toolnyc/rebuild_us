@@ -1,14 +1,17 @@
-# Spanish translation implementation specification
-
-- Status: Approved
-- Date: 2026-07-17
-- Initial target locale: `es`
-- Normative design: [ADR-0006](adr/0006-build-time-translation-tables.md) and
-  [ADR-0007](adr/0007-translation-review-automation.md)
+# Spanish translation automation
 
 ## Outcome
 
-Publish static, indexable Spanish counterparts for every current public route:
+Publishing English content in Sanity automatically refreshes the Spanish
+**translation table** with DeepL and deploys it. Content authors can later review
+that Spanish in Sanity, make an edit, and publish their approved override.
+
+English remains the source content. Spanish remains a version-controlled build
+input, not a second set of fields on every source document.
+
+## Scope
+
+This specification covers the initial public routes:
 
 | English      | Spanish         |
 | ------------ | --------------- |
@@ -16,244 +19,186 @@ Publish static, indexable Spanish counterparts for every current public route:
 | `/resources` | `/es/resources` |
 | `/privacy`   | `/es/privacy`   |
 
-English remains the only source content managed on the existing page and resource
-documents. Spanish is generated through DeepL, reviewed by non-technical authors in
-Sanity, and deployed only from version-controlled tables committed to `main`.
+It adds only the automation missing from the current translation implementation.
+It does not add a release gate, a new service, granular permissions, or an
+additional editorial product.
 
-## Boundaries
+## Publishing flow
 
-- Translate public copy and Portable Text spans only.
-- Do not translate document IDs, slugs, URLs, image alt-text identifiers, embed
-  sources, analytics values, PII, or protected names including `Rebuild`, `Claims
-Ready`, and `ClaimReady`.
-- Keep English routes and canonical English slugs unchanged.
-- Do not add localized fields to `splashPage`, `resourcesPage`, `privacyPage`,
-  `resourceGuide`, `resourceVideo`, or `siteSettings`.
-- Do not read translations at runtime, use translated HTML, or serve English text as
-  a fallback inside an `es` page.
+### Automatic translation
 
-## Architecture
+1. A content author publishes an English public page, Guide, Video, or site setting
+   in Sanity.
+2. A Sanity webhook sends `sanity-content-published` to the existing
+   GitHub `repository_dispatch` workflow.
+3. The `generate` job runs
+   `pnpm --filter web translations:generate --locale es`.
+4. The generator reads the current English source, reuses messages whose source hash
+   has not changed, and sends only new or changed messages to DeepL.
+5. The job validates the updated generated table, builds the web app, and commits
+   `apps/web/src/i18n/tables/es.generated.json` to `main`.
+6. The normal Vercel deployment from `main` publishes the refreshed Spanish output.
+7. The same job creates or refreshes one pending **translation review** per changed
+   content owner.
 
-### Source and registry
+Machine translation is published automatically. Authors do not need to translate
+before publishing English content.
 
-Add `apps/web/src/i18n/registry.ts` as the complete typed inventory of public copy.
-It reads the same English query results used by the page templates and emits ordered
-descriptors:
+### Author override
+
+1. An author opens **Spanish Translation Reviews** in Sanity Studio.
+2. The review shows the English snapshot, machine Spanish, and an editable Spanish
+   value for each changed translation message.
+3. The author edits any message they want to improve, changes the review status to
+   `approved`, and publishes the review document.
+4. A second Sanity webhook sends `sanity-translation-approved` to the same GitHub
+   workflow.
+5. The `apply-review` job rechecks the English source hashes, writes the approved
+   current messages to `apps/web/src/i18n/tables/es.overrides.json`, validates and
+   builds, then commits to `main`.
+6. The next Vercel deployment renders the reviewed Spanish because overrides take
+   precedence over generated messages.
+
+## Existing components and required changes
+
+### Translation tables and resolver
+
+Keep the current table contract:
 
 ```ts
-type MessageKind = "plain" | "richText" | "metadata";
-
-interface TranslatableMessage {
-  key: string;
-  kind: MessageKind;
-  value: string | PortableTextBlock[];
-  owner: string;
-}
-
-interface ContentOwner {
-  id: string;
-  route: "/" | "/resources" | "/privacy";
-  messages: TranslatableMessage[];
+interface TranslationTable {
+  locale: "es";
+  messages: TranslationMessage[];
 }
 ```
 
-Initial key families:
+`es.generated.json` stores DeepL output. `es.overrides.json` stores approved human
+changes. `resolveMessage` already selects a hash-matched override before a
+hash-matched generated message, so no new resolution model is needed.
 
-| Owner               | Key examples                                                 | Fields                                       |
-| ------------------- | ------------------------------------------------------------ | -------------------------------------------- |
-| `site`              | `site.nav.resources`, `site.nav.join`, `site.footer.privacy` | shared UI labels, copyright copy             |
-| `splash`            | `splash.hero.heading`, `splash.about.statement`              | all translatable `splashPage` display fields |
-| `resourcesPage`     | `resources.hero.heading`, `resources.newsletter.copy`        | resources-page display fields                |
-| `privacyPage`       | `privacy.title`, `privacy.body`                              | title and Portable Text body                 |
-| `guide.<sanity-id>` | `guide.<id>.title`                                           | guide title                                  |
-| `video.<sanity-id>` | `video.<id>.title`                                           | video title                                  |
+### Translation registry
 
-The registry must make exclusions explicit beside each owner. It must be the only
-module allowed to enumerate translatable content. Templates receive a resolved
-localized view model, never a raw table lookup.
+`apps/web/src/i18n/registry.ts` remains the inventory of translatable English
+content and existing owner groups:
 
-### Tables and resolution
+- `site`
+- `splash`
+- `resourcesPage`
+- `privacyPage`
+- `guide.<sanity-id>`
+- `video.<sanity-id>`
 
-Create:
+Remove the duplicated registry from `apps/web/scripts/translations.mjs`. Extract the
+shared registry data and source traversal into one ESM-compatible module that both
+the Node generator and the Astro runtime can use. The generator and runtime must
+therefore agree on keys, owners, paths, kinds, and source hashes.
 
-```text
-apps/web/src/i18n/
-  contract.ts
-  hash.ts
-  registry.ts
-  resolve.ts
-  glossary.ts
-  providers/deepl.ts
-  tables/es.generated.json
-  tables/es.overrides.json
-```
+### Generator
 
-`contract.ts` implements the ADR-0006 table schema with Zod-free TypeScript
-validators (no runtime validation dependency is currently installed). `hash.ts`
-serializes `kind` and the source value with NFC normalization and stable object-key
-ordering, then hashes it with Node's `crypto.createHash('sha256')`.
+Extend `apps/web/scripts/translations.mjs` to:
 
-`resolve.ts` must:
+- use the shared registry;
+- keep matching generated messages unchanged;
+- generate only new or changed messages with DeepL;
+- validate every protected term after translation: `Rebuild`, `Claims Ready`, and
+  `ClaimReady` must be unchanged;
+- create or refresh pending Sanity `translationReview` documents for owners with
+  new machine translations; and
+- emit a concise JSON report for the workflow log.
 
-1. calculate the current source hash;
-2. select an exact hash- and kind-matched override first;
-3. then select a matching generated message;
-4. return the resolved message and status;
-5. report a missing message to its owner so the `es` renderer omits that owner or
-   item.
+The generator must retain the current table schema. Do not add English text,
+quality labels, or timestamps to generated table messages.
 
-The `es` renderer may render a stale prior Spanish message, but it must omit a new
-guide, video, or whole owner that has no usable Spanish message. This applies during
-a provider outage only. Malformed tables and structural validation failures still
-fail automation.
+### Translation reviews
 
-`glossary.ts` is the provider-independent protected-term mapping. The DeepL adapter
-uses it to configure or apply its glossary and validates that protected terms remain
-unchanged in generated output.
+Keep `translationReview` as the Sanity workflow document. A review is one locale
+and one existing content owner, such as `splash` or `guide.<id>`.
 
-### Portable Text
+Update the schema so it can store the same value type as the table:
 
-`providers/deepl.ts` batches each contiguous textual span with its key and position.
-It clones Portable Text blocks and all non-text structure unchanged, then substitutes
-only returned translated spans. Marks, annotations, list nesting, `_key`, `_type`,
-and embedded non-text blocks must compare equal before and after translation.
+- plain messages use editable text;
+- rich-text messages use Portable Text, with their non-text structure retained;
+- each message records its key, kind, English snapshot, source hash, generated
+  Spanish, and optional reviewed Spanish;
+- review status remains `pending`, `approved`, `stale`, or `applied`.
 
-`RichText.astro` remains the sole renderer for English and Spanish Portable Text.
-No HTML is saved in a table or introduced into the renderer.
+The existing Studio desk list remains the author entry point. Authors edit the
+reviewed Spanish and set the status to `approved`; no custom permissions or new
+Studio application are required.
 
-### Localized Astro rendering
+### Review application command
 
-Refactor the existing route templates into shared page renderers or data-to-props
-functions so English and Spanish use identical markup:
+Add an `apply-review` command under `apps/web/scripts/` that accepts a review ID:
 
-```text
-apps/web/src/pages/index.astro
-apps/web/src/pages/resources.astro
-apps/web/src/pages/privacy.astro
-apps/web/src/pages/es/index.astro
-apps/web/src/pages/es/resources.astro
-apps/web/src/pages/es/privacy.astro
-```
+1. fetch the approved review from Sanity;
+2. fetch the current English source and rebuild the registry;
+3. apply only messages with matching key, kind, and source hash to
+   `es.overrides.json`;
+4. validate the override table and build the web app;
+5. return the review to `stale` if its English changed; otherwise mark it `applied`
+   with the resulting commit SHA.
 
-The `/es/*` files load English Sanity data, resolve it through the registry and
-`es` tables, then pass the result to the same components now used by:
+The command must never add an English fallback to a Spanish page.
 
-- `src/pages/index.astro`
-- `src/pages/resources.astro`
-- `src/pages/privacy.astro`
+### GitHub workflow
 
-Update `BaseLayout.astro` to accept `locale`, canonical URL, and alternate URL
-metadata. It must set `lang="es"` for localized documents, emit canonical plus
-`hreflang="en"` and `hreflang="es"` alternates, and use translated metadata.
+Complete `.github/workflows/translations.yml`:
 
-Update `Nav.astro` and `sections/Footer.astro` with a locale-aware route helper and
-a visible `English | Español` switcher on desktop and mobile. It maps equivalent
-known routes directly and links unsupported future English routes to `/es/`.
-`privacy.astro` must also use the shared navigation and footer so the agreed
-switcher appears on all initial routes.
+- keep the existing `translations-main` concurrency group;
+- on `sanity-content-published`, generate, validate, build, create/update reviews,
+  and commit the generated table if it changed;
+- on `sanity-translation-approved`, run the review-application command, validate,
+  build, and commit the override table if it changed; and
+- use the existing repository secrets for Sanity, DeepL, and the automation token.
 
-Add sitemap generation or a static sitemap route that emits all six routes. Spanish
-entries use `hreflang` alternates, canonical English slugs, and only include a route
-when its root owner has usable localized output.
+Sanity is configured with two direct GitHub repository-dispatch webhooks, one for
+English public-content publishes and one for approved translation reviews. No
+additional endpoint or service is introduced.
 
-## Automation
+## Content rules
 
-### Commands
-
-Add workspace scripts:
-
-```text
-pnpm --filter web translations:validate
-pnpm --filter web translations:generate --locale es
-pnpm --filter web translations:report --locale es
-```
-
-`generate` reads published Sanity data, resolves existing tables, calls DeepL only
-for unmatched hashes, validates the result, writes `es.generated.json`, creates or
-refreshes pending review records, and emits a machine-readable report. It is
-idempotent for an unchanged source snapshot.
-
-`validate` checks table shape, unknown/duplicate keys, hash and kind matches,
-Portable Text structure, protected terms, and localization coverage. `report`
-outputs machine, reviewed, stale, omitted, invalid, and hash-invalidated-override
-counts with owner and key detail.
-
-### GitHub Action
-
-Add `.github/workflows/translations.yml` with two authenticated dispatch paths:
-
-1. **English content publish**: a Sanity webhook sends a signed event. The workflow
-   acquires a concurrency lock for `translations-main`, runs generation and
-   validation, commits generated tables directly to `main` using a least-privilege
-   automation identity, and lets that commit trigger Vercel.
-2. **Review approval**: a Sanity webhook dispatches the review ID. The workflow
-   fetches the record, rechecks every source hash against the registry, writes only
-   valid approved messages to `es.overrides.json` with `reviewed` metadata, validates
-   it, commits to `main`, and marks the review applied. Any stale review is returned
-   to pending status without committing.
-
-Use repository/environment secrets for `SANITY_*`, `DEEPL_API_KEY`, a webhook
-signature secret, and the automation GitHub credential. Never include credentials
-in generated output, logs, tables, or client code. The action must use concurrency
-grouping and optimistic Sanity document revisions to avoid overwriting simultaneous
-publishes or reviews.
-
-### Sanity review queue
-
-Add `translationReview` under `apps/studio/schemaTypes/` and register it from
-`schemaTypes/index.ts`. Required fields:
-
-| Field           | Purpose                                                                       |
-| --------------- | ----------------------------------------------------------------------------- |
-| `locale`        | Initial locked value: `es`                                                    |
-| `owner`         | stable owner ID, display name, and route                                      |
-| `messages`      | key, kind, English snapshot, source hash, generated Spanish, reviewer Spanish |
-| `status`        | `pending`, `approved`, `stale`, `applied`                                     |
-| `generation`    | provider, model, generated time, generated table revision                     |
-| `approval`      | reviewer identity and approval time                                           |
-| `appliedCommit` | resulting Git commit SHA                                                      |
-
-Build a focused Studio desk view that filters pending Spanish reviews and makes the
-English snapshot, generated Spanish, and editable reviewed Spanish visible together.
-The unit of work is exactly one owner and locale, not individual strings or an
-unbounded publish batch.
+- Translate public text and Portable Text spans only.
+- Preserve Portable Text marks, annotations, list nesting, `_key`, `_type`, embeds,
+  and non-text blocks.
+- Do not translate URLs, document IDs, asset references, form embeds, campaign IDs,
+  image metadata, or slugs.
+- Preserve `Rebuild`, `Claims Ready`, and `ClaimReady` exactly.
+- Never render English as a Spanish fallback.
 
 ## Failure behavior
 
-| Condition                           | English deploy   | Spanish output                 | Required report             |
-| ----------------------------------- | ---------------- | ------------------------------ | --------------------------- |
-| DeepL failure with prior message    | continues        | stale Spanish message          | provider failure, stale key |
-| DeepL failure with no prior message | continues        | affected item or owner omitted | omission, missing key       |
-| malformed/generated table           | stops automation | no commit or deploy            | validation errors           |
-| stale reviewer hash                 | continues        | prior resolved value remains   | invalidated review          |
-| invalid Portable Text result        | stops automation | no commit or deploy            | structural error            |
+- An English publish remains independent of translation automation. It is not held
+  for DeepL or review.
+- If DeepL, table validation, or the web build fails, do not commit a new generated
+  table. The prior committed Spanish deployment remains intact.
+- A source message without a Spanish translation is omitted from the Spanish output.
+  A prior Spanish message may remain stale only when the existing resolver can use
+  it, never as English fallback.
+- If an author approves a review after its English source changes, do not write an
+  override. Mark the review `stale` so the author can review the latest generated
+  translation.
 
-## Validation plan
+## Implementation sequence
 
-Add unit tests for canonical hashing, table validation, override precedence,
-invalidated overrides, missing-message omission, DeepL request/response mapping,
-protected-term preservation, and Portable Text structural invariance.
+1. Consolidate the registry used by the generator and runtime.
+2. Extend generation to create and refresh pending reviews.
+3. Update the review schema for editable plain and Portable Text Spanish values.
+4. Add the review-application command.
+5. Complete both GitHub workflow jobs and configure the two Sanity dispatch
+   webhooks.
+6. Add focused tests and exercise one English publish plus one author override in
+   the production-equivalent Sanity dataset.
 
-Add Astro build tests that verify:
+## Acceptance criteria
 
-- every initial English and Spanish route builds;
-- Spanish HTML has `lang="es"`, canonical URLs, and reciprocal alternate links;
-- navigation and footer switchers map all six routes correctly;
-- guide/video URLs and Solidarity Tech embeds remain unchanged;
-- stale content remains Spanish, and missing fresh content is omitted rather than
-  rendered in English;
-- sitemap output contains localized entries only when renderable.
-
-The workflow runs translation validation before committing, then `pnpm build`.
-
-## Delivery sequence
-
-1. Add table contracts, hashing, registry, resolver, fixtures, and validation tests.
-2. Add the DeepL adapter, generation/report CLI, initial `es.generated.json`, and
-   stable English-only build verification.
-3. Refactor route data flow, add `/es/*` pages, metadata, sitemap, and switchers.
-4. Add the `translationReview` schema and Studio review desk view.
-5. Add signed GitHub Action dispatch, concurrency, generated-table commits, and
-   review-approval override commits.
-6. Seed production Spanish tables, verify the six-route deployment, and exercise
-   stale and no-prior-message outage cases in a non-production dataset.
+- Publishing English content automatically commits only required new or changed
+  Spanish messages to `es.generated.json`.
+- The generated-table commit triggers a Spanish deployment without author action.
+- A pending review appears in Sanity for each changed content owner.
+- An author can edit Spanish, approve the review, and publish a deployed override.
+- A matching override wins over generated Spanish at build time.
+- Changed or missing Spanish never becomes English text on an `/es/*` page.
+- Portable Text structure, URLs, embeds, assets, campaign IDs, and protected names
+  are preserved.
+- A failed translation or validation run does not replace the last committed Spanish
+  table.
