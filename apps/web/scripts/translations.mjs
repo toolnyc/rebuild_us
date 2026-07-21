@@ -1,6 +1,12 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { createClient } from "@sanity/client";
 import { translationEntries } from "../src/i18n/registry.mjs";
+import {
+  protectedTerms,
+  refreshGeneratedMessages,
+  upsertPendingReviews,
+  validateProtectedTerms,
+} from "../src/i18n/translation-generation.mjs";
 
 const mode = process.argv[2];
 const localeFlag = process.argv.indexOf("--locale");
@@ -28,14 +34,15 @@ function validate(table, name) {
 }
 
 async function generate() {
-  if (!process.env.SANITY_PROJECT_ID || !process.env.DEEPL_API_KEY) {
-    throw new Error("SANITY_PROJECT_ID and DEEPL_API_KEY are required to generate translations.");
+  if (!process.env.SANITY_PROJECT_ID || !process.env.SANITY_API_TOKEN || !process.env.DEEPL_API_KEY) {
+    throw new Error("SANITY_PROJECT_ID, SANITY_API_TOKEN, and DEEPL_API_KEY are required to generate translations.");
   }
   const client = createClient({
     projectId: process.env.SANITY_PROJECT_ID,
     dataset: process.env.SANITY_DATASET ?? "production",
     apiVersion: "2024-01-01",
     useCdn: false,
+    token: process.env.SANITY_API_TOKEN,
   });
   const snapshot = await client.fetch(`{
     "siteSettings": *[_type == "siteSettings"][0]{announcementText,announcementCtaLabel},
@@ -46,23 +53,22 @@ async function generate() {
     "videos": *[_type == "resourceVideo"]{_id,title}
   }`);
   const messages = translationEntries(snapshot);
-  const current = new Map(generated.messages.map((message) => [`${message.key}:${message.kind}:${message.sourceHash}`, message]));
-  const output = [];
-  const changedOwners = new Set();
-  for (const { sourceHash, ...message } of messages) {
-    const existing = current.get(`${message.key}:${message.kind}:${sourceHash}`);
-    if (existing) {
-      output.push(existing);
-      continue;
-    }
-    const value = await translate(message);
-    output.push({ key: message.key, kind: message.kind, sourceHash, value });
-    changedOwners.add(message.owner);
-  }
+  const { messages: output, changed } = await refreshGeneratedMessages({
+    messages,
+    generatedMessages: generated.messages,
+    translate,
+  });
   const next = { locale: "es", messages: output };
   validate(next, "generated");
+  const reviews = await upsertPendingReviews(client, changed.filter((message) => message.kind === "plain"));
   await writeFile(new URL("es.generated.json", root), `${JSON.stringify(next, null, 2)}\n`);
-  console.log(JSON.stringify({ locale, generated: output.length, changedOwners: [...changedOwners], generatedKeys: output.filter((message) => !current.has(`${message.key}:${message.kind}:${message.sourceHash}`)).map((message) => message.key) }));
+  console.log(JSON.stringify({
+    locale,
+    generated: output.length,
+    generatedKeys: changed.map((message) => message.key),
+    changedOwners: reviews.map((review) => review.owner.id),
+    reviewsUpserted: reviews.length,
+  }));
 }
 
 async function translate(message) {
@@ -83,13 +89,13 @@ async function translate(message) {
   if (!response.ok) throw new Error(`DeepL translation failed: ${response.status} ${await response.text()}`);
   const translations = (await response.json()).translations.map(({ text }) => unprotect(text));
   if (translations.length !== spans.length) throw new Error(`DeepL returned incomplete translation for ${message.key}.`);
+  spans.forEach((span, index) => validateProtectedTerms(span.text, translations[index], message.key));
   if (message.kind === "plain") return translations[0];
   const clone = structuredClone(message.value);
   spans.forEach((span, index) => { clone[span.block].children[span.child].text = translations[index]; });
   return clone;
 }
 
-const protectedTerms = ["Rebuild", "Claims Ready", "ClaimReady"];
 const protect = (text) => protectedTerms.reduce((result, term, index) => result.replaceAll(term, `__REBUILD_TERM_${index}__`), text);
 const unprotect = (text) => protectedTerms.reduce((result, term, index) => result.replaceAll(`__REBUILD_TERM_${index}__`, term), text);
 const portableSpans = (blocks) => blocks.flatMap((block, blockIndex) => Array.isArray(block.children) ? block.children.flatMap((child, childIndex) => typeof child.text === "string" && child.text ? [{ text: child.text, block: blockIndex, child: childIndex }] : []) : []);
