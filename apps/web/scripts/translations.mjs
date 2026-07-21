@@ -7,8 +7,8 @@ import { applyApprovedReview } from "../src/i18n/review-application.mjs";
 import {
   protectedTerms,
   refreshGeneratedMessages,
+  translateMessage,
   upsertPendingReviews,
-  validateProtectedTerms,
 } from "../src/i18n/translation-generation.mjs";
 
 const mode = process.argv[2];
@@ -53,7 +53,7 @@ async function generate() {
   });
   const next = { locale: "es", messages: output };
   validate(next, "generated");
-  const reviews = await upsertPendingReviews(client, changed.filter((message) => message.kind === "plain"));
+  const reviews = await upsertPendingReviews(client, changed);
   await writeFile(new URL("es.generated.json", root), `${JSON.stringify(next, null, 2)}\n`);
   console.log(JSON.stringify({
     locale,
@@ -74,7 +74,7 @@ async function applyReview() {
   const [review, snapshot] = await Promise.all([
     client.fetch(
       `*[_id == $reviewId && _type == "translationReview"][0]{
-        _id, locale, status, messages[]{key, kind, sourceHash, reviewedSpanish}
+        _id, locale, status, messages[]{key, kind, sourceHash, reviewedSpanish, reviewedSpanishRichText}
       }`,
       { reviewId },
     ),
@@ -156,33 +156,24 @@ async function ensureGitIndexIsClean() {
 }
 
 async function translate(message) {
-  const spans = message.kind === "plain"
-    ? [{ text: message.value }]
-    : portableSpans(message.value);
-  const source = spans.map((span) => protect(span.text));
-  const endpoint = process.env.DEEPL_API_KEY.endsWith(":fx")
-    ? "https://api-free.deepl.com/v2/translate"
-    : "https://api.deepl.com/v2/translate";
-  const body = new URLSearchParams({ target_lang: "ES" });
-  source.forEach((text) => body.append("text", text));
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { Authorization: `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}` },
-    body,
+  return translateMessage(message, async (texts) => {
+    const endpoint = process.env.DEEPL_API_KEY.endsWith(":fx")
+      ? "https://api-free.deepl.com/v2/translate"
+      : "https://api.deepl.com/v2/translate";
+    const body = new URLSearchParams({ target_lang: "ES" });
+    texts.map(protect).forEach((text) => body.append("text", text));
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { Authorization: `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}` },
+      body,
+    });
+    if (!response.ok) throw new Error(`DeepL translation failed: ${response.status} ${await response.text()}`);
+    return (await response.json()).translations.map(({ text }) => unprotect(text));
   });
-  if (!response.ok) throw new Error(`DeepL translation failed: ${response.status} ${await response.text()}`);
-  const translations = (await response.json()).translations.map(({ text }) => unprotect(text));
-  if (translations.length !== spans.length) throw new Error(`DeepL returned incomplete translation for ${message.key}.`);
-  spans.forEach((span, index) => validateProtectedTerms(span.text, translations[index], message.key));
-  if (message.kind === "plain") return translations[0];
-  const clone = structuredClone(message.value);
-  spans.forEach((span, index) => { clone[span.block].children[span.child].text = translations[index]; });
-  return clone;
 }
 
 const protect = (text) => protectedTerms.reduce((result, term, index) => result.replaceAll(term, `__REBUILD_TERM_${index}__`), text);
 const unprotect = (text) => protectedTerms.reduce((result, term, index) => result.replaceAll(`__REBUILD_TERM_${index}__`, term), text);
-const portableSpans = (blocks) => blocks.flatMap((block, blockIndex) => Array.isArray(block.children) ? block.children.flatMap((child, childIndex) => typeof child.text === "string" && child.text ? [{ text: child.text, block: blockIndex, child: childIndex }] : []) : []);
 
 if (mode === "generate") {
   await generate();

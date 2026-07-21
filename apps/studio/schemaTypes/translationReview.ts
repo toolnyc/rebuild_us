@@ -1,14 +1,57 @@
 import { defineField, defineType } from "sanity";
 
+const isPlain = ({ parent }: { parent?: { kind?: string } }) => parent?.kind !== "plain";
+const isRichText = ({ parent }: { parent?: { kind?: string } }) => parent?.kind !== "richText";
+
+const highlightDecorator = {
+  title: "Highlight",
+  value: "highlight",
+};
+
+const richText = (name: string, title: string, readOnly = false) =>
+  defineField({
+    name,
+    title,
+    type: "array",
+    readOnly,
+    hidden: isRichText,
+    of: [
+      {
+        type: "block",
+        styles: [{ title: "Normal", value: "normal" }],
+        lists: [],
+        marks: {
+          decorators: [
+            { title: "Strong", value: "strong" },
+            { title: "Emphasis", value: "em" },
+            highlightDecorator,
+          ],
+          annotations: [
+            {
+              name: "link",
+              type: "object",
+              title: "Link",
+              fields: [{ name: "href", type: "url", title: "URL" }],
+            },
+          ],
+        },
+      },
+      { type: "image" },
+    ],
+  });
+
 const message = {
   type: "object",
   fields: [
-    defineField({ name: "key", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "kind", type: "string", options: { list: ["plain", "richText", "metadata"] }, validation: (Rule) => Rule.required() }),
-    defineField({ name: "english", type: "text", validation: (Rule) => Rule.required() }),
-    defineField({ name: "sourceHash", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "generatedSpanish", type: "text", validation: (Rule) => Rule.required() }),
-    defineField({ name: "reviewedSpanish", type: "text" }),
+    defineField({ name: "key", type: "string", readOnly: true, validation: (Rule) => Rule.required() }),
+    defineField({ name: "kind", type: "string", readOnly: true, options: { list: ["plain", "richText", "metadata"] }, validation: (Rule) => Rule.required() }),
+    defineField({ name: "english", type: "text", readOnly: true, hidden: isPlain }),
+    richText("englishRichText", "English", true),
+    defineField({ name: "sourceHash", type: "string", readOnly: true, validation: (Rule) => Rule.required() }),
+    defineField({ name: "generatedSpanish", type: "text", readOnly: true, hidden: isPlain }),
+    richText("generatedSpanishRichText", "Generated Spanish", true),
+    defineField({ name: "reviewedSpanish", type: "text", hidden: isPlain }),
+    richText("reviewedSpanishRichText", "Reviewed Spanish"),
   ],
 };
 

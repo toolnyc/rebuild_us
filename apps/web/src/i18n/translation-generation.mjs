@@ -59,19 +59,45 @@ export function pendingReviewDocuments(changed) {
       _key: messageKey(key),
       key,
       kind,
-      english: value,
+      ...reviewValueFields("english", kind, value),
       sourceHash,
-      generatedSpanish: generated.value,
+      ...reviewValueFields("generatedSpanish", kind, generated.value),
     })),
     status: "pending",
     generation: { provider: "DeepL" },
   }));
 }
 
+/**
+ * @param {{ kind: string; value: string | object[]; key: string }} message
+ * @param {(texts: string[]) => Promise<string[]>} translate
+ */
+export async function translateMessage(message, translate) {
+  const spans = message.kind === "plain"
+    ? [{ text: message.value }]
+    : portableSpans(message.value);
+  if (!spans.length) return structuredClone(message.value);
+
+  const translations = await translate(spans.map((span) => span.text));
+  if (translations.length !== spans.length) throw new Error(`Translation returned incomplete text for ${message.key}.`);
+  spans.forEach((span, index) => validateProtectedTerms(span.text, translations[index], message.key));
+  if (message.kind === "plain") return translations[0];
+
+  const clone = structuredClone(message.value);
+  spans.forEach((span, index) => { clone[span.block].children[span.child].text = translations[index]; });
+  return clone;
+}
+
 export async function upsertPendingReviews(client, changed) {
   const reviews = pendingReviewDocuments(changed);
   await Promise.all(reviews.map((review) => client.createOrReplace(review)));
   return reviews;
+}
+
+function reviewValueFields(name, kind, value) {
+  return kind === "richText"
+    ? { [`${name}RichText`]: value }
+    : { [name]: value };
 }
 
 function reviewDocumentId(owner) {
@@ -84,4 +110,13 @@ function messageKey(value) {
 
 function countOccurrences(text, term) {
   return text.split(term).length - 1;
+}
+
+function portableSpans(blocks) {
+  return blocks.flatMap((block, blockIndex) => Array.isArray(block.children)
+    ? block.children.flatMap((child, childIndex) =>
+      child._type === "span" && typeof child.text === "string" && child.text
+        ? [{ text: child.text, block: blockIndex, child: childIndex }]
+        : [])
+    : []);
 }

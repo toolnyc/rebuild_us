@@ -25,12 +25,14 @@ export function applyApprovedReview({ review, messages, overrides }) {
 
   /** @type {TranslationMessage[]} */
   const additions = review.messages.flatMap((message) => {
-    if (!isPlainReviewedMessage(message)) return [];
+    const source = current.get(`${message.key}:${message.kind}:${message.sourceHash}`);
+    const value = reviewedValue(message, source);
+    if (value === undefined) return [];
     return [{
       key: message.key,
       kind: message.kind,
       sourceHash: message.sourceHash,
-      value: message.reviewedSpanish,
+      value,
     }];
   });
   const reviewedKeys = new Set(additions.map((message) => message.key));
@@ -64,4 +66,39 @@ function isPlainReviewedMessage(value) {
     && typeof message.sourceHash === "string"
     && typeof message.reviewedSpanish === "string"
     && message.reviewedSpanish.trim().length > 0;
+}
+
+/** @param {unknown} reviewMessage @param {unknown} source */
+function reviewedValue(reviewMessage, source) {
+  if (isPlainReviewedMessage(reviewMessage)) return reviewMessage.reviewedSpanish;
+  if (!reviewMessage || typeof reviewMessage !== "object" || !source || typeof source !== "object") return undefined;
+
+  const review = /** @type {Record<string, unknown>} */ (reviewMessage);
+  const current = /** @type {Record<string, unknown>} */ (source);
+  if (review.kind !== "richText" || !Array.isArray(review.reviewedSpanishRichText)) return undefined;
+  if (!Array.isArray(current.value) || !hasMatchingPortableTextStructure(current.value, review.reviewedSpanishRichText)) {
+    throw new Error(`Reviewed Portable Text for ${String(review.key)} does not match the English structure.`);
+  }
+  return review.reviewedSpanishRichText;
+}
+
+/** @param {unknown} source @param {unknown} reviewed */
+function hasMatchingPortableTextStructure(source, reviewed) {
+  if (Array.isArray(source) || Array.isArray(reviewed)) {
+    return Array.isArray(source)
+      && Array.isArray(reviewed)
+      && source.length === reviewed.length
+      && source.every((value, index) => hasMatchingPortableTextStructure(value, reviewed[index]));
+  }
+  if (source && reviewed && typeof source === "object" && typeof reviewed === "object") {
+    const sourceRecord = /** @type {Record<string, unknown>} */ (source);
+    const reviewedRecord = /** @type {Record<string, unknown>} */ (reviewed);
+    const sourceKeys = Object.keys(sourceRecord);
+    return sourceKeys.length === Object.keys(reviewedRecord).length
+      && sourceKeys.every((key) => key in reviewedRecord
+        && (sourceRecord._type === "span" && key === "text"
+          ? typeof reviewedRecord[key] === "string"
+          : hasMatchingPortableTextStructure(sourceRecord[key], reviewedRecord[key])));
+  }
+  return source === reviewed;
 }
