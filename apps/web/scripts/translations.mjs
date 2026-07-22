@@ -111,6 +111,7 @@ async function applyReview() {
     }
     await run("git", ["add", "apps/web/src/i18n/tables/es.overrides.json"], { cwd: projectRoot.pathname });
     await run("git", ["commit", "-m", "Apply reviewed Spanish translations"], { cwd: projectRoot.pathname });
+    await run("git", ["push"], { cwd: projectRoot.pathname });
     const { stdout: commitSha } = await run("git", ["rev-parse", "HEAD"], { cwd: projectRoot.pathname });
     await client.patch(review._id).set({ status: "applied", appliedCommit: commitSha.trim() }).commit();
     console.log(JSON.stringify({ reviewId, status: "applied", appliedKeys: result.appliedKeys, commitSha: commitSha.trim() }));

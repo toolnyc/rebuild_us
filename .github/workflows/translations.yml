@@ -57,5 +57,14 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: |
+          git config user.name "rebuild translations"
+          git config user.email "translations@users.noreply.github.com"
+      - run: pnpm --filter web translations:apply-review "$REVIEW_ID"
+        env:
+          REVIEW_ID: ${{ github.event.client_payload.reviewId }}
+          SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+          SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
+          SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
       - run: pnpm --filter web translations:validate
       - run: pnpm build
