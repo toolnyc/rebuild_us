@@ -6,6 +6,7 @@ import WrittenGuides from "../../components/sections/WrittenGuides.astro";
 import VideoLibrary from "../../components/sections/VideoLibrary.astro";
 import GetInvolved from "../../components/sections/GetInvolved.astro";
 import Footer from "../../components/sections/Footer.astro";
+import SmoothScroll from "../../components/SmoothScroll.astro";
 import { sanityClient } from "../../lib/sanity";
 import generatedJson from "../../i18n/tables/es.generated.json";
 import overridesJson from "../../i18n/tables/es.overrides.json";
@@ -52,4 +53,11 @@ const localizedVideos = localized.videos.filter((video) => localized.included.ha
     />
   </main>}
   {localized.included.has("site") && <Footer locale="es" route="/resources" visibility={visibility} labels={{ privacy: site.footerPrivacy as string, copyright: site.footerCopyright as string }} />}
+  <SmoothScroll />
 </BaseLayout>
+
+<script>
+  import { setupMotion } from "../../scripts/motion";
+
+  setupMotion({ page: "resources" });
+</script>

@@ -9,6 +9,7 @@ import WhyJoin from "../../components/sections/WhyJoin.astro";
 import Resources from "../../components/sections/Resources.astro";
 import GetInvolved from "../../components/sections/GetInvolved.astro";
 import Footer from "../../components/sections/Footer.astro";
+import SmoothScroll from "../../components/SmoothScroll.astro";
 import { sanityClient } from "../../lib/sanity";
 import generatedJson from "../../i18n/tables/es.generated.json";
 import overridesJson from "../../i18n/tables/es.overrides.json";
@@ -46,4 +47,23 @@ const hasSplash = localized.included.has("splash");
     </main>
   )}
   {hasSite && <Footer locale="es" route="/" visibility={visibility} labels={{ privacy: site.footerPrivacy as string, copyright: site.footerCopyright as string }} />}
+  <SmoothScroll />
 </BaseLayout>
+
+<script>
+  import gsap from "gsap";
+  import { setupMotion } from "../../scripts/motion";
+
+  const announcement = document.querySelector("[data-announcement]");
+  if (announcement) {
+    gsap.from(announcement, {
+      autoAlpha: 0,
+      duration: 0.6,
+      ease: "power3.out",
+      delay: 1.4,
+      clearProps: "opacity,visibility",
+    });
+  }
+
+  setupMotion({ page: "splash" });
+</script>

@@ -13,6 +13,7 @@ const { joinDestination = '#join', visibility = {}, locale = "en", route = "/", 
 const homeRoute = locale === "es" ? "/es/" : "/";
 const privacyRoute = locale === "es" ? "/es/privacy" : "/privacy";
 const switchRoute = locale === "es" ? route : route === "/" ? "/es/" : `/es${route}`;
+const switchLabel = locale === "en" ? "Español" : "English";
 ---
 
 <!--
@@ -39,7 +40,7 @@ const switchRoute = locale === "es" ? route : route === "/" ? "/es/" : `/es${rou
             </a>
           )
         }
-        <a href={switchRoute} class="hover:underline">English | Español</a>
+        <a href={switchRoute} class="hover:underline">{switchLabel}</a>
         {
           visibility.contactPage && (
             <a href="/contact" class="hover:underline">

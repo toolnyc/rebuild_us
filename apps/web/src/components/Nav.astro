@@ -27,6 +27,7 @@ const homeRoute = locale === "es" ? "/es/" : "/";
 const resourcesRoute = locale === "es" ? "/es/resources" : resourcesDestination;
 const resourcesLabel = labels.resources ?? "Resources";
 const joinLabel = labels.join ?? "Join Rebuild";
+const switchLabel = locale === "en" ? "Español" : "English";
 ---
 
 <header class="border-b border-ink/10 bg-white/95 backdrop-blur relative z-50">
@@ -46,7 +47,7 @@ const joinLabel = labels.join ?? "Join Rebuild";
     <!-- Desktop right -->
     <div class="hidden sm:flex flex-1 items-center justify-end gap-4">
       <Button href={joinDestination} variant="small">{joinLabel}</Button>
-      <a href={localizedRoute(locale === "en" ? "es" : "en")} class="text-sm font-bold hover:text-accent-orange">English | Español</a>
+      <a href={localizedRoute(locale === "en" ? "es" : "en")} class="text-sm font-bold hover:text-accent-orange">{switchLabel}</a>
     </div>
 
     <!-- Mobile hamburger -->
@@ -98,7 +99,7 @@ const joinLabel = labels.join ?? "Join Rebuild";
       class="ty-h2 text-ink hover:text-accent-orange transition-colors"
       onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')"
     >{resourcesLabel}</a>
-    <a href={localizedRoute(locale === "en" ? "es" : "en")} class="ty-body font-bold hover:text-accent-orange">English | Español</a>
+    <a href={localizedRoute(locale === "en" ? "es" : "en")} class="ty-body font-bold hover:text-accent-orange">{switchLabel}</a>
 
   </nav>
 
