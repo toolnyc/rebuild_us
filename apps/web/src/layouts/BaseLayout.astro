@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import utmPersistence from '../scripts/utm-persistence.js?raw';
 
 interface Props {
   title?: string;
@@ -15,6 +16,8 @@ const { title = 'Rebuild — The National Disaster Survivors Association' } = As
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- UTM persistence: must run before the Solidarity Tech embed script so restored UTMs are visible to it. Keep parser-blocking (is:inline), never async/defer. -->
+    <script is:inline set:html={utmPersistence}></script>
     <script src="https://act.rebuild.us/embed/v1.js" async></script>
     <!-- Fundraise Up -->
     <script>(function(w,d,s,n,a){if(!w[n]){var l='call,catch,on,once,set,then,track,openCheckout'
