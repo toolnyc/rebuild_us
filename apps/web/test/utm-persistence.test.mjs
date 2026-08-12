@@ -9,6 +9,13 @@ import vm from "node:vm";
 
 const source = readFileSync(new URL("../src/scripts/utm-persistence.js", import.meta.url), "utf8");
 
+const HOUR_MS = 60 * 60 * 1000;
+
+// Stored payload in the current shape: { t: <epoch ms>, utm: {...} }.
+function storedSet(utm, ageMs = 0) {
+  return JSON.stringify({ t: Date.now() - ageMs, utm });
+}
+
 function runScript({ search = "", pathname = "/", hash = "", stored = null, storageThrows = false } = {}) {
   const store = new Map();
   if (stored !== null) store.set("rebuild_utm", stored);
@@ -29,6 +36,10 @@ function runScript({ search = "", pathname = "/", hash = "", stored = null, stor
           if (storageThrows) throw new Error("denied");
           store.set(key, String(value));
         },
+        removeItem: (key) => {
+          if (storageThrows) throw new Error("denied");
+          store.delete(key);
+        },
       },
     },
   };
@@ -45,17 +56,22 @@ const FULL_SET = {
   utm_term: "flood",
 };
 
+function storedUtm(store) {
+  const raw = store.get("rebuild_utm");
+  return raw ? JSON.parse(raw).utm : undefined;
+}
+
 test("URL with all five UTMs stores the set and does not rewrite the URL", () => {
   const { store, replaceStateCalls } = runScript({
     search: "?utm_source=socials&utm_medium=media&utm_campaign=txfloods&utm_content=join&utm_term=flood",
   });
-  assert.deepEqual(JSON.parse(store.get("rebuild_utm")), FULL_SET);
+  assert.deepEqual(storedUtm(store), FULL_SET);
   assert.equal(replaceStateCalls.length, 0);
 });
 
 test("URL with a partial UTM set stores exactly that set", () => {
   const { store, replaceStateCalls } = runScript({ search: "?utm_source=socials&utm_campaign=txfloods" });
-  assert.deepEqual(JSON.parse(store.get("rebuild_utm")), {
+  assert.deepEqual(storedUtm(store), {
     utm_source: "socials",
     utm_campaign: "txfloods",
   });
@@ -65,9 +81,17 @@ test("URL with a partial UTM set stores exactly that set", () => {
 test("URL params overwrite a previously stored set (URL wins, last touch)", () => {
   const { store } = runScript({
     search: "?utm_campaign=new",
-    stored: JSON.stringify(FULL_SET),
+    stored: storedSet(FULL_SET),
   });
-  assert.deepEqual(JSON.parse(store.get("rebuild_utm")), { utm_campaign: "new" });
+  assert.deepEqual(storedUtm(store), { utm_campaign: "new" });
+});
+
+test("URL params overwrite even an expired stored set", () => {
+  const { store } = runScript({
+    search: "?utm_campaign=new",
+    stored: storedSet(FULL_SET, 24 * HOUR_MS),
+  });
+  assert.deepEqual(storedUtm(store), { utm_campaign: "new" });
 });
 
 test("empty UTM values in the URL are ignored", () => {
@@ -81,7 +105,7 @@ test("no URL UTMs + stored set restores them, preserving existing params and has
     search: "?fundraiseupLivemode=no",
     pathname: "/resources",
     hash: "#guides",
-    stored: JSON.stringify(FULL_SET),
+    stored: storedSet(FULL_SET),
   });
   assert.equal(replaceStateCalls.length, 1);
   const url = replaceStateCalls[0][2];
@@ -97,9 +121,36 @@ test("no URL UTMs + stored set restores them, preserving existing params and has
 test("restore on the homepage produces a clean root URL", () => {
   const { replaceStateCalls } = runScript({
     pathname: "/",
-    stored: JSON.stringify({ utm_source: "socials" }),
+    stored: storedSet({ utm_source: "socials" }),
   });
   assert.equal(replaceStateCalls[0][2], "/?utm_source=socials");
+});
+
+test("stored set older than the TTL is discarded and removed, no restore", () => {
+  const { store, replaceStateCalls } = runScript({
+    pathname: "/resources",
+    stored: storedSet(FULL_SET, 13 * HOUR_MS),
+  });
+  assert.equal(replaceStateCalls.length, 0);
+  assert.equal(store.has("rebuild_utm"), false);
+});
+
+test("stored set just inside the TTL still restores", () => {
+  const { replaceStateCalls } = runScript({
+    pathname: "/resources",
+    stored: storedSet({ utm_source: "socials" }, 11 * HOUR_MS),
+  });
+  assert.equal(replaceStateCalls.length, 1);
+  assert.equal(replaceStateCalls[0][2], "/resources?utm_source=socials");
+});
+
+test("legacy stored shape (flat utm map, no timestamp) is discarded and removed", () => {
+  const { store, replaceStateCalls } = runScript({
+    pathname: "/resources",
+    stored: JSON.stringify(FULL_SET),
+  });
+  assert.equal(replaceStateCalls.length, 0);
+  assert.equal(store.has("rebuild_utm"), false);
 });
 
 test("no URL UTMs + no stored set is a no-op", () => {
@@ -116,14 +167,14 @@ test("malformed stored JSON is ignored without throwing", () => {
 test("stored sets with unknown or empty keys are filtered to the five UTM keys", () => {
   const { replaceStateCalls } = runScript({
     pathname: "/resources",
-    stored: JSON.stringify({ utm_source: "socials", utm_source_evil: "x", ref: "y", utm_term: "", nested: { a: 1 } }),
+    stored: storedSet({ utm_source: "socials", utm_source_evil: "x", ref: "y", utm_term: "", nested: { a: 1 } }),
   });
   assert.equal(replaceStateCalls.length, 1);
   assert.equal(replaceStateCalls[0][2], "/resources?utm_source=socials");
 });
 
 test("stored set containing only invalid keys is a no-op", () => {
-  const { replaceStateCalls } = runScript({ stored: JSON.stringify({ ref: "y", utm_term: "" }) });
+  const { replaceStateCalls } = runScript({ stored: storedSet({ ref: "y", utm_term: "" }) });
   assert.equal(replaceStateCalls.length, 0);
 });
 

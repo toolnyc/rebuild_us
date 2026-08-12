@@ -1,6 +1,6 @@
 # UTM Pass-Through to Solidarity Tech — Research & Spec
 
-- Status: **Implemented and verified end-to-end** (persistence script shipped).
+- Status: **Implemented and verified end-to-end** (persistence script shipped 2026-08-11; delivery race + stale-session fixes shipped 2026-08-12 — see "2026-08-12 hardening").
 - Date: 2026-08-11
 
 ## Goal
@@ -85,7 +85,7 @@ sources in the page's **Results tab**, or **filter by UTM source in People**.
 | - | ------------ | ------ | -------- |
 | 1 | ~~**No cross-page persistence.** `hostUtmParams()` reads only the current page's query string.~~ | **FIXED 2026-08-11** by the persistence script (see "Implementation" below): stored UTMs are re-attached to the URL on every page load, so ST's own forwarding picks them up site-wide. | Resolved |
 | 2 | `ref` is forwarded host-side and accepted child-side, but not server-rendered from URL params and not listed in ST's UTM docs. | Don't rely on `ref` for reporting. | Low |
-| 3 | Timing edge: if the iframe fires `load` before the async host script attaches its listener, the context message is never sent. | Rare attribution loss (slow script download + fast cached iframe). No practical host-side mitigation; acceptable. | Low |
+| 3 | ~~Timing edge: if the iframe fires `load` before the async host script attaches its listener, the context message is never sent.~~ | **FIXED 2026-08-12** — reproduced on production (delaying v1.js 4s → zero UTM inputs in the Web Basic iframe) after a real submission arrived with no codes. Closed by `st-embed-utm.js` (see "2026-08-12 hardening"). | Resolved |
 | 4 | ~~Founding-member stepper: context-appended hidden inputs are added once at iframe load. If ST re-renders form DOM between steps, appended inputs could be dropped.~~ | **RESOLVED 2026-08-11 — see "Stepper DOM test" below.** The stepper is show/hide panes in one persistent form; hidden inputs survive step navigation in both directions. | None |
 | 5 | UTMs attach to the **ST submission** only. The Fundraise Up donation opened via the `st:embed:submitted` handoff does its own separate tracking. | Donation-level attribution in FU is a separate concern, out of scope here. | Info |
 
@@ -230,6 +230,48 @@ MX-valid email, close the FU modal without paying, check the ST Results tab,
 then delete the test person) to observe the values server-side. The mechanism is
 already proven: the hidden inputs are ordinary form fields that post with the
 form, and ST documents that they are recorded.
+
+## 2026-08-12 hardening — delivery race + stale-session TTL
+
+Two production incidents prompted this round:
+
+1. **A founding-member submission recorded stale `utm_source=test` / `utm_medium=test` /
+   `utm_content=stepper` / `utm_term=x`** — the exact values from the 2026-08-11 stepper
+   test URL — on a later visit that carried no campaign link. Root cause: sessionStorage
+   is not a real session boundary. Firefox and Chrome restore it with browser-session
+   restore, so "session-only" attribution can leak into direct visits days later.
+2. **A Web Basic submission recorded no UTMs at all** despite a campaign URL. Root
+   cause: gap #3, the `load`-event race, which turned out to be reachable in the wild
+   (repeat visits → warm cached iframe → iframe `load` fires before the async v1.js
+   attaches its listener → `st:embed:context` never sent). Reproduced deterministically
+   against production by delaying v1.js 4s: the Web Basic iframe received zero UTM
+   inputs; undelayed, it received all of them.
+
+Fixes:
+
+- **`apps/web/src/scripts/st-embed-utm.js` (new)** — sends the `st:embed:context`
+  postMessage site-side, on two hooks registered parser-blocking in `<head>` before any
+  iframe is parsed: a capture-phase window `load` listener (load doesn't bubble, but
+  capture sees it for every subresource, so no iframe load can be missed), and the
+  child's own `st:embed:loaded` announcement (verified on production; also covers the
+  child attaching its listener after its load event). Payload mirrors v1.js exactly,
+  including `ref` in the forwarded keys; origin and window handle are both checked
+  before trusting child messages. The child handler is idempotent (skips inputs a form
+  already has), so duplicate sends from these hooks and v1.js are harmless.
+- **`utm-persistence.js` TTL** — stored sets are now `{ t, utm }` with a 12-hour
+  lifetime (`MAX_AGE_MS`). Expired sets — and pre-TTL legacy sets with no timestamp —
+  are discarded and removed on read, which also flushes the stale test set already
+  sitting in browsers. 12h covers a genuine same-day visit chain while killing
+  next-day leaks from restored browser sessions.
+- **`BaseLayout.astro`** — inlines the new script between persistence and v1.js.
+
+Verification (local production build, `astro preview`, headless Chromium):
+
+- v1.js delayed 4s: both embeds (founding-member, Web Basic) still receive all UTM
+  inputs — the race is closed.
+- Cross-page restore, negative control, and normal-speed delivery all unchanged.
+- Expired and legacy stored sets: not restored, not delivered, removed from storage.
+- `node --test` — 30/30 pass (17 persistence incl. TTL cases, 13 delivery).
 
 ## Verification
 

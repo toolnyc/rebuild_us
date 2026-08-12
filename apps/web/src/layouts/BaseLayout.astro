@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import utmPersistence from '../scripts/utm-persistence.js?raw';
+import stEmbedUtm from '../scripts/st-embed-utm.js?raw';
 
 interface Props {
   title?: string;
@@ -18,6 +19,8 @@ const { title = 'Rebuild — The National Disaster Survivors Association' } = As
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- UTM persistence: must run before the Solidarity Tech embed script so restored UTMs are visible to it. Keep parser-blocking (is:inline), never async/defer. -->
     <script is:inline set:html={utmPersistence}></script>
+    <!-- UTM delivery: sends st:embed:context to ST iframes directly, so attribution does not depend on v1.js catching the iframe load event. Also parser-blocking, after persistence. -->
+    <script is:inline set:html={stEmbedUtm}></script>
     <script src="https://act.rebuild.us/embed/v1.js" async></script>
     <!-- Fundraise Up -->
     <script>(function(w,d,s,n,a){if(!w[n]){var l='call,catch,on,once,set,then,track,openCheckout'
