@@ -74,6 +74,14 @@ Two scripts in `apps/web/scripts/`, both deleted after verification:
    the DeepL document API (EN→ES), uploads the result as a Sanity file asset,
    and sets `fileEs`.
 
+The yellow pill headers in the guides are artwork (not a text layer), so DeepL
+could not translate them. They were patched separately: pill regions were
+detected in the rendered pages, OCR'd, translated, and redrawn as overlays
+(same yellow stadium style, Basis Grotesque Pro Bold) onto the DeepL-translated
+PDFs. This was a one-time pixel-surgery pass; if a guide's source design ever
+gets proper Spanish artwork, upload it to `fileEs` and it will simply replace
+the patched version.
+
 Both require a **write-capable** `SANITY_API_TOKEN` in `apps/web/.env` (the
 default token is read-only) plus `DEEPL_API_KEY` for the PDF script.
 
