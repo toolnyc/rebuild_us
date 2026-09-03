@@ -12,7 +12,7 @@ interface Props {
   bgImage?: any;
 }
 
-const { columns = [], bgImage } = Astro.props;
+const { label = "Why join Rebuild today?", columns = [], bgImage } = Astro.props;
 
 const bgUrl = bgImage
   ? urlFor(bgImage).width(1600).height(900).fit('crop').url()
@@ -34,7 +34,7 @@ const bgUrl = bgImage
 
   <div class="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:py-28">
     <h2 class="mb-14 ty-h2 text-center text-white" data-animate="fade">
-      Why join Rebuild today?
+      {label}
     </h2>
 
     <div data-animate-group>

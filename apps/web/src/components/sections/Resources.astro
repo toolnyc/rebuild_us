@@ -16,6 +16,8 @@ interface Props {
   leftCopy?: string;
   items?: ResourceItem[];
   resourcesPageVisible?: boolean;
+  resourcesHref?: string;
+  downloadLabel?: string;
 }
 
 const {
@@ -25,6 +27,8 @@ const {
   leftCopy,
   items: itemsProp,
   resourcesPageVisible = false,
+  resourcesHref = '/resources',
+  downloadLabel = 'Download ↓',
 } = Astro.props;
 
 const items = itemsProp ?? [];
@@ -33,7 +37,7 @@ const leftCopyHtml =
   leftCopy && resourcesPageVisible
     ? leftCopy.replace(
         /rebuild\.us\/resources/,
-        '<a href="/resources" class="link-alt underline">rebuild.us/resources</a>',
+        `<a href="${resourcesHref}" class="link-alt underline">rebuild.us/resources</a>`,
       )
     : leftCopy;
 
@@ -69,11 +73,11 @@ type Section = 'disaster-tipsheets' | 'survivors-communities' | 'fema-government
                   href={item.fileUrl}
                   class="ty-caption font-bold text-ink whitespace-nowrap hover:opacity-70 transition-opacity"
                 >
-                  Download ↓
+                  {downloadLabel}
                 </a>
               ) : (
                 <span class="ty-caption font-bold text-ink/40 whitespace-nowrap">
-                  Download ↓
+                  {downloadLabel}
                 </span>
               )}
             </li>

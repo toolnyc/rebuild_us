@@ -1,9 +1,13 @@
 import { defineType, defineField } from 'sanity';
 
+const esString = (name: string, title: string) =>
+  defineField({ name, title, type: 'string', group: 'es' });
+
 export const siteSettings = defineType({
   name: 'siteSettings',
   title: 'Site Settings',
   type: 'document',
+  groups: [{ name: 'es', title: 'Español' }],
   fields: [
     defineField({
       name: 'showAnnouncement',
@@ -74,6 +78,25 @@ export const siteSettings = defineType({
       title: 'YouTube URL',
       type: 'url',
     }),
+
+    // Español — shared UI labels and announcement copy for the /es/ pages
+    esString('announcementTextEs', 'Announcement text (Español)'),
+    esString('announcementCtaLabelEs', 'Announcement CTA label (Español)'),
+    esString('navResourcesEs', 'Nav "Resources" label (Español)'),
+    esString('navJoinEs', 'Nav "Join" label (Español)'),
+    esString('footerPrivacyEs', 'Footer "Privacy Policy" label (Español)'),
+    esString('footerCopyrightEs', 'Footer copyright line (Español)'),
+    esString('backHomeEs', '"Back home" label (Español)'),
+    esString('videoPlayEs', '"Play video:" label (Español)'),
+    esString('downloadLabelEs', '"Download" label (Español)'),
+    esString('guidesEmptyEs', '"No guides yet." label (Español)'),
+    esString('guidesDisasterTipsheetsEs', 'Guide section "Disaster Tipsheets" (Español)'),
+    esString('guidesSurvivorsEs', 'Guide section "For Survivors & Our Communities" (Español)'),
+    esString('guidesFemaEs', 'Guide section "FEMA & Government Programs" (Español)'),
+    esString('guidesInsuranceEs', 'Guide section "Insurance" (Español)'),
+    esString('statsFoundingEs', 'Stat label "Founding member spots" (Español)'),
+    esString('statsNetworkEs', 'Stat label "Survivor-built network" (Español)'),
+    esString('statsSurvivorsEs', 'Stat label "Disaster survivors" (Español)'),
   ],
   __experimental_actions: ['update', 'publish'],
 });

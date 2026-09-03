@@ -5,17 +5,28 @@ import stEmbedUtm from '../scripts/st-embed-utm.js?raw';
 
 interface Props {
   title?: string;
+  locale?: "en" | "es";
+  canonicalUrl?: string;
+  alternateUrl?: string;
 }
 
-const { title = 'Rebuild — The National Disaster Survivors Association' } = Astro.props;
+const {
+  title = 'Rebuild — The National Disaster Survivors Association',
+  locale = "en",
+  canonicalUrl = Astro.url.href,
+  alternateUrl,
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
+    {alternateUrl && <link rel="alternate" hreflang={locale === "en" ? "es" : "en"} href={alternateUrl} />}
+    {alternateUrl && <link rel="alternate" hreflang={locale} href={canonicalUrl} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- UTM persistence: must run before the Solidarity Tech embed script so restored UTMs are visible to it. Keep parser-blocking (is:inline), never async/defer. -->
     <script is:inline set:html={utmPersistence}></script>

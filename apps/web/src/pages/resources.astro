@@ -6,6 +6,7 @@ import WrittenGuides from "../components/sections/WrittenGuides.astro";
 import VideoLibrary from "../components/sections/VideoLibrary.astro";
 import GetInvolved from "../components/sections/GetInvolved.astro";
 import Footer from "../components/sections/Footer.astro";
+import SmoothScroll from "../components/SmoothScroll.astro";
 import { sanityClient } from "../lib/sanity";
 
 const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
@@ -13,11 +14,11 @@ const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
 const page = await sanityClient.fetch(`*[_type == "resourcesPage"][0]`);
 
 const guides = await sanityClient.fetch(
-  `*[_type == "resourceGuide"]{ title, section, "fileUrl": file.asset->url, order } | order(order asc)`,
+  `*[_type == "resourceGuide"]{ _id, title, section, "fileUrl": file.asset->url, order } | order(order asc)`,
 );
 
 const videos = await sanityClient.fetch(
-  `*[_type == "resourceVideo"]{ title, youtubeUrl, order } | order(order asc)`,
+  `*[_type == "resourceVideo"]{ _id, title, youtubeUrl, order } | order(order asc)`,
 );
 
 const visibility = await sanityClient.fetch(`{
@@ -32,7 +33,7 @@ const visibility = await sanityClient.fetch(`{
 const joinDestination = siteSettings?.joinDestination ?? "#join";
 ---
 
-<BaseLayout title={`${page?.title ?? "Resources"} — Rebuild`}>
+<BaseLayout title={`${page?.title ?? "Resources"} — Rebuild`} canonicalUrl="https://rebuild.us/resources" alternateUrl="https://rebuild.us/es/resources">
   <!-- Sage top strip -->
   <div class="w-full h-[28px] bg-accent-sage"></div>
 
@@ -90,35 +91,13 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
     joinDestination={joinDestination}
     showGive={siteSettings?.showGive}
     visibility={visibility}
+    route="/resources"
   />
+  <SmoothScroll />
 </BaseLayout>
 
 <script>
-  import gsap from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import Lenis from "lenis";
   import { setupMotion } from "../scripts/motion";
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const lenis = new Lenis({ lerp: 0.12 });
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
-
-  const stickyHeader = document.querySelector(".sticky") as HTMLElement | null;
-  const headerOffset = () => -((stickyHeader?.offsetHeight ?? 80) + 16);
-
-  document.querySelectorAll('a[href^="#"]').forEach((link) => {
-    link.addEventListener("click", (e) => {
-      const id = link.getAttribute("href");
-      if (!id || id === "#") return;
-      const target = document.querySelector(id);
-      if (!target) return;
-      e.preventDefault();
-      lenis.scrollTo(target as HTMLElement, { offset: headerOffset() });
-    });
-  });
 
   setupMotion({ page: "resources" });
 </script>
