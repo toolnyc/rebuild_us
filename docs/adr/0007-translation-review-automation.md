@@ -1,6 +1,6 @@
 # 0007 - Sanity review queue with Git-committed translation overrides
 
-- Status: Accepted
+- Status: Superseded by [0008](0008-spanish-as-editor-managed-sanity-fields.md)
 - Date: 2026-07-17
 
 ## Context
