@@ -97,6 +97,9 @@ export const siteSettings = defineType({
     esString('statsFoundingEs', 'Stat label "Founding member spots" (Español)'),
     esString('statsNetworkEs', 'Stat label "Survivor-built network" (Español)'),
     esString('statsSurvivorsEs', 'Stat label "Disaster survivors" (Español)'),
+    esString('statsNetworkValueEs', 'Stat value "Nationwide" (Español)'),
+    esString('statsSurvivorsValueEs', 'Stat value "By & for" (Español)'),
+    esString('followAlongEs', '"Follow along" social heading (Español)'),
   ],
   __experimental_actions: ['update', 'publish'],
 });

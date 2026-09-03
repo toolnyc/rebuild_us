@@ -1,14 +1,18 @@
 ---
 interface Props {
   labels?: [string, string, string];
+  values?: [string, string, string];
 }
 
-const { labels = ["Founding member spots", "Survivor-built network", "Disaster survivors"] } = Astro.props;
+const {
+  labels = ["Founding member spots", "Survivor-built network", "Disaster survivors"],
+  values = ["500", "Nationwide", "By & for"],
+} = Astro.props;
 
 const stats = [
-  { value: '500', label: labels[0] },
-  { value: 'Nationwide', label: labels[1] },
-  { value: 'By & for', label: labels[2] },
+  { value: values[0], label: labels[0] },
+  { value: values[1], label: labels[1] },
+  { value: values[2], label: labels[2] },
 ];
 ---
 

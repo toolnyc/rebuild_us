@@ -18,6 +18,8 @@ const visibility = await sanityClient.fetch(`{ "privacyPage": *[_type == "privac
 // Spanish copy is editor-managed in Sanity `*Es` fields. Fall back to
 // English for anything not yet translated so the page never breaks.
 const es = (spanish: unknown, english: unknown) => spanish ?? english;
+// Solidarity Tech forms carry their own Spanish translations behind ?locale=es.
+const esForm = (src?: string) => (src ? `${src}${src.includes("?") ? "&" : "?"}locale=es` : src);
 const site = siteSettings ?? {};
 const page = resourcesPage ?? {};
 
@@ -54,7 +56,8 @@ const localizedVideos = videos
     <GetInvolved
       copy={es(page.newsletterCopyEs, page.newsletterCopy) as string}
       finePrint={es(page.newsletterFinePrintEs, page.newsletterFinePrint) as string}
-      formSrc={site.getInvolvedFormSrc as string}
+      formSrc={esForm(site.getInvolvedFormSrc as string)}
+      followLabel={site.followAlongEs as string}
       instagramUrl={site.instagramUrl as string}
       facebookUrl={site.facebookUrl as string}
       youtubeUrl={site.youtubeUrl as string}
