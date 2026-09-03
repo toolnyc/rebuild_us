@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-const origin = "https://rebuild.us";
+const origin = "https://www.rebuild.us";
 const routes = ["/", "/resources", "/privacy"];
 
 export const GET: APIRoute = async () => {

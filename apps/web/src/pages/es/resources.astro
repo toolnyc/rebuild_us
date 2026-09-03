@@ -36,7 +36,7 @@ const localizedVideos = videos
   .map((video: { titleEs: string }) => ({ ...video, title: video.titleEs }));
 ---
 
-<BaseLayout locale="es" title={`${es(page.titleEs, page.title)} — Rebuild`} canonicalUrl="https://rebuild.us/es/resources" alternateUrl="https://rebuild.us/resources">
+<BaseLayout locale="es" title={`${es(page.titleEs, page.title)} — Rebuild`} canonicalUrl="https://www.rebuild.us/es/resources" alternateUrl="https://www.rebuild.us/resources">
   <div class="w-full h-[28px] bg-accent-sage"></div>
   <div class="sticky top-0 z-50"><Nav locale="es" route="/resources" joinDestination={site.joinDestination as string} labels={{ resources: site.navResourcesEs, join: site.navJoinEs }} /></div>
   <main>

@@ -16,7 +16,7 @@ const site = siteSettings ?? {};
 const page = privacyPage ?? {};
 ---
 
-<BaseLayout locale="es" title={`${es(page.titleEs, page.title)} — Rebuild`} canonicalUrl="https://rebuild.us/es/privacy" alternateUrl="https://rebuild.us/privacy">
+<BaseLayout locale="es" title={`${es(page.titleEs, page.title)} — Rebuild`} canonicalUrl="https://www.rebuild.us/es/privacy" alternateUrl="https://www.rebuild.us/privacy">
   <div class="w-full h-[28px] bg-accent-sage"></div>
   <div class="sticky top-0 z-50"><Nav locale="es" route="/privacy" joinDestination={site.joinDestination as string} labels={{ resources: site.navResourcesEs, join: site.navJoinEs }} /></div>
   <main class="mx-auto max-w-3xl px-6 py-20"><h1 class="ty-h1">{es(page.titleEs, page.title)}</h1><div class="prose mt-8 text-ink [&_p]:mt-4"><RichText value={es(page.bodyEs, page.body) as never} /></div></main>

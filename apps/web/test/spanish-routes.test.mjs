@@ -13,7 +13,7 @@ import { dirname, join } from "node:path";
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
 const read = (path) => readFileSync(join(dist, path), "utf8");
 
-const origin = "https://rebuild.us";
+const origin = "https://www.rebuild.us";
 const routes = [
   { en: "/", es: "/es/", enFile: "index.html", esFile: "es/index.html" },
   { en: "/resources", es: "/es/resources", enFile: "resources/index.html", esFile: "es/resources/index.html" },
