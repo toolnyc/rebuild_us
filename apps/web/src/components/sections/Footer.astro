@@ -4,9 +4,16 @@ import Logo from '../Logo.astro';
 interface Props {
   joinDestination?: string;
   visibility?: Record<string, boolean>;
+  locale?: "en" | "es";
+  route?: "/" | "/resources" | "/privacy";
+  labels?: { privacy?: string; copyright?: string };
 }
 
-const { joinDestination = '#join', visibility = {} } = Astro.props;
+const { joinDestination = '#join', visibility = {}, locale = "en", route = "/", labels = {} } = Astro.props;
+const homeRoute = locale === "es" ? "/es/" : "/";
+const privacyRoute = locale === "es" ? "/es/privacy" : "/privacy";
+const switchRoute = locale === "es" ? route : route === "/" ? "/es/" : `/es${route}`;
+const switchLabel = locale === "en" ? "Español" : "English";
 ---
 
 <!--
@@ -19,20 +26,21 @@ const { joinDestination = '#join', visibility = {} } = Astro.props;
   style="clip-path: polygon(0% 0%, 10% 0%, calc(10% + 39.5px) 42px, calc(10% + 79px) 0%, 100% 0%, 100% 100%, 0% 100%);"
 >
   <div class="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6 py-16" data-animate="fade">
-    <a href="/"><Logo class="h-24 sm:h-32 w-auto" /></a>
+    <a href={homeRoute}><Logo class="h-24 sm:h-32 w-auto" /></a>
   </div>
 
   <div class="border-t border-ink/30 w-full">
     <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 ty-caption text-ink sm:flex-row">
-      <span>© 2026 Rebuild — The National Disaster Survivors Association</span>
+      <span>{labels.copyright ?? "© 2026 Rebuild — The National Disaster Survivors Association"}</span>
       <div class="flex items-center gap-4">
         {
           visibility.privacyPage && (
-            <a href="/privacy" class="hover:underline">
-              Privacy Policy
+            <a href={privacyRoute} class="hover:underline">
+              {labels.privacy ?? "Privacy Policy"}
             </a>
           )
         }
+        <a href={switchRoute} class="hover:underline">{switchLabel}</a>
         {
           visibility.contactPage && (
             <a href="/contact" class="hover:underline">

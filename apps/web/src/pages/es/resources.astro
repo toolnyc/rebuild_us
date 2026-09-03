@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import TornEdge from "../../components/TornEdge.astro";
+import WrittenGuides from "../../components/sections/WrittenGuides.astro";
+import VideoLibrary from "../../components/sections/VideoLibrary.astro";
+import GetInvolved from "../../components/sections/GetInvolved.astro";
+import Footer from "../../components/sections/Footer.astro";
+import SmoothScroll from "../../components/SmoothScroll.astro";
+import { sanityClient } from "../../lib/sanity";
+
+const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+const resourcesPage = await sanityClient.fetch(`*[_type == "resourcesPage"][0]`);
+const guides = await sanityClient.fetch(`*[_type == "resourceGuide"]{ _id, title, titleEs, section, "fileUrl": file.asset->url, "fileUrlEs": fileEs.asset->url, order } | order(order asc)`);
+const videos = await sanityClient.fetch(`*[_type == "resourceVideo"]{ _id, title, titleEs, youtubeUrl, order } | order(order asc)`);
+const visibility = await sanityClient.fetch(`{ "privacyPage": *[_type == "privacyPage"][0].visible }`);
+
+// Spanish copy is editor-managed in Sanity `*Es` fields. Fall back to
+// English for anything not yet translated so the page never breaks.
+const es = (spanish: unknown, english: unknown) => spanish ?? english;
+// Solidarity Tech forms carry their own Spanish translations behind ?locale=es.
+const esForm = (src?: string) => (src ? `${src}${src.includes("?") ? "&" : "?"}locale=es` : src);
+const site = siteSettings ?? {};
+const page = resourcesPage ?? {};
+
+// Guides and videos are omitted entirely until they have a Spanish title.
+const localizedGuides = guides
+  .filter((guide: { titleEs?: string }) => guide.titleEs)
+  .map((guide: { titleEs: string; fileUrl?: string; fileUrlEs?: string }) => ({
+    ...guide,
+    title: guide.titleEs,
+    fileUrl: guide.fileUrlEs ?? guide.fileUrl,
+  }));
+const localizedVideos = videos
+  .filter((video: { titleEs?: string }) => video.titleEs)
+  .map((video: { titleEs: string }) => ({ ...video, title: video.titleEs }));
+---
+
+<BaseLayout locale="es" title={`${es(page.titleEs, page.title)} — Rebuild`} canonicalUrl="https://rebuild.us/es/resources" alternateUrl="https://rebuild.us/resources">
+  <div class="w-full h-[28px] bg-accent-sage"></div>
+  <div class="sticky top-0 z-50"><Nav locale="es" route="/resources" joinDestination={site.joinDestination as string} labels={{ resources: site.navResourcesEs, join: site.navJoinEs }} /></div>
+  <main>
+    <section class="bg-accent-yellow px-6 pt-20 pb-0 lg:pt-28"><div class="mx-auto max-w-7xl"><h1 class="ty-display">{es(page.heroHeadlineEs, page.heroHeadline)}</h1>{es(page.heroSubcopyEs, page.heroSubcopy) && <p class="mt-6 max-w-2xl ty-lead">{es(page.heroSubcopyEs, page.heroSubcopy)}</p>}</div></section>
+    <TornEdge position="bottom" color="var(--color-accent-yellow)" />
+    <WrittenGuides
+      guides={localizedGuides}
+      labels={{
+        "disaster-tipsheets": site.guidesDisasterTipsheetsEs as string,
+        "survivors-communities": site.guidesSurvivorsEs as string,
+        "fema-government": site.guidesFemaEs as string,
+        insurance: site.guidesInsuranceEs as string,
+        empty: site.guidesEmptyEs as string,
+      }}
+    />
+    <VideoLibrary heading={es(page.videoLibraryHeadingEs, page.videoLibraryHeading) as string} videos={localizedVideos} playLabel={site.videoPlayEs as string} />
+    <GetInvolved
+      copy={es(page.newsletterCopyEs, page.newsletterCopy) as string}
+      finePrint={es(page.newsletterFinePrintEs, page.newsletterFinePrint) as string}
+      formSrc={esForm(site.getInvolvedFormSrc as string)}
+      followLabel={site.followAlongEs as string}
+      instagramUrl={site.instagramUrl as string}
+      facebookUrl={site.facebookUrl as string}
+      youtubeUrl={site.youtubeUrl as string}
+    />
+  </main>
+  <Footer locale="es" route="/resources" visibility={visibility} labels={{ privacy: site.footerPrivacyEs, copyright: site.footerCopyrightEs }} />
+  <SmoothScroll />
+</BaseLayout>
+
+<script>
+  import { setupMotion } from "../../scripts/motion";
+
+  setupMotion({ page: "resources" });
+</script>

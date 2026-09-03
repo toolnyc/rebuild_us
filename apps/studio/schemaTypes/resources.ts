@@ -31,6 +31,17 @@ export const resourceGuide = defineType({
       type: "file",
       options: { accept: ".pdf" },
     }),
+    defineField({
+      name: "titleEs",
+      title: "Title (Español)",
+      type: "string",
+    }),
+    defineField({
+      name: "fileEs",
+      title: "PDF file (Español)",
+      type: "file",
+      options: { accept: ".pdf" },
+    }),
     defineField({ name: "order", title: "Order", type: "number" }),
   ],
   orderings: [
@@ -62,6 +73,11 @@ export const resourceVideo = defineType({
       title: "YouTube URL",
       type: "url",
       validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "titleEs",
+      title: "Title (Español)",
+      type: "string",
     }),
     defineField({ name: "order", title: "Order", type: "number" }),
   ],

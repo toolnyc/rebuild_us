@@ -12,11 +12,12 @@ const highlightDecorator = {
   value: "highlight",
 };
 
-const richText = (name: string, title: string) =>
+const richText = (name: string, title: string, group?: string) =>
   defineField({
     name,
     title,
     type: "array",
+    ...(group ? { group } : {}),
     of: [
       {
         type: "block",
@@ -52,6 +53,7 @@ export const splashPage = defineType({
     { name: "whyJoin", title: "Why Join" },
     { name: "resources", title: "Resources" },
     { name: "getInvolved", title: "Get Involved" },
+    { name: "es", title: "Español" },
   ],
   fields: [
     defineField({
@@ -157,6 +159,8 @@ export const splashPage = defineType({
           fields: [
             { name: "title", title: "Title", type: "string" },
             { name: "body", title: "Body", type: "text", rows: 4 },
+            { name: "titleEs", title: "Title (Español)", type: "string" },
+            { name: "bodyEs", title: "Body (Español)", type: "text", rows: 4 },
           ],
           preview: { select: { title: "title" } },
         },
@@ -206,6 +210,35 @@ export const splashPage = defineType({
       type: "string",
       group: "getInvolved",
     }),
+
+    // Español
+    ...[
+      ["heroHeadlineEs", "Hero headline (leading) (Español)"],
+      ["heroHeadlineAccentEs", "Hero headline accent (italic) (Español)"],
+      ["heroSubcopyEs", "Hero subcopy (Español)"],
+      ["heroImageCaptionEs", "Hero image caption (Español)"],
+      ["aboutLabelEs", "About eyebrow label (Español)"],
+      ["aboutSupportEs", "About supporting paragraph (Español)"],
+      ["foundingLabelEs", "Founding eyebrow label (Español)"],
+      ["foundingCtaHeadlineEs", "Founding CTA headline (Español)"],
+      ["foundingCtaSubcopyEs", "Founding CTA subcopy (Español)"],
+      ["benefitsLabelEs", "Why Join eyebrow label (Español)"],
+      ["resourcesLabelEs", "Resources eyebrow label (Español)"],
+      ["resourcesHeadlineEs", "Resources headline (Español)"],
+      ["getInvolvedCopyEs", "Get Involved copy (Español)"],
+      ["getInvolvedFinePrintEs", "Get Involved fine print (Español)"],
+    ].map(([name, title]) =>
+      defineField({ name, title, type: "string", group: "es" }),
+    ),
+    defineField({
+      name: "resourcesLeftCopyEs",
+      title: "Resources intro copy (Español)",
+      type: "text",
+      rows: 3,
+      group: "es",
+    }),
+    richText("aboutStatementEs", "About statement (Español)", "es"),
+    richText("resourcesSubcopyEs", "Resources subcopy (Español)", "es"),
   ],
   __experimental_actions: ["update", "publish"],
 });
@@ -225,6 +258,17 @@ export const privacyPage = defineType({
     defineField({
       name: "body",
       title: "Body",
+      type: "array",
+      of: [{ type: "block" }],
+    }),
+    defineField({
+      name: "titleEs",
+      title: "Title (Español)",
+      type: "string",
+    }),
+    defineField({
+      name: "bodyEs",
+      title: "Body (Español)",
       type: "array",
       of: [{ type: "block" }],
     }),
@@ -300,6 +344,30 @@ export const resourcesPage = defineType({
       name: "newsletterFinePrint",
       title: "Newsletter fine print",
       type: "string",
+    }),
+
+    // Español
+    ...[
+      ["titleEs", "Title (Español)"],
+      ["heroHeadlineEs", "Hero headline (Español)"],
+      ["writtenGuidesHeadingEs", "Written Guides heading (Español)"],
+      ["videoLibraryHeadingEs", "Video Library heading (Español)"],
+      ["newsletterCopyEs", "Newsletter copy (Español)"],
+      ["newsletterFinePrintEs", "Newsletter fine print (Español)"],
+    ].map(([name, title]) =>
+      defineField({ name, title, type: "string" }),
+    ),
+    defineField({
+      name: "heroSubcopyEs",
+      title: "Hero subcopy (Español)",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
+      name: "writtenGuidesSubcopyEs",
+      title: "Written Guides subcopy (Español)",
+      type: "text",
+      rows: 3,
     }),
   ],
   __experimental_actions: ["update", "publish"],

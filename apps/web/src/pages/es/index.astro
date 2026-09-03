@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import Hero from "../../components/sections/Hero.astro";
+import Stats from "../../components/sections/Stats.astro";
+import About from "../../components/sections/About.astro";
+import FoundingCta from "../../components/sections/FoundingCta.astro";
+import WhyJoin from "../../components/sections/WhyJoin.astro";
+import Resources from "../../components/sections/Resources.astro";
+import GetInvolved from "../../components/sections/GetInvolved.astro";
+import Footer from "../../components/sections/Footer.astro";
+import SmoothScroll from "../../components/SmoothScroll.astro";
+import { sanityClient } from "../../lib/sanity";
+
+const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+const splash = await sanityClient.fetch(`*[_type == "splashPage"][0]{
+  ...,
+  featuredResources[]->{ _id, title, titleEs, section, "fileUrl": file.asset->url, "fileUrlEs": fileEs.asset->url }
+}`);
+const visibility = await sanityClient.fetch(`{ "privacyPage": *[_type == "privacyPage"][0].visible }`);
+
+// Spanish copy is editor-managed in Sanity `*Es` fields. Fall back to
+// English for anything not yet translated so the page never breaks.
+const es = (spanish: unknown, english: unknown) => spanish ?? english;
+// Solidarity Tech forms carry their own Spanish translations behind ?locale=es.
+const esForm = (src?: string) => (src ? `${src}${src.includes("?") ? "&" : "?"}locale=es` : src);
+const site = siteSettings ?? {};
+const page = splash ?? {};
+
+const navLabels = { resources: site.navResourcesEs, join: site.navJoinEs };
+const footerLabels = { privacy: site.footerPrivacyEs, copyright: site.footerCopyrightEs };
+
+const columns = (page.whyJoinColumns ?? []).map((column: { title?: string; body?: string; titleEs?: string; bodyEs?: string }) => ({
+  ...column,
+  title: es(column.titleEs, column.title),
+  body: es(column.bodyEs, column.body),
+}));
+
+const items = (page.featuredResources ?? [])
+  .filter((guide: { titleEs?: string }) => guide.titleEs)
+  .map((guide: { title?: string; titleEs?: string; fileUrl?: string; fileUrlEs?: string }) => ({
+    ...guide,
+    title: guide.titleEs,
+    fileUrl: guide.fileUrlEs ?? guide.fileUrl,
+  }));
+---
+
+<BaseLayout
+  locale="es"
+  title={`${es(page.heroHeadlineEs, page.heroHeadline)} — Rebuild`}
+  canonicalUrl="https://rebuild.us/es/"
+  alternateUrl="https://rebuild.us/"
+>
+  <div class="w-full h-[28px] bg-accent-sage"></div>
+  <div class="sticky top-0 z-50"><Nav locale="es" route="/" joinDestination={site.joinDestination as string} labels={navLabels} /></div>
+  <main>
+    <Hero headline={es(page.heroHeadlineEs, page.heroHeadline) as string} headlineAccent={es(page.heroHeadlineAccentEs, page.heroHeadlineAccent) as string} subcopy={es(page.heroSubcopyEs, page.heroSubcopy) as string} image={page.heroImage} imageAlt={page.heroImage?.alt} joinDestination={site.joinDestination as string} joinLabel={site.navJoinEs as string} />
+    <Stats labels={[site.statsFoundingEs, site.statsNetworkEs, site.statsSurvivorsEs].map((label, index) => label ?? ["Founding member spots", "Survivor-built network", "Disaster survivors"][index]) as [string, string, string]} values={["500", site.statsNetworkValueEs ?? "Nationwide", site.statsSurvivorsValueEs ?? "By & for"] as [string, string, string]} />
+    <About label={es(page.aboutLabelEs, page.aboutLabel) as string} statement={es(page.aboutStatementEs, page.aboutStatement) as never} support={es(page.aboutSupportEs, page.aboutSupport) as string} />
+    <FoundingCta label={es(page.foundingLabelEs, page.foundingLabel) as string} headline={es(page.foundingCtaHeadlineEs, page.foundingCtaHeadline) as string} subcopy={es(page.foundingCtaSubcopyEs, page.foundingCtaSubcopy) as string} formSrc={esForm(site.foundingMemberFormSrc as string)} fundraiseUpCampaignId={site.fundraiseUpCampaignId as string} />
+    <WhyJoin label={es(page.benefitsLabelEs, page.benefitsLabel) as string} columns={columns} bgImage={page.whyJoinBgImage} />
+    <Resources label={es(page.resourcesLabelEs, page.resourcesLabel) as string} headline={es(page.resourcesHeadlineEs, page.resourcesHeadline) as string} subcopy={es(page.resourcesSubcopyEs, page.resourcesSubcopy) as never} leftCopy={es(page.resourcesLeftCopyEs, page.resourcesLeftCopy) as string} items={items} resourcesPageVisible={true} resourcesHref="/es/resources" downloadLabel={site.downloadLabelEs as string} />
+    <GetInvolved copy={es(page.getInvolvedCopyEs, page.getInvolvedCopy) as string} finePrint={es(page.getInvolvedFinePrintEs, page.getInvolvedFinePrint) as string} formSrc={esForm(site.getInvolvedFormSrc as string)} followLabel={site.followAlongEs as string} instagramUrl={site.instagramUrl as string} facebookUrl={site.facebookUrl as string} youtubeUrl={site.youtubeUrl as string} />
+  </main>
+  <Footer locale="es" route="/" visibility={visibility} labels={footerLabels} />
+  <SmoothScroll />
+</BaseLayout>
+
+<script>
+  import gsap from "gsap";
+  import { setupMotion } from "../../scripts/motion";
+
+  const announcement = document.querySelector("[data-announcement]");
+  if (announcement) {
+    gsap.from(announcement, {
+      autoAlpha: 0,
+      duration: 0.6,
+      ease: "power3.out",
+      delay: 1.4,
+      clearProps: "opacity,visibility",
+    });
+  }
+
+  setupMotion({ page: "splash" });
+</script>

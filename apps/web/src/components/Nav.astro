@@ -5,31 +5,49 @@ import Logo from './Logo.astro';
 interface Props {
   joinDestination?: string;
   resourcesDestination?: string;
+  locale?: "en" | "es";
+  route?: "/" | "/resources" | "/privacy";
+  labels?: { resources?: string; join?: string };
 }
 
 const {
   joinDestination = '#join',
   resourcesDestination = '#resources',
+  locale = "en",
+  route = "/",
+  labels = {},
 } = Astro.props;
+
+const localizedRoute = (targetLocale: "en" | "es") => {
+  if (targetLocale === locale) return route;
+  if (targetLocale === "es") return route === "/" ? "/es/" : `/es${route}`;
+  return route;
+};
+const homeRoute = locale === "es" ? "/es/" : "/";
+const resourcesRoute = locale === "es" ? "/es/resources" : resourcesDestination;
+const resourcesLabel = labels.resources ?? "Resources";
+const joinLabel = labels.join ?? "Join Rebuild";
+const switchLabel = locale === "en" ? "Español" : "English";
 ---
 
 <header class="border-b border-ink/10 bg-white/95 backdrop-blur relative z-50">
   <nav class="mx-auto flex max-w-7xl items-center px-4 py-3 sm:px-6 sm:py-4">
     <!-- Desktop left -->
     <div class="hidden sm:flex flex-1 items-center justify-start">
-      <a href={resourcesDestination} class="border-2 border-accent-orange text-accent-orange text-[0.875rem] font-bold px-3 py-1 rounded-[var(--radius)] transition hover:bg-accent-orange hover:text-white">Resources</a>
+      <a href={resourcesRoute} class="border-2 border-accent-orange text-accent-orange text-[0.875rem] font-bold px-3 py-1 rounded-[var(--radius)] transition hover:bg-accent-orange hover:text-white">{resourcesLabel}</a>
     </div>
 
     <!-- Mobile: spacer to balance hamburger -->
     <div class="flex sm:hidden flex-1"></div>
 
-    <a href="/" aria-label="Rebuild home" class="shrink-0">
+    <a href={homeRoute} aria-label="Rebuild home" class="shrink-0">
       <Logo />
     </a>
 
     <!-- Desktop right -->
     <div class="hidden sm:flex flex-1 items-center justify-end gap-4">
-      <Button href={joinDestination} variant="small">Join</Button>
+      <Button href={joinDestination} variant="small">{joinLabel}</Button>
+      <a href={localizedRoute(locale === "en" ? "es" : "en")} class="text-sm font-bold hover:text-accent-orange">{switchLabel}</a>
     </div>
 
     <!-- Mobile hamburger -->
@@ -60,7 +78,7 @@ const {
   class="fixed inset-0 z-50 flex flex-col bg-white translate-x-full transition-transform duration-300 sm:hidden"
 >
   <div class="flex items-center justify-between px-4 py-3 border-b border-ink/10">
-    <a href="/" aria-label="Rebuild home" onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')">
+    <a href={homeRoute} aria-label="Rebuild home" onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')">
       <Logo />
     </a>
     <button
@@ -77,10 +95,11 @@ const {
 
   <nav class="flex flex-col gap-4 px-6 py-8">
     <a
-      href={resourcesDestination}
+      href={resourcesRoute}
       class="ty-h2 text-ink hover:text-accent-orange transition-colors"
       onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')"
-    >Resources</a>
+    >{resourcesLabel}</a>
+    <a href={localizedRoute(locale === "en" ? "es" : "en")} class="ty-body font-bold hover:text-accent-orange">{switchLabel}</a>
 
   </nav>
 
@@ -89,7 +108,7 @@ const {
       href={joinDestination}
       class="flex items-center justify-center w-full bg-accent-orange text-white font-bold text-lg py-4 rounded-[var(--radius)] hover:opacity-90 transition"
       onclick="document.getElementById('mobile-nav').classList.add('translate-x-full')"
-    >Join Rebuild</a>
+    >{joinLabel}</a>
   </div>
 </div>
 

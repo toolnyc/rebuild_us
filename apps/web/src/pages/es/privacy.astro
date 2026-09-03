@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/sections/Footer.astro";
+import RichText from "../../components/RichText.astro";
+import { sanityClient } from "../../lib/sanity";
+
+const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+const privacyPage = await sanityClient.fetch(`*[_type == "privacyPage"][0]`);
+const visibility = await sanityClient.fetch(`{ "privacyPage": *[_type == "privacyPage"][0].visible }`);
+
+// Spanish copy is editor-managed in Sanity `*Es` fields. Fall back to
+// English for anything not yet translated so the page never breaks.
+const es = (spanish: unknown, english: unknown) => spanish ?? english;
+const site = siteSettings ?? {};
+const page = privacyPage ?? {};
+---
+
+<BaseLayout locale="es" title={`${es(page.titleEs, page.title)} — Rebuild`} canonicalUrl="https://rebuild.us/es/privacy" alternateUrl="https://rebuild.us/privacy">
+  <div class="w-full h-[28px] bg-accent-sage"></div>
+  <div class="sticky top-0 z-50"><Nav locale="es" route="/privacy" joinDestination={site.joinDestination as string} labels={{ resources: site.navResourcesEs, join: site.navJoinEs }} /></div>
+  <main class="mx-auto max-w-3xl px-6 py-20"><h1 class="ty-h1">{es(page.titleEs, page.title)}</h1><div class="prose mt-8 text-ink [&_p]:mt-4"><RichText value={es(page.bodyEs, page.body) as never} /></div></main>
+  <Footer locale="es" route="/privacy" visibility={visibility} labels={{ privacy: site.footerPrivacyEs, copyright: site.footerCopyrightEs }} />
+</BaseLayout>

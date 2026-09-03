@@ -1,6 +1,6 @@
 # 0006 - Build-time translation tables
 
-- Status: Accepted
+- Status: Superseded by [0008](0008-spanish-as-editor-managed-sanity-fields.md)
 - Date: 2026-07-17
 
 ## Context
