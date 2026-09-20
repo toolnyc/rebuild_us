@@ -1,3 +1,5 @@
+> **Where things live** - Client: NewWorld | Bucket: `clients/NewWorld/` | Dropbox: `_Clients/NewWorld/` | Registry: `~/Code/toolhub/CoS/REGISTRY.md`
+
 # REBUILD.US
 
 Re-development of [rebuild.us](https://rebuild.us) for newworld.inc. This is a rebrand and full information-architecture change from the current WordPress site to a new "national association for disaster survivors" positioning.
