@@ -20,8 +20,6 @@ _Avoid_: charity, fund (when describing the org itself)
 
 **Founding member**:
 A disaster survivor who joins the association during its founding phase ("Become a Founding Member"). Gets early access to trainings, member calls, legislative updates, and resources. The Phase 1 splash page targets 500 founding members via a Solidarity Tech signup form.
-_Note:_ "member" collides with ClaimReady's own **member / associate / professional** tier vocabulary. Our member is an association identity; theirs is a ClaimReady account tier. Keep the two senses distinct in code and copy.
-
 **Resource**:
 Content that helps people prepare for and respond to a disaster and navigate recovery. The umbrella term is realized as two Sanity document types (see ADR-0003):
 
@@ -47,13 +45,13 @@ An endorsement quote from an advisory-board member or partner-organization leade
 A time-stamped update published under News. Carries a **vertical** (a tag used for grouping/filtering).
 
 **Claims Ready** (our page) / **ClaimReady** (the vendor):
-"Claims Ready" (with "s") is the rebuild.us page and program. "ClaimReady" (no space, no "s") is the third-party vendor product — a white-label policy-scan tool (upload a policy → AI coverage-gap analysis → hosted report). In Phase 1 the Claims Ready page is a static "Coming Soon" section with a link to claimreadyapp.com. Phase 2 integrates the ClaimReady API server-side (see ADR-0002). Always keep the two names distinct in code, copy, and route names.
+"Claims Ready" (with "s") is the rebuild.us page and program. "ClaimReady" (no space, no "s") is the third-party vendor product — a white-label policy-scan tool (upload a policy → AI coverage-gap analysis → hosted report). The Claims Ready page is a static "Coming Soon" section with a link to claimreadyapp.com. Always keep the two names distinct in code, copy, and route names.
 
 **Rebuild Foundation**:
 A nav destination referring to the foundation entity (currently TBD — hidden via Sanity `siteSettings` in Phase 1).
 
 **Solidarity Tech**:
-The CRM and form platform used by rebuild.us. The Solidarity Tech instance is hosted at `act.rebuild.us`. In Phase 1 it provides an iframe embed for the founding-member signup form; on submission it fires a bubbling DOM event (`st:embed:submitted`) on `document` that triggers the Fundraise Up handoff. In Phase 2 it is the primary CRM, with bidirectional member data sync to Neon.
+The CRM and form platform used by rebuild.us. The Solidarity Tech instance is hosted at `act.rebuild.us`. It provides iframe embeds for the founding-member signup and Get Involved forms; on submission the founding-member embed fires a bubbling DOM event (`st:embed:submitted`) on `document` that triggers the Fundraise Up handoff (see ADR-0005). UTM parameters on inbound links are persisted and forwarded into form submissions for campaign attribution (see ADR-0009).
 _Avoid_: "Action Network" as a synonym — these are two distinct platforms.
 
 **Fundraise Up**:
@@ -62,31 +60,11 @@ The payment processing platform used for donations. Integrated via an org-specif
 **Phase 1 / splash**:
 The launch-ready static splash page at rebuild.us. Single long-scroll page, centered logo only in nav, Solidarity Tech founding-member form embed, no user auth or backend. Replaces the current WordPress site on deploy.
 
-**Phase 2 / full site**:
-The full rebuild.us product with user auth (Clerk), relational database (Neon), hybrid SSR (Astro + Vercel adapter), ClaimReady integration, and CMS-driven content pages.
-
-**Translation table**:
-An immutable, version-controlled build artifact that maps canonical English content
-keys to a target locale's translated messages. Keys are semantic and scoped by their
-content owner, not derived from source text or a page payload. It is generated from
-English source content and may be superseded by a separate human-reviewed override.
-It is not an editor-managed CMS localization field or a runtime cache.
-
-**Translation message**:
-One locale-specific value in a Translation table. Each message records the hash of
-the English source it represents and its quality status: **machine** after automated
-generation, **reviewed** after human approval, or **stale** when translation
-generation fails and the prior Spanish message is retained. A changed English source
-is served from a fresh machine translation while review is pending.
-
-**Translation review**:
-A Sanity-managed review task for one locale and one content owner, such as a public
-page, guide, or news article. It groups all newly machine-translated or changed
-messages for that owner with their English snapshots and source hashes. A
-non-technical reviewer may edit and approve the messages; approval is validated by
-automation and committed to the corresponding version-controlled Translation table
-override. A Translation review is a workflow record, not a localized field on the
-source content document or a deployed source of truth.
+**Spanish (`es`) fields**:
+Editor-managed translations live as parallel `*Es` fields on the same Sanity
+documents as the English source (see ADR-0008). Pages under `/es/` render from
+these fields, falling back to English when a translation is empty (the `es()`
+helper in `apps/web/src/lib/`). There is no build-time translation pipeline.
 
 ## Relationships
 
@@ -95,13 +73,8 @@ source content document or a deployed source of truth.
 - A **Guide** belongs to one **section** (one of four locked values); a **Video** has no section.
 - The splash features a curated, ordered subset of **Guides** (referenced from the splash page).
 - **Testimonials** and **Impact stories** are reused across multiple pages.
-- A **Translation table** maps canonical English content keys to one target locale;
-  a human-reviewed override takes precedence over its generated message.
-- A **Translation message** corresponds to one English-source hash and has one
-  quality status. A stale message retains an older source hash until generation
-  recovers.
-- A **Translation review** groups pending review messages for one content owner and
-  locale; an approved review may produce hash-matched Translation table overrides.
+- Each **`es` field** mirrors the English field on the same document; an empty `es`
+  value falls back to English at render time.
 
 ## Flagged ambiguities
 
@@ -110,7 +83,7 @@ source content document or a deployed source of truth.
 - **Claims Ready** vs **ClaimReady** — resolved: "Claims Ready" (with "s") is our page/program; "ClaimReady" (no space) is the vendor. See term definitions above.
 - **Rebuild Foundation** page scope — still TBD; hidden in Phase 1.
 - **Organization name** — resolved: short name **Rebuild**; canonical descriptor **The National Disaster Survivors Association** (hardcoded lockup in nav/footer/copyright).
-- **Identity / auth** — resolved: Phase 2 uses Clerk (phone/email OTP) for real user accounts. Phase 1 has no auth. See ADR-0002.
+- **Identity / auth** — the current site has no auth and no user accounts.
 - **Newsletter signup** — resolved: reuses the Get Involved Solidarity Tech embed (`getInvolvedFormSrc`) with page-specific copy, rendered via the shared Get Involved section.
 - **Resource content model** — resolved: two document types (**Guide** + **Video**) rather than a single Resource-with-format. See ADR-0003.
 - **Resources destination** — resolved: `resourcesDestination` points to `/resources` once the Resources page is visible (was `#resources` on the splash).

@@ -34,8 +34,9 @@ provenance without coupling the table format to a vendor.
 Spanish routes use `/es/` prefixes and canonical English slugs. Localized slugs are
 outside this decision.
 
-The normative contract is in
-[`docs/buildtime-translation-table-spec.md`](../buildtime-translation-table-spec.md).
+The normative contract was recorded in
+`docs/buildtime-translation-table-spec.md`, since removed — this design was never
+built (superseded by [0008](0008-spanish-as-editor-managed-sanity-fields.md)).
 
 ## Alternatives considered
 

@@ -5,10 +5,9 @@ truth for brand fonts, color tokens, radius, the type scale, and the shared
 component layer. Rationale and the decisions behind the overhaul live in
 [ADR-0004](./adr/0004-design-system-overhaul.md); this file is the living catalog.
 
-> **Status:** specification. The tokens, `@font-face` rules, component specs, and the
-> Solidarity Tech `<style>` block below are the approved target. They are documented
-> here first; applying them to `apps/web/src/styles/global.css`, the components, and
-> the live ST HTML is a separate implementation task.
+> **Status:** live. This catalog reflects the shipped site: the tokens and
+> `@font-face` rules are in `apps/web/src/styles/global.css`, and the component
+> layer is in `apps/web/src/components/`.
 
 Design source: Figma — Rebuild Splash
 ([palette](https://www.figma.com/design/LC4ZJUQYVgnoGltxEuElHN/Rebuild-Splash?node-id=34-167),

@@ -1,6 +1,6 @@
 # Solidarity Tech Form Styling Reference
 
-Inventory of every styleable element on the two Solidarity Tech forms embedded on the splash page, so the styling CSS can be written when the live forms are final. This catalogues **how** to target each element (mechanism + selectors), not what visual treatment to apply. Owner: Pete (see `build-plan.md`, "Ownership & dependencies").
+Inventory of every styleable element on the two Solidarity Tech forms embedded on the splash page, so the styling CSS can be written when the live forms are final. This catalogues **how** to target each element (mechanism + selectors), not what visual treatment to apply. Owner: Pete.
 
 ## How styling is applied
 

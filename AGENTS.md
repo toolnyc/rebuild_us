@@ -6,17 +6,16 @@ Re-development of [rebuild.us](https://rebuild.us) for newworld.inc. This is a r
 
 See `CONTEXT.md` for the domain language and `docs/adr/` for architectural decisions (start with `docs/adr/0001-stack.md`).
 
-## Stack (decided, not yet scaffolded)
+## Stack
 
-- **Frontend:** Astro hybrid mode (SSG default, SSR opt-in via Vercel adapter from Phase 1), Tailwind CSS v4 with brand design tokens
-- **CMS:** Sanity (Studio on Sanity hosting); document types — `siteSettings`, `splashPage`, `privacyPage`, `resourcesPage`, `aboutPage`, `newsPage`, `contactPage`, `caseStudiesPage`, `memberPortalPage` (stubs with `visible` flag, Phase 1), `newsArticle`, `resource`, `impactStory`, `testimonial`, `person` (Phase 2 content types)
+- **Frontend:** Astro `output: 'static'` with the Vercel adapter, Tailwind CSS v4 with brand design tokens (`docs/design-system.md`)
+- **CMS:** Sanity (Studio on Sanity hosting); document types — `siteSettings`, `splashPage`, `privacyPage`, `resourcesPage`, `resourceGuide`, `resourceVideo`. Spanish is editor-managed via parallel `*Es` fields (ADR-0008)
 - **Structure:** pnpm-workspace monorepo (`apps/web`, `apps/studio`)
-- **Hosting:** Vercel, rebuilt on publish via Sanity webhook → Vercel deploy hook
-- **Integrations (Phase 1):** Solidarity Tech — founding-member signup form embed (`act.rebuild.us`) and get-involved form embed (`act.rebuild.us/join-rebuild`)
-- **Integrations (Phase 2):** Clerk (auth), Neon Postgres (database), Drizzle ORM, ClaimReady API proxy, Solidarity Tech bidirectional sync
-- **Tooling:** TypeScript strict, Prettier, ESLint
+- **Hosting:** Vercel, rebuilt on publish via Sanity webhook → Vercel deploy hook; canonical origin is `https://www.rebuild.us` (ADR-0010)
+- **Integrations:** Solidarity Tech — founding-member signup form embed (`act.rebuild.us`) and get-involved form embed (`act.rebuild.us/join-rebuild`), with UTM pass-through (ADR-0009); Fundraise Up — checkout modal opened after the signup form submits (capture-then-pay, ADR-0005)
+- **Tooling:** TypeScript strict, Prettier, ESLint; unit tests via `node --test` (`pnpm --filter web test`)
 
-See `docs/adr/0001-stack.md` (Phase 1 architecture) and `docs/adr/0002-backend-auth-integrations.md` (Phase 2 architecture).
+See `docs/adr/0001-stack.md` and the other ADRs in `docs/adr/` for the decisions behind this. There is no backend, auth, or database.
 
 ## Workflows
 

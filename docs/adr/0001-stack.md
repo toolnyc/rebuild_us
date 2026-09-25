@@ -5,9 +5,8 @@
 - Updated: 2026-07-13 (brand palette adopted from approved mid-fi design)
 - Updated: 2026-07-14 (brand palette, fonts, and square-corner stance below are **superseded by [ADR-0004](./0004-design-system-overhaul.md)**; the canonical design system now lives in [`docs/design-system.md`](../design-system.md))
 
-> This ADR covers the Phase 1 (splash) architecture only. Phase 1 is fully
-> static. The ClaimReady integration and full-site backend decisions (auth,
-> database, hybrid SSR) are recorded in ADR-0002.
+> This ADR covers the Phase 1 (splash) architecture only, which is what is built
+> and deployed. Phase 1 is fully static.
 
 ## Context
 
@@ -15,12 +14,12 @@ We are rebuilding rebuild.us (currently WordPress on Pantheon) as a rebrand with
 
 ## Decision
 
-- **Frontend:** Astro with the Vercel adapter in static mode (SSG default, per-route SSR opt-in via `export const prerender = false`). Astro v5 removed the `hybrid` output option; `static` now behaves identically. Phase 1 uses this to support Sanity draft-preview routes (`/api/preview`, `/api/disable-preview`); all content pages remain static. Phase 2 adds further SSR routes for the ClaimReady proxy and auth.
+- **Frontend:** Astro with the Vercel adapter in static mode (SSG default, per-route SSR opt-in via `export const prerender = false`). Astro v5 removed the `hybrid` output option; `static` now behaves identically. The adapter supports Sanity draft-preview routes (`/api/preview`, `/api/disable-preview`); all content pages are static.
 - **Styling:** Tailwind CSS v4 with brand design tokens. _(Superseded by [ADR-0004](./0004-design-system-overhaul.md): the fonts, palette, and square-corner stance described here have been replaced by the design-system overhaul — Instrument Serif + Basis Grotesque Pro/Mono, a white `#FFFFFC` base, and a `5px` radius. The values below are retained for historical context; see [`docs/design-system.md`](../design-system.md) for the current tokens.)_ Brand fonts are New Burns Trial (display) and Armand Grotesk Test (body); files live in `apps/web/public/fonts/`. Token names use CSS custom properties (`--font-display`, `--font-body`, `--font-ui`). Brand color tokens (adopted from the approved mid-fi design): `--color-cream` `#F1E9DD` (page background), `--color-ink` `#1F1B17` (text + nav/footer/dark sections), `--color-muted` `#6B655C` (secondary text), `--color-white` `#FFFFFF` (cards), `--color-accent-yellow` `#ECF278`, `--color-accent-orange` `#F4552A`, `--color-accent-sage` `#A7B795`.
-- **CMS:** Sanity. Studio deployed to Sanity's hosting. Phase 1 document types: `siteSettings`, `splashPage`, `privacyPage` (full content); `resourcesPage`, `aboutPage`, `newsPage`, `contactPage`, `caseStudiesPage`, `memberPortalPage` (stubs: `title` + `visible` only). Phase 2 content types: `newsArticle`, `resource`, `impactStory`, `testimonial`, `person`. Each page document has a `visible` boolean; when `false`, the page and all nav/footer/section links to it are suppressed. `siteSettings` holds non-page config only (form embed URLs, social URLs, section toggles). `splashPage` is a singleton holding all editable homepage copy.
+- **CMS:** Sanity. Studio deployed to Sanity's hosting. Document types: `siteSettings`, `splashPage`, `privacyPage`, `resourcesPage` (page singletons) and `resourceGuide`, `resourceVideo` (content types; see [ADR-0003](./0003-resource-content-model.md)). Each page document has a `visible` boolean; when `false`, the page and all nav/footer/section links to it are suppressed. `siteSettings` holds non-page config only (form embed URLs, social URLs, section toggles). `splashPage` is a singleton holding all editable homepage copy.
 - **Repo structure:** pnpm-workspace monorepo — `apps/web` (Astro) and `apps/studio` (Sanity Studio). Sanity Studio is scaffolded from Phase 1 (required for `siteSettings`).
 - **Hosting:** Vercel.
-- **Integrations (Phase 1):** Solidarity Tech. The founding-member signup form is a Solidarity Tech iframe embed (`act.rebuild.us`). Newsletter sections are stubbed pending integration decision. Donations link out to the existing AN-hosted `donate.rebuild.us` page.
+- **Integrations:** Solidarity Tech. The founding-member signup form is a Solidarity Tech iframe embed (`act.rebuild.us`), as is the Get Involved form. The donation flow was later split into a capture-then-pay handoff to Fundraise Up (see [ADR-0005](./0005-capture-then-pay-split.md)).
 - **Tooling:** TypeScript strict, Prettier (`prettier-plugin-astro`), ESLint (`eslint-plugin-astro`). No git hooks or test framework at setup; add Playwright smoke tests later if needed.
 
 ## Consequences
