@@ -1,4 +1,4 @@
-> **Where things live** - Client: NewWorld | Bucket: `clients/NewWorld/` | Dropbox: `_Clients/NewWorld/` | Registry: `~/Code/toolhub/CoS/REGISTRY.md`
+> **Where things live** - Client: NewWorld | Bucket: `clients/NewWorld/` | Dropbox: `_Clients/NewWorld/` | Registry: Notion "Repos" DB (IDs in `~/Code/toolhub/CoS/NOTION.md`)
 
 # REBUILD.US
 
