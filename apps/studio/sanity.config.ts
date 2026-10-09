@@ -56,6 +56,8 @@ export default defineConfig({
                     ),
                   ]),
               ),
+            S.divider(),
+            S.documentTypeListItem("sharePage").title("Share Pages (PDF)"),
           ]),
     }),
   ],

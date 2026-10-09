@@ -10,6 +10,7 @@ import {
   memberPortalPage,
 } from "./pages";
 import { resourceGuide, resourceVideo } from "./resources";
+import { sharePage } from "./sharePage";
 
 export const schemaTypes = [
   siteSettings,
@@ -23,4 +24,5 @@ export const schemaTypes = [
   memberPortalPage,
   resourceGuide,
   resourceVideo,
+  sharePage,
 ];
