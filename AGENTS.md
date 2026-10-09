@@ -9,7 +9,7 @@ See `CONTEXT.md` for the domain language and `docs/adr/` for architectural decis
 ## Stack
 
 - **Frontend:** Astro `output: 'static'` with the Vercel adapter, Tailwind CSS v4 with brand design tokens (`docs/design-system.md`)
-- **CMS:** Sanity (Studio on Sanity hosting); document types — `siteSettings`, `splashPage`, `privacyPage`, `resourcesPage`, `resourceGuide`, `resourceVideo`. Spanish is editor-managed via parallel `*Es` fields (ADR-0008)
+- **CMS:** Sanity (Studio on Sanity hosting); document types — `siteSettings`, `splashPage`, `privacyPage`, `resourcesPage`, `resourceGuide`, `resourceVideo`, `sharePage` (unlisted PDF pages at `/share/<slug>`, ADR-0011). Spanish is editor-managed via parallel `*Es` fields (ADR-0008)
 - **Structure:** pnpm-workspace monorepo (`apps/web`, `apps/studio`)
 - **Hosting:** Vercel, rebuilt on publish via Sanity webhook → Vercel deploy hook; canonical origin is `https://www.rebuild.us` (ADR-0010)
 - **Integrations:** Solidarity Tech — founding-member signup form embed (`act.rebuild.us`) and get-involved form embed (`act.rebuild.us/join-rebuild`), with UTM pass-through (ADR-0009); Fundraise Up — checkout modal opened after the signup form submits (capture-then-pay, ADR-0005)

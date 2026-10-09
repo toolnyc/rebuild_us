@@ -35,6 +35,9 @@ Content that helps people prepare for and respond to a disaster and navigate rec
 
 _Note:_ "article" (an on-site or external written resource distinct from a downloadable guide) remains a conceptual format but is deferred — Phase 1 ships only guides and videos.
 
+**Share page**:
+An unlisted, full-screen PDF page at `www.rebuild.us/share/<slug>` (Español: `/es/share/<slug>`) created from a `sharePage` Sanity document. Editors upload a PDF and pick a slug; the page has no nav or footer, is absent from the sitemap and nav, and is reached only by direct link (see ADR-0011). Distinct from a **Guide**, which is a listed resource shown on the Resources page.
+
 **Impact story**:
 A narrative of an organization's or community's relief/recovery work, featured on the homepage.
 

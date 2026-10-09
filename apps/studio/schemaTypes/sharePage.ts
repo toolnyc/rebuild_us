@@ -1,8 +1,9 @@
 import { defineType, defineField } from "sanity";
 import { SlugWithCopyLinks } from "../components/SlugWithCopyLinks";
 
-// Reserved first path segments that would collide with existing routes.
-const RESERVED_SLUGS = ["resources", "privacy", "es", "sitemap.xml", "robots.txt"];
+// Routes are namespaced under /share/, so no slug can collide with another
+// page; the only thing to guard is characters that break a static path.
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const sharePage = defineType({
   name: "sharePage",
@@ -27,12 +28,12 @@ export const sharePage = defineType({
       validation: (r) =>
         r.required().custom(async (slug, context) => {
           if (!slug?.current) return true;
-          if (RESERVED_SLUGS.includes(slug.current)) {
-            return `"${slug.current}" is reserved by an existing route`;
+          if (!SLUG_PATTERN.test(slug.current)) {
+            return "Use only lowercase letters, numbers, and single hyphens (e.g. fema-appeal-guide)";
           }
           const { document, getClient } = context;
           const client = getClient({ apiVersion: "2024-01-01" });
-          const id = document?._id.replace(/^drafts\./, "");
+          const id = document?._id?.replace(/^drafts\./, "") ?? "";
           const duplicate = await client.fetch(
             `*[_type == "sharePage" && slug.current == $slug && !(_id in [$id, $draftId])][0]._id`,
             { slug: slug.current, id, draftId: `drafts.${id}` },

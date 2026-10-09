@@ -11,8 +11,12 @@ export function SlugWithCopyLinks(props: SlugInputProps) {
 
   const copy = useCallback(
     async (url: string, label: string) => {
-      await navigator.clipboard.writeText(url);
-      toast.push({ status: "success", title: `${label} link copied` });
+      try {
+        await navigator.clipboard.writeText(url);
+        toast.push({ status: "success", title: `${label} link copied` });
+      } catch {
+        toast.push({ status: "error", title: "Couldn't copy", description: url });
+      }
     },
     [toast],
   );
@@ -38,8 +42,8 @@ export function SlugWithCopyLinks(props: SlugInputProps) {
       ) : (
         <Card padding={2} radius={2} tone="transparent" border>
           <Text size={1} muted>
-            Set a slug to get shareable links. Pages go live after the next
-            publish-triggered rebuild.
+            Set a slug to get shareable links. Links only work after the
+            document is published and the site has rebuilt.
           </Text>
         </Card>
       )}

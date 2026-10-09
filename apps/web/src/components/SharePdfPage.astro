@@ -47,10 +47,12 @@ const downloadLabel = lang === "es" ? "Descargar PDF" : "Download PDF";
     </style>
   </head>
   <body>
-    <iframe class="pdf-frame" src={`${fileUrl}#view=FitH`} title={title}>
+    <!-- <object> (not <iframe>) so the fallback actually renders when the browser
+         can't display PDFs inline, e.g. Android Chrome. -->
+    <object class="pdf-frame" data={`${fileUrl}#view=FitH`} type="application/pdf" title={title}>
       <div class="fallback">
         <a href={fileUrl}>{downloadLabel}</a>
       </div>
-    </iframe>
+    </object>
   </body>
 </html>
