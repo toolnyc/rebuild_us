@@ -1,0 +1,31 @@
+---
+import SharePdfPage from "../../components/SharePdfPage.astro";
+import { sanityClient } from "../../lib/sanity";
+
+export async function getStaticPaths() {
+  const pages = await sanityClient.fetch(
+    `*[_type == "sharePage" && defined(slug.current) && defined(file.asset)]{
+      "slug": slug.current,
+      title,
+      titleEs,
+      "fileUrl": file.asset->url,
+      "fileUrlEs": fileEs.asset->url
+    }`,
+  );
+  return pages.map((page: any) => ({
+    params: { slug: page.slug },
+    props: page,
+  }));
+}
+
+const page = Astro.props;
+const canonicalUrl = `https://www.rebuild.us/share/${page.slug}`;
+const hasEs = Boolean(page.titleEs || page.fileUrlEs);
+---
+
+<SharePdfPage
+  title={page.title}
+  fileUrl={page.fileUrl}
+  canonicalUrl={canonicalUrl}
+  alternateUrl={hasEs ? `https://www.rebuild.us/es/share/${page.slug}` : undefined}
+/>
