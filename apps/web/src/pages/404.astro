@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import Button from '../components/Button.astro';
+import { sanityClient } from '../lib/sanity';
+
+const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+const visibility = await sanityClient.fetch(`{
+  "privacyPage": *[_type == "privacyPage"][0].visible,
+  "contactPage": *[_type == "contactPage"][0].visible
+}`);
+
+// Vercel serves this single page for every unmatched path, including /es/*,
+// so it is English-first with a Spanish line rather than a localized pair.
+---
+
+<BaseLayout title="Page not found — Rebuild" canonicalUrl="https://www.rebuild.us/404">
+  <div class="flex min-h-screen flex-col">
+  <div class="w-full h-[28px] bg-accent-sage"></div>
+  <div class="sticky top-0 z-50">
+    <Nav joinDestination={siteSettings?.joinDestination} resourcesDestination="/resources" route="/" />
+  </div>
+  <main class="mx-auto flex w-full max-w-3xl flex-1 flex-col items-start justify-center px-6 py-24 sm:py-32">
+    <h1 class="ty-display">
+      This page isn't here <em>anymore.</em>
+    </h1>
+    <p class="ty-lead mt-6 max-w-xl text-muted">
+      The link may be out of date, or the address may have a typo. Either way, you can
+      always head back to where you started.
+    </p>
+    <div class="mt-10 flex flex-wrap gap-4">
+      <Button href="/" variant="primary" size="lg">Back to home</Button>
+      <Button href="/resources" variant="outline" size="lg">Browse resources</Button>
+    </div>
+    <p class="ty-caption mt-10 text-muted" lang="es">
+      ¿Buscas la versión en español? <a href="/es/" class="link-main">Ir al inicio</a>
+    </p>
+  </main>
+  <Footer joinDestination={siteSettings?.joinDestination} visibility={visibility} route="/" />
+  </div>
+</BaseLayout>
