@@ -8,6 +8,10 @@ component layer. Rationale and the decisions behind the overhaul live in
 > **Status:** live. This catalog reflects the shipped site: the tokens and
 > `@font-face` rules are in `apps/web/src/styles/global.css`, and the component
 > layer is in `apps/web/src/components/`.
+>
+> **Full site (V2):** this system is reused unchanged for the full-site build
+> (ADR-0012). The V2 wireframes supply layout blocks only; see §8 and
+> [`full-site.md`](./full-site.md).
 
 Design source: Figma — Rebuild Splash
 ([palette](https://www.figma.com/design/LC4ZJUQYVgnoGltxEuElHN/Rebuild-Splash?node-id=34-167),
@@ -34,8 +38,7 @@ Three brand typefaces. New Burns Trial, Armand Grotesk, and Helvetica Neue are
 
 ### Font files
 
-Place these in `apps/web/public/fonts/` (source files are in `~/Downloads`). Remove
-the retired `ArmandGroteskTest-*.otf` and `NewBurnsTrial-Regular.otf`.
+These live in `apps/web/public/fonts/`:
 
 ```
 InstrumentSerif-Regular.ttf
@@ -191,10 +194,11 @@ a color class.
 
 ---
 
-## 5. `global.css` token block (spec)
+## 5. `global.css` token block
 
-Copy-ready target for `apps/web/src/styles/global.css` (Tailwind v4). `@font-face`
-rules from §1 go at the bottom of the file (omitted here for brevity).
+Mirror of the token and utility blocks in `apps/web/src/styles/global.css`
+(Tailwind v4). The `@font-face` rules from §1 sit at the bottom of that file
+(omitted here for brevity).
 
 ```css
 @import "tailwindcss";
@@ -346,13 +350,13 @@ label uses `--color-accent-sage` (e.g. "500 / Founding Member Spots",
   to the Sanity Studio (`https://rebuild-us.sanity.studio`). The previous dark
   ink link-column footer is retired.
 
-### GuideSection card
+### Guide section
 
-Used on the Resources page to group guide rows within a sub-section. `5px` radius,
-`2px solid --color-accent-sage` border, white fill. Contains a `ty-h2` sub-section
-heading followed by a list of Guide rows. Laid out in a `2×2` grid
-(`grid-cols-1 lg:grid-cols-2`); two rows render four sub-sections in document order
-(Disaster Tipsheets → For Survivors → FEMA & Government → Insurance).
+Used on the Resources page (`WrittenGuides.astro`) to group guides by section. A
+bare `ty-h2` section heading followed by a grid of Guide cards
+(`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`). Sections render in the order
+Disaster Tipsheets → FEMA & Government → For Survivors → Insurance. This is the
+"Resources Block" of the V2 wireframes.
 
 ### Document icon
 
@@ -368,11 +372,16 @@ The accent color maps to the section:
 | `fema-government` | `--color-accent-sage` |
 | `insurance` | `--color-accent-blue` |
 
-### Guide row
+### Guide card
 
-An `<a>` wrapping the entire row (Document icon + title). The anchor's `href` is
-`fileUrl` from Sanity; it opens the PDF. Title uses `ty-h3` (Basis Grotesque Pro
-Bold). No separate "Download" link.
+An `<a>` wrapping the whole card (Document icon + title): `5px` radius, 1px
+`--color-ink` border at 20% opacity, darker on hover. The anchor's `href` is
+`fileUrl` from Sanity; it opens the PDF. Title is `ty-body` bold. No separate
+"Download" link. A guide with no file renders dimmed and inert. This is the
+"Resources Card" of the V2 wireframes.
+
+The splash Resources section (`Resources.astro`) uses a different shape: hairline-
+separated rows with a Document icon, title, and a "Download" link.
 
 ### Decorative patterns (not components)
 
@@ -402,8 +411,10 @@ Document as reusable patterns/utilities, not as first-class components.
 The two ST forms (`act.rebuild.us/founding-member/embed`, `/join-form/embed`) are
 cross-origin iframes styled from ST's **Website → Settings → Site-wide HTML Head
 Content**. See [`splash/solidarity-tech-form-styling.md`](./splash/solidarity-tech-form-styling.md)
-for the full selector inventory; the current live block is
-[`splash/solidarity-tech-form-styles.html`](./splash/solidarity-tech-form-styles.html).
+for the full selector inventory. The paste-ready block
+(`splash/solidarity-tech-form-styles.html`) was removed from the repo on
+2026-09-25 (commit `67ef1e8`); the live copy is in Solidarity Tech's settings, and
+the last committed version is in git history.
 
 **Changes for the overhaul:**
 
@@ -483,13 +494,20 @@ The dark-theme block (everything scoped under `body.embedded-iframe:has(.multipa
 is **deleted**; both forms share the single light treatment above. Re-run the
 verification checklist in the HTML file after applying.
 
+Whether the §7 rewrite has been applied on the Solidarity Tech side is not tracked
+in this repo; check the live forms.
+
 ---
 
-## Implementation checklist (later task)
+## 8. Full-site layout blocks (V2)
 
-- [ ] Add the 8 font files to `apps/web/public/fonts/`; delete Armand + New Burns.
-- [ ] Replace the `@theme`, `@utility`, and `@font-face` blocks in `global.css` per §5 and §1; remove the global square reset.
-- [ ] Update components (`Button`, `Logo`, `Hero`, sections) to consume the new tokens; drop orange-emphasis in headings.
-- [ ] Rewrite `WrittenGuides.astro` — 4 locked sections, GuideSection card, Document icon SVG, Guide row anchor. Update Sanity `resourceGuide` schema: expand `section` enum to 4 values (`disaster-tipsheets`, `survivors-communities`, `fema-government`, `insurance`).
-- [ ] Add Resources-page-specific vertical bar decorations (22px orange bars, left + right edges; left bar transitions to sage at mid-page).
-- [ ] Rewrite the ST `<style>` block per §7 (gated on font licensing/CORS); re-verify on the live forms.
+The V2 Figma file adds a set of grid-based layout blocks (heroes, lockups, 3-up
+and 4-up card rows, marquees, a carousel, and News Article, Partner, and
+Membership Hub cards) and page wireframes built from them. They are grayscale
+structure only. Build each block as a composition of the primitives in §6, using
+the tokens in §2–§4; do not copy the wireframes' grays, placeholder font, or
+square corners.
+
+The block list, Figma node IDs, and the existing component each block should
+start from are in [`full-site.md`](./full-site.md#layout-blocks). When a block
+ships, document it in §6.

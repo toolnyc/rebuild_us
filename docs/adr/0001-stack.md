@@ -4,9 +4,11 @@
 - Date: 2026-06-28
 - Updated: 2026-07-13 (brand palette adopted from approved mid-fi design)
 - Updated: 2026-07-14 (brand palette, fonts, and square-corner stance below are **superseded by [ADR-0004](./0004-design-system-overhaul.md)**; the canonical design system now lives in [`docs/design-system.md`](../design-system.md))
+- Updated: 2026-11-18 (the "Phase 2" full site described below, with a backend and auth, is **amended by [ADR-0012](./0012-static-full-site.md)**: the full site is static and adds no accounts, backend, or ClaimReady feature)
 
-> This ADR covers the Phase 1 (splash) architecture only, which is what is built
-> and deployed. Phase 1 is fully static.
+> This ADR covers the Phase 1 (splash) architecture, which is what is built and
+> deployed. The full site keeps the same static architecture (ADR-0012). The
+> Sanity draft-preview routes mentioned under Decision were never built.
 
 ## Context
 

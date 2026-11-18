@@ -153,7 +153,7 @@ Single-step signup: Full Name, Email, Phone, SMS opt-in (Yes/No). No payment.
 
 ## Final CSS
 
-The paste-ready `<style>` block lives in [`solidarity-tech-form-styles.html`](./solidarity-tech-form-styles.html). Paste it into **Website → Settings → Site-wide HTML Head Content**. All rules are scoped under `body.embedded-iframe`, so only the embedded forms are affected. Font is `"Helvetica Neue", system-ui, sans-serif` (the site's UI font, system-installed — no `@font-face`/CORS/licensing), with slightly tightened tracking. Square corners throughout.
+The paste-ready `<style>` block (`solidarity-tech-form-styles.html`) was removed from this repo on 2026-09-25 (commit `67ef1e8`). The live copy is in Solidarity Tech under **Website → Settings → Site-wide HTML Head Content**; the last committed version is in git history. The description below is of that removed file and predates the single light theme in [`design-system.md`](../design-system.md) §7. All rules are scoped under `body.embedded-iframe`, so only the embedded forms are affected. Font is `"Helvetica Neue", system-ui, sans-serif` (the site's UI font, system-installed — no `@font-face`/CORS/licensing), with slightly tightened tracking. Square corners throughout.
 
 **Two themes:** the **Join** form uses a light cream surface (blends into the cream section); the **Founding** form uses a dark ink surface matching the `#join` section it sits in (cream text, light-filled inputs so the Stripe box stays legible, cream-outline choice controls that turn orange when selected). The founding treatment is scoped via `:has(.multipage)` so only the stepper form gets it.
 
