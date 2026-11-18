@@ -42,6 +42,13 @@ pnpm --filter studio build  # only when apps/studio changed
 
 The web build reads live Sanity content, so it needs `SANITY_PROJECT_ID` in `apps/web/.env`. `test/spanish-routes.test.mjs` asserts the built route pairs; extend it when adding routes.
 
+Type checks are not installed as dependencies; run them with `pnpm dlx`. Both pass clean and should stay that way:
+
+```
+cd apps/web && pnpm dlx --package=@astrojs/check --package=typescript@6 astro-check
+cd apps/studio && pnpm dlx --package=typescript@6 tsc --noEmit -p .
+```
+
 ### After any Sanity schema change
 
 Schema changes in `apps/studio/schemaTypes/` are not reflected in the live Studio until you redeploy:

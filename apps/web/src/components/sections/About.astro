@@ -2,12 +2,11 @@
 import RichText from '../RichText.astro';
 
 interface Props {
-  label?: string;
   statement?: any;
   support?: string;
 }
 
-const { label, statement, support } = Astro.props;
+const { statement, support } = Astro.props;
 ---
 
 <section id="about" class="mx-auto max-w-7xl px-6 py-20 lg:py-28 text-center">

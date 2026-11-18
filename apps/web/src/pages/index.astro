@@ -22,10 +22,7 @@ const splash = await sanityClient.fetch(`*[_type == "splashPage"][0]{
 const visibility = await sanityClient.fetch(`{
   "privacyPage": *[_type == "privacyPage"][0].visible,
   "resourcesPage": *[_type == "resourcesPage"][0].visible,
-  "aboutPage": *[_type == "aboutPage"][0].visible,
-  "contactPage": *[_type == "contactPage"][0].visible,
-  "caseStudiesPage": *[_type == "caseStudiesPage"][0].visible,
-  "memberPortalPage": *[_type == "memberPortalPage"][0].visible
+  "contactPage": *[_type == "contactPage"][0].visible
 }`);
 
 const joinDestination = siteSettings?.joinDestination ?? "#join";
@@ -61,13 +58,11 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
     <Stats />
 
     <About
-      label={splash?.aboutLabel}
       statement={splash?.aboutStatement}
       support={splash?.aboutSupport}
     />
 
     <FoundingCta
-      label={splash?.foundingLabel}
       headline={splash?.foundingCtaHeadline}
       subcopy={splash?.foundingCtaSubcopy}
       formSrc={siteSettings?.foundingMemberFormSrc}
@@ -77,7 +72,6 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
     <WhyJoin label={splash?.benefitsLabel} columns={splash?.whyJoinColumns} bgImage={splash?.whyJoinBgImage} />
 
     <Resources
-      label={splash?.resourcesLabel}
       headline={splash?.resourcesHeadline}
       subcopy={splash?.resourcesSubcopy}
       leftCopy={splash?.resourcesLeftCopy}
@@ -95,11 +89,7 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
     />
   </main>
 
-  <Footer
-    joinDestination={joinDestination}
-    visibility={visibility}
-    route="/"
-  />
+  <Footer visibility={visibility} route="/" />
   <SmoothScroll />
 </BaseLayout>
 
@@ -119,5 +109,5 @@ const joinDestination = siteSettings?.joinDestination ?? "#join";
     });
   }
 
-  setupMotion({ page: "splash" });
+  setupMotion();
 </script>

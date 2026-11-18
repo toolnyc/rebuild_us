@@ -325,12 +325,13 @@ Label-above input for embedded/native forms. `ty-body`/`ty-caption` label in
 `--color-ink`, 1px `--color-ink` border, `5px` radius, white fill, `--color-muted`
 placeholder, orange focus ring (`0 0 0 3px rgba(244,85,42,0.2)`).
 
-### Eyebrow / SectionMarker
+### Eyebrow
 
 `ty-eyebrow` (Basis Mono Bold, uppercase). Orange (`RESOURCES`) or ink depending on
-surface. Used for nav labels only — the numbered section kickers ("01 About", …)
-are retired; section headings stand bare per the splash/resources comps. The
-Sanity `*Label` fields remain in the schema but are unrendered.
+surface. Used for small labels only — the numbered section kickers ("01 About", …)
+and their `SectionMarker` component are retired; section headings stand bare per
+the splash/resources comps. The Sanity `*Label` fields remain in the schema but,
+apart from `benefitsLabel` (the Why Join heading), are unrendered.
 
 ### Stat
 

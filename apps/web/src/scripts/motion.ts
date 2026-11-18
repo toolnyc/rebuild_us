@@ -21,11 +21,7 @@ const sc = (el: Element, start = "top 95%"): ScrollTrigger.Vars => ({
   once: true,
 });
 
-interface MotionOptions {
-  page: "splash" | "resources";
-}
-
-export function setupMotion({ page }: MotionOptions) {
+export function setupMotion() {
   // ── data-animate="hero" — load-time cascade ─────────────────────────────
   const heroSection = document.querySelector('[data-animate="hero"]');
   if (heroSection) {

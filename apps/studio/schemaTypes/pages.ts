@@ -240,7 +240,6 @@ export const splashPage = defineType({
     richText("aboutStatementEs", "About statement (Español)", "es"),
     richText("resourcesSubcopyEs", "Resources subcopy (Español)", "es"),
   ],
-  __experimental_actions: ["update", "publish"],
 });
 
 export const privacyPage = defineType({
@@ -273,7 +272,6 @@ export const privacyPage = defineType({
       of: [{ type: "block" }],
     }),
   ],
-  __experimental_actions: ["update", "publish"],
 });
 
 const stubPage = (name: string, title: string) =>
@@ -290,7 +288,6 @@ const stubPage = (name: string, title: string) =>
       }),
       visibleField,
     ],
-    __experimental_actions: ["update", "publish"],
   });
 
 export const resourcesPage = defineType({
@@ -370,7 +367,6 @@ export const resourcesPage = defineType({
       rows: 3,
     }),
   ],
-  __experimental_actions: ["update", "publish"],
 });
 
 export const aboutPage = stubPage("aboutPage", "About");

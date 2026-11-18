@@ -96,7 +96,7 @@ The ticker of active disasters Rebuild is tracking, shown as a marquee on the Ho
 Editor-managed translations live as parallel `*Es` fields on the same Sanity
 documents as the English source (see ADR-0008). Pages under `/es/` render from
 these fields, falling back to English when a translation is empty (the `es()`
-helper in `apps/web/src/lib/`). There is no build-time translation pipeline.
+helper in `apps/web/src/lib/i18n.ts`). There is no build-time translation pipeline.
 
 ## Relationships
 

@@ -25,5 +25,5 @@ const visibility = await sanityClient.fetch(`{
     </div>
     <a href="/" class="mt-10 inline-block ty-body font-semibold hover:text-accent-orange">← Back home</a>
   </main>
-  <Footer joinDestination={siteSettings?.joinDestination} visibility={visibility} route="/privacy" />
+  <Footer visibility={visibility} route="/privacy" />
 </BaseLayout>

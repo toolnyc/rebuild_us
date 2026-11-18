@@ -1,16 +1,13 @@
 ---
 interface Props {
   href: string;
-  variant?: 'primary' | 'outline' | 'dark' | 'small' | 'main' | 'alt';
+  variant?: 'primary' | 'outline' | 'dark' | 'small';
   size?: 'sm' | 'base' | 'lg';
   class?: string;
   [key: string]: any;
 }
 
 const { href, variant = 'primary', size = 'base', class: className = '', ...rest } = Astro.props;
-
-// Map legacy variant names
-const resolvedVariant = variant === 'main' ? 'primary' : variant === 'alt' ? 'outline' : variant;
 
 const base = 'inline-flex items-center justify-center font-bold transition'
   + ' rounded-[var(--radius)]'
@@ -29,8 +26,8 @@ const variants = {
   small: 'border-2 border-accent-orange bg-accent-orange text-white text-[0.875rem] font-bold px-3 py-1 hover:bg-transparent hover:text-accent-orange',
 };
 
-const sizeClass = resolvedVariant === 'small' ? '' : sizes[size];
-const variantClass = variants[resolvedVariant] ?? variants.primary;
+const sizeClass = variant === 'small' ? '' : sizes[size];
+const variantClass = variants[variant];
 ---
 
 <a href={href} class:list={[base, sizeClass, variantClass, className]} {...rest}>

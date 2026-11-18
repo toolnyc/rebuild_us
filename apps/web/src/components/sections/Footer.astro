@@ -2,14 +2,13 @@
 import Logo from '../Logo.astro';
 
 interface Props {
-  joinDestination?: string;
   visibility?: Record<string, boolean>;
   locale?: "en" | "es";
   route?: "/" | "/resources" | "/privacy";
   labels?: { privacy?: string; copyright?: string };
 }
 
-const { joinDestination = '#join', visibility = {}, locale = "en", route = "/", labels = {} } = Astro.props;
+const { visibility = {}, locale = "en", route = "/", labels = {} } = Astro.props;
 const homeRoute = locale === "es" ? "/es/" : "/";
 const privacyRoute = locale === "es" ? "/es/privacy" : "/privacy";
 const switchRoute = locale === "es" ? route : route === "/" ? "/es/" : `/es${route}`;

@@ -101,5 +101,4 @@ export const siteSettings = defineType({
     esString('statsSurvivorsValueEs', 'Stat value "By & for" (Español)'),
     esString('followAlongEs', '"Follow along" social heading (Español)'),
   ],
-  __experimental_actions: ['update', 'publish'],
 });
