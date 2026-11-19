@@ -28,7 +28,8 @@ on `siteSettings`. `resourceGuide` additionally gains a `fileEs` PDF field.
 
 The initial translation is a one-time seed: a script
 (`apps/web/scripts/seed-spanish.mjs`) reads the previously generated translation
-table from git history (branch `spanish-translations`) and writes each value into
+table from git history (tag `archive/spanish-translations`, formerly the
+`spanish-translations` branch) and writes each value into
 its `*Es` field. A second script (`apps/web/scripts/translate-pdfs.mjs`) sends
 each `resourceGuide` PDF through the DeepL document API and uploads the result as
 `fileEs`. Both scripts are deleted once the seed is verified in Studio.
