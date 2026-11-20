@@ -26,14 +26,6 @@ Content that helps people prepare for and respond to a disaster and navigate rec
 - **Guide** — a written, downloadable PDF that belongs to one **section** (see four locked values below). Shown on the Resources page grouped by section as a grid of Guide cards; each card is a clickable anchor to the file. Also shown on the splash as curated hairline-separated rows (document icon + title + "Download" link) in the splash Resources section.
 - **Video** — a YouTube video (link/embed). Has no section; shown in a flat "Video Library" grid on the Resources page below the Written Guides section.
 
-**Guide sections** (four locked enum values in the Sanity schema):
-
-- `disaster-tipsheets` — "Disaster Tipsheets" (accent: orange)
-- `survivors-communities` — "For Survivors & Our Communities" (accent: yellow)
-- `fema-government` — "FEMA & Government Programs" (accent: sage)
-- `insurance` — "Insurance" (accent: blue)
-
-_Note:_ "article" (an on-site or external written resource distinct from a downloadable guide) remains a conceptual format but is deferred — Phase 1 ships only guides and videos.
 
 **Share page**:
 An unlisted, full-screen PDF page at `www.rebuild.us/share/<slug>` (Español: `/es/share/<slug>`) created from a `sharePage` Sanity document. Editors upload a PDF and pick a slug; the page has no nav or footer, is absent from the sitemap and nav, and is reached only by direct link (see ADR-0011). Distinct from a **Guide**, which is a listed resource shown on the Resources page.
@@ -110,19 +102,4 @@ helper in `apps/web/src/lib/i18n.ts`). There is no build-time translation pipeli
 - Each **`es` field** mirrors the English field on the same document; an empty `es`
   value falls back to English at render time.
 
-## Flagged ambiguities
 
-- "victim" vs "survivor" — resolved: always **disaster survivor**; "victim" is never used.
-- "member" vs "founding member" — at launch the membership is the founding cohort. Revisit if a general (non-founding) member tier is introduced later.
-- **Claims Ready** vs **ClaimReady** — resolved: "Claims Ready" (with "s") is our page/program; "ClaimReady" (no space) is the vendor. See term definitions above.
-- **Rebuild Foundation** page scope — still TBD; hidden in Phase 1.
-- **Organization name** — resolved: short name **Rebuild**; canonical descriptor **The National Disaster Survivors Association** (hardcoded lockup in nav/footer/copyright).
-- **Identity / auth** — the current site has no auth and no user accounts.
-- **Newsletter signup** — resolved: reuses the Get Involved Solidarity Tech embed (`getInvolvedFormSrc`) with page-specific copy, rendered via the shared Get Involved section.
-- **Resource content model** — resolved: two document types (**Guide** + **Video**) rather than a single Resource-with-format. See ADR-0003.
-- **Resources destination** — resolved: `resourcesDestination` points to `/resources` once the Resources page is visible (was `#resources` on the splash).
-- **Earlier-IA terms** — **Impact story**, **Testimonial**, **Claims Ready**, and **Rebuild Foundation** come from the information architecture that preceded the V2 sitemap. None has a page in the V2 sitemap or wireframes; do not build them unless they reappear there.
-- **Vertical vs category** — a **News article** was defined as carrying a "vertical". The V2 wireframes show one category tag per article (Report, Article, Press Release, Rebuild in Action, Guide, Survivor Stories). Whether the tag is the vertical, and the final list, is unresolved.
-- **Member vs founding member (full site)** — the V2 wireframes speak of "members" and "membership" generally and never mention founding members. Whether the founding-member campaign continues on the full site is unresolved.
-- **Organization name in the footer** — the V2 footer wireframe reads "© Organizing Resilience, 2026" with placeholder legal-entity copy marked pending counsel review. The live site hardcodes "Rebuild — The National Disaster Survivors Association". Unresolved until legal copy is final.
-- **Rebuild Ready group vs Partner** — the Rebuild Ready Network wireframe uses both for the organizations in the network. Treated as the same thing (**Partner**) until told otherwise.
